@@ -1,0 +1,23 @@
+<h2>Usuarios</h2>
+<% if (!usersList.length) {%>
+  <p>Sin resultados</p>
+<% } else {%>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Username</th>
+        <th>Calificacion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% usersList.forEach((user) => { %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.username %></td>
+          <td><%= user.rating %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% }%>

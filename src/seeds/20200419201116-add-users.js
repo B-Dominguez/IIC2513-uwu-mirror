@@ -20,6 +20,7 @@ module.exports = {
       password: 'pass',
       createdAt: new Date(),
       updatedAt: new Date(),
+      rating: 5.0,
       },
       {
       username: "bidominguez2",
@@ -30,6 +31,7 @@ module.exports = {
       password: 'pass',
       createdAt: new Date(),
       updatedAt: new Date(),
+      rating: 4.9,
       }
     ];
 
