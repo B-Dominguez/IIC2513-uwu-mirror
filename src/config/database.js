@@ -1,14 +1,14 @@
 const config = {
   default: {
-    username: process.env.DB_USERNAME || 'adminuwu',
-    password: process.env.DB_PASSWORD || 'uwupass',
+    username: process.env.DB_USERNAME ,
+    password: process.env.DB_PASSWORD ,
     dialect: process.env.DB_DIALECT || 'postgres',
-    database: process.env.DB_NAME || 'guwu',
+    database: process.env.DB_NAME,
     host: process.env.DB_HOST || '127.0.0.1',
   },
   development: {
     extend: 'default',
-    database: process.env.DB_NAME || 'guwu_dev',
+    database: process.env.DB_NAME,
   },
   test: {
     extend: 'default',
