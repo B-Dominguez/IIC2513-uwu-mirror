@@ -22,11 +22,8 @@
         <input type="integer" name="sender" value="<%= message.sender %>" />
       </div>
       <div  class="field">
-        <label for="trade_id">trade_id</label>
-        <input type="integer" name="trade_id" value="<%= message.trade_id %>" />
-      </div>
-      <div  class="field">
-        <input type="hidden" name="tradeId" value=1 />
+        <label for="tradeId">tradeId</label>
+        <input type="integer" name="tradeId" value="<%= message.tradeId %>" />
       </div>
       <div  class="field">
         <% if (message.isNewRecord) { %>

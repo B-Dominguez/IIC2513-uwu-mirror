@@ -50,8 +50,8 @@ router.get('messages.edit', '/:id/edit', loadMessage, async(ctx) => {
 router.patch('messages.update', '/:id', loadMessage, async (ctx) => {
     const { message } = ctx.state;
     try {
-        const {id_user1, id_user2, status, actual_offer, date} = ctx.request.body;
-        await message.update({id_user1, id_user2, status, actual_offer, date});
+        const {id_user1, id_user2, status, actual_offer, date, tradeId} = ctx.request.body;
+        await message.update({id_user1, id_user2, status, actual_offer, date, tradeId});
         ctx.redirect(ctx.router.url('messages.list'));
     } catch (validationError) {
         await ctx.render('messages/edit', {
@@ -69,4 +69,3 @@ router.del('messages.delete', '/:id', loadMessage, async (ctx) => {
 });
 
 module.exports = router;
-

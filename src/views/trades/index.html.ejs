@@ -10,7 +10,7 @@
                 <th>status</th>
                 <th>actual_offer</th>
                 <th>date</th>
-                <th colspan="2">Actions</th>
+                <th colspan="3">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +21,7 @@
                     <td><%= trade.status %></td>
                     <td><%= trade.actual_offer %></td>
                     <td><%= trade.date %></td>
+                    <td><a href="<%= showTradePath(trade) %>">Show</a></td>
                     <td><a href="<%= editTradePath(trade) %>">Edit</a></td>
                     <td>
                         <form action="<%= deleteTradePath(trade) %>" method="POST">

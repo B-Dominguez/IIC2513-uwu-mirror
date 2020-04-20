@@ -14,6 +14,24 @@ router.get('trades.list', '/', async (ctx) => {
         newTradePath: ctx.router.url('trades.new'),
         editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
         deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
+        showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
+    });
+});
+
+router.get('trades.show', '/:id/show', loadTrade, async (ctx) => {
+    const { trade } = ctx.state;
+    const tradeMessagesList = await ctx.orm.message.findAll({
+      where: {tradeId: trade.id}});
+    await ctx.render('trades/show', {
+        trade,
+        tradeMessagesList,
+        editTradePath: ctx.router.url('trades.edit', { id: trade.id}),
+        // falta new message
+        deleteTradePath: ctx.router.url('trades.delete', { id: trade.id}),
+        editMessagePath: (message) => ctx.router.url('messages.edit',
+        { id: message.id}),
+        deleteMessagePath: (message) => ctx.router.url('messages.delete',
+        { id: message.id}),
     });
 });
 
@@ -69,4 +87,3 @@ router.del('trades.delete', '/:id', loadTrade, async (ctx) => {
 });
 
 module.exports = router;
-
