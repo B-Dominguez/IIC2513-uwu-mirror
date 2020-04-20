@@ -1,0 +1,35 @@
+<h2>Messages</h2>
+<% if (!messagesList.length) { %>
+    <p>No results</p>
+<% } else { %>
+    <table>
+        <thead>
+            <tr>
+                <th>content</th>
+                <th>sender</th>
+                <th>trade_id</th>
+                <th>date</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% messagesList.forEach((message) => { %>
+                <tr>
+                    <td><%= message.content %></td>
+                    <td><%= message.sender %></td>
+                    <td><%= message.trade_id %></td>
+                    <td><%= message.date %></td>
+                    <td><a href="<%= editMessagePath(message) %>">Edit</a></td>
+                    <td>
+                        <form action="<%= deleteMessagePath(message) %>" method="POST">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>
+
+<a href="<%= newMessagePath %>">New Message</a>
