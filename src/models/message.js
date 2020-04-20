@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     trade_id: DataTypes.INTEGER,
   }, {});
 
-  message.associate = function associate() {
+  message.associate = function associate(models) {
+    message.belongsTo(models.trade);
     // associations can be defined here. This method receives a models parameter.
   };
 

@@ -34,6 +34,12 @@
         <input type="file" name="image2"  accept="image/*" value="<%= object.image2 %>" />
       </div>
       <div  class="field">
+        <input type="hidden" name="userId" value=1 />
+      </div>
+      <div  class="field">
+        <input type="hidden" name="status" value='available' />
+      </div>
+      <div  class="field">
         <% if (object.isNewRecord) { %>
           <input type="submit" name="create" value="Create" />
         <% } else { %>
