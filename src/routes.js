@@ -10,6 +10,6 @@ const router = new KoaRouter();
 router.use('/', index.routes());
 router.use('/hello', hello.routes());
 router.use('/objects', objects.routes());
-router.use('/offers', objects.offers());
+router.use('/offers', offers.routes());
 
 module.exports = router;
