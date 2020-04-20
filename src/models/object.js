@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 
   object.associate = function associate() {
     object.belongsTo(models.user);
-
+    object.belongsToMany(models.offer,{ through: 'ObjectOffer' })
     // associations can be defined here. This method receives a models parameter.
   };
 

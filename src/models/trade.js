@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   trade.associate = function associate() {
     trade.hasMany(models.message);
     trade.hasMany(models.offer);
+    trade.belongsToMany(models.user,{ through: 'UserTrade' })
+
     // associations can be defined here. This method receives a models parameter.
   };
 
