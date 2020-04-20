@@ -64,4 +64,37 @@
     </table>
 <% } %>
 
-<!-- <a href="< %= newMessagePath % >">New Message</a> -->
+<h3>Ofertas asociadas</h3>
+
+<% if (!tradeOffersList.length) { %>
+    <p>No offers associated</p>
+<% } else { %>
+    <table id='offers-list'>
+        <thead>
+            <tr>
+                <th>content</th>
+                <th>sender</th>
+                <th>tradeId</th>
+                <th>date</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% tradeOffersList.forEach((offer) => { %>
+                <tr>
+                    <td><%= offer.content %></td>
+                    <td><%= offer.sender %></td>
+                    <td><%= offer.tradeId %></td>
+                    <td><%= offer.date %></td>
+                    <td><a href="<%= editOfferPath(offer) %>">Edit</a></td>
+                    <td>
+                        <form action="<%= deleteOfferPath(offer) %>" method="POST">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>

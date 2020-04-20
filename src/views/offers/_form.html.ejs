@@ -22,7 +22,8 @@
         <textarea type="text" name="status"><%= offer.status %></textarea>
       </div>
       <div  class="field">
-        <input type="hidden" name="tradeId" value=1 />
+        <label for="tradeId">tradeId</label>
+        <input type="integer" name="tradeId" value="<%= message.tradeId %>" />
       </div>
       <div  class="field">
         <% if (offer.isNewRecord) { %>
@@ -33,6 +34,3 @@
       </div>
     </form>
   </div>
-
-
-  
