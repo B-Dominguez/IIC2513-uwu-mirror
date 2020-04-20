@@ -1,0 +1,37 @@
+<h2>Trades</h2>
+<% if (!tradesList.length) { %>
+    <p>No results</p>
+<% } else { %>
+    <table>
+        <thead>
+            <tr>
+                <th>id_user1</th>
+                <th>id_user2</th>
+                <th>status</th>
+                <th>actual_offer</th>
+                <th>date</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% tradesList.forEach((trade) => { %>
+                <tr>
+                    <td><%= trade.id_user1 %></td>
+                    <td><%= trade.id_user2 %></td>
+                    <td><%= trade.status %></td>
+                    <td><%= trade.actual_offer %></td>
+                    <td><%= trade.date %></td>
+                    <td><a href="<%= editTradePath(trade) %>">Edit</a></td>
+                    <td>
+                        <form action="<%= deleteTradePath(trade) %>" method="POST">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>
+
+<a href="<%= newTradePath %>">New Trade</a>
