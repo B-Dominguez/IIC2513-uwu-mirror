@@ -26,6 +26,14 @@
         <input type="text" name="category" value="<%= object.category %>" />
       </div>
       <div  class="field">
+        <label for="file">Agrega una imagen</label>
+        <input type="file" name="image1"  accept="image/*" value="<%= object.image1 %>" />
+      </div>
+      <div  class="field">
+        <label for="file">Agrega una segunda imagen</label>
+        <input type="file" name="image2"  accept="image/*" value="<%= object.image2 %>" />
+      </div>
+      <div  class="field">
         <% if (object.isNewRecord) { %>
           <input type="submit" name="create" value="Create" />
         <% } else { %>
@@ -34,3 +42,6 @@
       </div>
     </form>
   </div>
+
+
+  
