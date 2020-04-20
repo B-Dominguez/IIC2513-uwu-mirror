@@ -1,0 +1,34 @@
+
+<h2>Objetos</h2>
+<% if (!objectsList.length) { %>
+  <p>No results</p>
+<% } else { %>
+  <table id="objects-list">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripcion</th>
+        <th>Estado</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% objectsList.forEach((object) => { %>
+        <tr>
+          <td><%= object.name %></td>
+          <td><%= object.description %></td>
+          <td><%= object.status %></td>
+          <td><a href="<%= editObjectPath(object) %>">Edit</a></td>
+          <td>
+            <form action="<%= deleteObjectPath(object) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="<%= newObjectPath %>">New Object</a>

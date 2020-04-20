@@ -1,0 +1,47 @@
+<div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        You need to fix the following errors:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    <form action="<%= submitObjectPath %>" method="post">
+      <% if (!object.isNewRecord) { %>
+        <input type="hidden" name="_method" value="patch" />
+      <% } %>
+      <div  class="field">
+        <label for="name">Nombre</label>
+        <input type="text" name="name" value="<%= object.name %>" />
+      </div>
+      <div  class="field">
+        <label for="description">Description</label>
+        <textarea type="text" name="description"><%= object.description %></textarea>
+      </div>
+      <div  class="field">
+        <label for="category">Categoria</label>
+        <input type="text" name="category" value="<%= object.category %>" />
+      </div>
+      <div  class="field">
+        <label for="file">Agrega una imagen</label>
+        <input type="file" name="image1"  accept="image/*" value="<%= object.image1 %>" />
+      </div>
+      <div  class="field">
+        <label for="file">Agrega una segunda imagen</label>
+        <input type="file" name="image2"  accept="image/*" value="<%= object.image2 %>" />
+      </div>
+      <div  class="field">
+        <% if (object.isNewRecord) { %>
+          <input type="submit" name="create" value="Create" />
+        <% } else { %>
+          <input type="submit" name="update" value="Update" />
+        <% } %>
+      </div>
+    </form>
+  </div>
+
+
+  
