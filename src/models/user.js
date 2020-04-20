@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     rating: DataTypes.FLOAT,
   }, {});
 
-  user.associate = function associate() {
+  user.associate = function associate(models) {
     user.hasMany(models.evaluation);
     user.hasMany(models.object);
     user.belongsToMany(models.trade,{ through: 'UserTrade' })

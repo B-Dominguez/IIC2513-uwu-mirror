@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
   }, {});
 
-  evaluation.associate = function associate() {
+  evaluation.associate = function associate(models) {
     evaluation.belongsTo(models.user);
     // associations can be defined here. This method receives a models parameter.
   };

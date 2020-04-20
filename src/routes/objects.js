@@ -28,7 +28,7 @@ router.get('objects.new', '/new', async (ctx) => {
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   try {
-    await object.save({ fields: [, 'name', 'description','status'] });
+    await object.save({ fields: [, 'name', 'description','status','userId'] });
     ctx.redirect(ctx.router.url('objects.list'));
   } catch (validationError) {
     await ctx.render('objects.new', {
