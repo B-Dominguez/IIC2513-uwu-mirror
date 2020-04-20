@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
   const offer = sequelize.define('offer', {
-    id: DataTypes.INTEGER,
     status: DataTypes.STRING,
     date: DataTypes.DATE,
+    info: DataTypes.STRING,
   }, {});
 
   offer.associate = function associate() {

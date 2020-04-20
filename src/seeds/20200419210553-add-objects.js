@@ -1,37 +1,41 @@
 module.exports = {
   up: (queryInterface) => {
-    const coursesData = [
+    const objectsData = [
       {
         name: 'Nintendo Switch',
-        id: 1,
         description: 'La vendo nueva',
         status: 'available',
-        category: 'tecnologia'
+        category: 'tecnologia',
         createdAt: new Date(),
         updatedAt: new Date(),
+        image1: 'imagen1.png',
+        image2: 'imagen2.png',
+
       },
       {
         name: 'Notebook HP',
-        id: 2,
         description: 'Buen estado',
         status: 'available',
-        category: 'tecnologia'
+        category: 'tecnologia',
         createdAt: new Date(),
         updatedAt: new Date(),
+        image1: 'imagen1.png',
+        image2: 'imagen2.png',
       },
       {
         name: 'Guitarra',
-        id: 3,
         description: 'Buena calidad',
         status: 'available',
-        category: 'instrumentos'
+        category: 'instrumentos',
         createdAt: new Date(),
         updatedAt: new Date(),
+        image1: 'imagen1.png',
+        image2: 'imagen2.png',
       },
     ];
 
-    return queryInterface.bulkInsert('courses', coursesData);
+    return queryInterface.bulkInsert('objects', objectsData);
   },
 
-  down: (queryInterface) => queryInterface.bulkDelete('courses', null, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('objects', null, {}),
 };

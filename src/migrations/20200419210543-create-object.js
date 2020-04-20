@@ -10,9 +10,6 @@ module.exports = {
     name: {
       type: Sequelize.STRING,
     },
-    id: {
-      type: Sequelize.INTEGER,
-    },
     description: {
       type: Sequelize.TEXT,
     },
@@ -23,10 +20,10 @@ module.exports = {
       type: Sequelize.STRING,
     },
     image1: {
-      type: Sequelize.IMAGE,
+      type: Sequelize.STRING,
     },
     image2: {
-      type: Sequelize.IMAGE,
+      type: Sequelize.STRING,
     },
 
     createdAt: {

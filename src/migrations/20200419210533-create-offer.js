@@ -7,14 +7,14 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
 
-    id: {
-      type: Sequelize.INTEGER,
-    },
     status: {
       type: Sequelize.STRING,
     },
     date: {
       type: Sequelize.DATE,
+    },
+    info: {
+      type: Sequelize.STRING,
     },
 
     createdAt: {

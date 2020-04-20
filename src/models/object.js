@@ -1,12 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const object = sequelize.define('object', {
     name: DataTypes.STRING,
-    id: DataTypes.INTEGER,
     description: DataTypes.TEXT,
     status: DataTypes.STRING,
     category: DataTypes.STRING,
-    image1: DataTypes.IMAGE,
-    image2: DataTypes.IMAGE,
+    image1: DataTypes.STRING,
+    image2: DataTypes.STRING,
   }, {});
 
   object.associate = function associate() {
