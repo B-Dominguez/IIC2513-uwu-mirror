@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   offer.associate = function associate() {
+    offer.belongsTo(models.trade);
     // associations can be defined here. This method receives a models parameter.
   };
 

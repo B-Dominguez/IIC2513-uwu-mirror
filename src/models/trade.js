@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   trade.associate = function associate() {
+    trade.hasMany(models.message);
+    trade.hasMany(models.offer);
     // associations can be defined here. This method receives a models parameter.
   };
 

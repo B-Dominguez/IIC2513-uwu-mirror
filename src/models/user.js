@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   user.associate = function associate() {
+    user.hasMany(models.evaluation);
+    user.hasMany(models.object);
     // associations can be defined here. This method receives a models parameter.
   };
 
