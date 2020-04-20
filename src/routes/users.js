@@ -19,6 +19,8 @@ router.get('users.list', '/', async (ctx) => {
   // equiv                        {usersList: usersList}
 });
 
+
+
 router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
@@ -50,6 +52,18 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
     submitUserPath: ctx.router.url('users.update', {id: user.id}),
   });
 });
+
+router.get('users.show', '/:id', loadUser,async (ctx) => {
+  const { user } = ctx.state;
+  await ctx.render('users/show', {
+    user,
+    newUserPath: ctx.router.url('users.new'),
+    editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
+    deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
+  });
+});
+
+
 
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
