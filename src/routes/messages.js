@@ -28,7 +28,7 @@ router.get('messages.new', '/new', async(ctx) => {
 router.post('messages.create', '/', async (ctx) => {
     const message = ctx.orm.message.build(ctx.request.body);
     try {
-        await message.save({ fields: ['content', 'date', 'sender', 'trade_id'] });
+        await message.save({ fields: ['content', 'sender', 'tradeId'] });
         ctx.redirect(ctx.router.url('messages.list'));
     } catch (validationError) {
         await ctx.render('messages/new', {

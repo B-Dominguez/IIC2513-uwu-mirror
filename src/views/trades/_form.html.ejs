@@ -30,10 +30,6 @@
         <input type="integer" name="actual_offer" value="<%= trade.actual_offer %>" />
       </div>
       <div  class="field">
-        <label for="date">date</label>
-        <input type="date" name="date" value="<%= trade.date %>" />
-      </div>
-      <div  class="field">
         <% if (trade.isNewRecord) { %>
           <input type="submit" name="create" value="Create" />
         <% } else { %>
