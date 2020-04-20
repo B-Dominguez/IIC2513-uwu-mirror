@@ -72,20 +72,20 @@
     <table id='offers-list'>
         <thead>
             <tr>
-                <th>content</th>
-                <th>sender</th>
-                <th>tradeId</th>
-                <th>date</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Info</th>
+                <th>Trade Id</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
             <% tradeOffersList.forEach((offer) => { %>
                 <tr>
-                    <td><%= offer.content %></td>
-                    <td><%= offer.sender %></td>
-                    <td><%= offer.tradeId %></td>
                     <td><%= offer.date %></td>
+                    <td><%= offer.status %></td>
+                    <td><%= offer.info %></td>
+                    <td><%= offer.tradeId %></td>
                     <td><a href="<%= editOfferPath(offer) %>">Edit</a></td>
                     <td>
                         <form action="<%= deleteOfferPath(offer) %>" method="POST">
