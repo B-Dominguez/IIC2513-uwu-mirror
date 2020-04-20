@@ -10,8 +10,16 @@
   </head>
 
   <body>
-    <header>
-      <h1>X-CHANGE</h1>
+
+    <header>    
+
+      <div class="tab">
+        <img src="<%= assetPath('logo.png') %>"  width="250" alt="Logo" />
+        <button class="tablinks"  href="/objects" >Objetos</button>
+        <button class="tablinks" href="/" >Transacciones</button>
+        <button class="tablinks" href="/" >Perfil</button>
+      </div>
+      
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>
