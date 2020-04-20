@@ -1,0 +1,34 @@
+
+<h2>Ofertas</h2>
+<% if (!offersList.length) { %>
+  <p>No results</p>
+<% } else { %>
+  <table id="offers-list">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Info</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% offersList.forEach((offer) => { %>
+        <tr>
+          <td><%= offer.date %></td>
+          <td><%= offer.status %></td>
+          <td><%= offer.info %></td>
+          <td><a href="<%= editOfferPath(offer) %>">Edit</a></td>
+          <td>
+            <form action="<%= deleteOfferPath(offer) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="<%= newOfferPath %>">New Offer</a>

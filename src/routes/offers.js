@@ -28,7 +28,7 @@ router.get('offers.new', '/new', async (ctx) => {
 router.post('offers.create', '/', async (ctx) => {
   const offer = ctx.orm.offer.build(ctx.request.body);
   try {
-    await offer.save({ fields: [, 'name', 'description','status'] });
+    await offer.save({ fields: [, 'name', 'description','status','tradeId'] });
     ctx.redirect(ctx.router.url('offers.list'));
   } catch (validationError) {
     await ctx.render('offers.new', {
