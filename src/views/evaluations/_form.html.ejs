@@ -1,0 +1,32 @@
+<div>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      Necesitas solucionar los siguientes errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= submitEvaluationPath %>" method="post">
+    <% if (!evaluation.isNewRecord) { %>
+      <input type="hidden" name="_method" value="patch" />
+    <% } %>
+    <div  class="field">
+      <label for="rate">Rate</label>
+      <input type="number" name="rate" value="<%= evaluation.rate %>" />
+    </div>
+    <div  class="field">
+      <label for="description">Description</label>
+      <input type="text" name="description" value="<%= evaluation.description %>" />
+    </div>
+    <div  class="field">
+      <% if (evaluation.isNewRecord) { %>
+        <input type="submit" name="create" value="Create" />
+      <% } else { %>
+        <input type="submit" name="update" value="Update" />
+      <% } %>
+    </div>
+  </form>
+</div>

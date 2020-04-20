@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>X-CHANGE</title>
+    <% if (env !== 'development') { %>
+      <link rel="stylesheet" href="<%= assetPath('app.css') %>">
+    <% } %>
+  </head>
+
+  <body>
+
+    <header>    
+
+      <div class="tab">
+        <img src="<%= assetPath('logo.png') %>"  width="250" alt="Logo" />
+        <button class="tablinks"  href="/objects" >Objetos</button>
+        <button class="tablinks" href="/" >Transacciones</button>
+        <button class="tablinks" href="/" >Perfil</button>
+      </div>
+      
+    </header>
+    <%- body %>
+    <script src="<%= assetPath('app.js') %>"></script>
+  </body>
+
+</html>
