@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const object = sequelize.define('object', {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
-    status: DataTypes.STRING,
+    status: DataTypes.STRING ||'available',
     category: DataTypes.STRING,
     image1: DataTypes.STRING,
     image2: DataTypes.STRING,
