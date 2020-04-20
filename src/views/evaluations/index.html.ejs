@@ -1,0 +1,31 @@
+<h2>Evaluaciones</h2>
+<% if (!evaluationsList.length) {%>
+  <p>Sin resultados</p>
+<% } else {%>
+  <table>
+    <thead>
+      <tr>
+        <th>Calificacion</th>
+        <th>Descripcion</th>
+        <th colspan="2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% evaluationsList.forEach((evaluation) => { %>
+        <tr>
+          <td><%= evaluation.rate %></td>
+          <td><%= evaluation.description %></td>
+          <td><a href="<%= editEvaluationPath(evaluation) %>">Editar</a> </td>
+          <td>
+            <form action="<%= deleteEvaluationPath(evaluation) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete"/>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% }%>
+
+<a href="<%= newEvaluationPath %>">Nueva Evaluacion</a>
