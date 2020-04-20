@@ -10,10 +10,15 @@
   </head>
 
   <body>
-    <header>
-      <div id="logo">
-        <img src="<%= assetPath('logo.png') %>" alt="Logo" />
+    <header>    
+
+      <div class="tab">
+        <img src="<%= assetPath('logo.png') %>"  width="250" alt="Logo" />
+        <button class="tablinks"  href="/objects" >Objetos</button>
+        <button class="tablinks" href="/" >Transacciones</button>
+        <button class="tablinks" href="/" >Perfil</button>
       </div>
+      
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>
