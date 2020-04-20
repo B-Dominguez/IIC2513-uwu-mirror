@@ -19,6 +19,8 @@ router.get('users.list', '/', async (ctx) => {
   // equiv                        {usersList: usersList}
 });
 
+
+
 router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
