@@ -15,11 +15,34 @@ router.get('users.list', '/', async (ctx) => {
     newUserPath: ctx.router.url('users.new'),
     editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
+    showUserPath: (user) => ctx.router.url('users.show', { id: user.id}),
   });
   // equiv                        {usersList: usersList}
 });
 
-
+router.get('users.show', '/:id/show', loadUser, async (ctx) => {
+  const { user } = ctx.state;
+  const userEvaluationsList = await ctx.orm.evaluation.findAll({
+    where: {userId: user.id}});
+    const userObjectsList = await ctx.orm.object.findAll({
+      where: {userId: user.id}});
+      await ctx.render('users/show', {
+        user,
+        userEvaluationsList,
+        userObjectsList,
+        editUserPath: ctx.router.url('users.edit', { id: user.id}),
+        // falta new evaluation
+        deleteUserPath: ctx.router.url('users.delete', { id: user.id}),
+        editEvaluationPath: (evaluation) => ctx.router.url('evaluations.edit',
+        { id: evaluation.id}),
+        deleteEvaluationPath: (evaluation) => ctx.router.url('evaluations.delete',
+        { id: evaluation.id}),
+        editObjectPath: (object) => ctx.router.url('objects.edit',
+        { id: object.id}),
+        deleteObjectPath: (object) => ctx.router.url('objects.delete',
+        { id: object.id}),
+      });
+    });
 
 router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
@@ -52,17 +75,6 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
     submitUserPath: ctx.router.url('users.update', {id: user.id}),
   });
 });
-
-router.get('users.show', '/:id', loadUser,async (ctx) => {
-  const { user } = ctx.state;
-  await ctx.render('users/show', {
-    user,
-    newUserPath: ctx.router.url('users.new'),
-    editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
-    deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
-  });
-});
-
 
 
 router.patch('users.update', '/:id', loadUser, async (ctx) => {

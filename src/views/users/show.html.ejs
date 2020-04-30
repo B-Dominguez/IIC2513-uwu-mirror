@@ -1,6 +1,6 @@
-<h2>Perfil</h2>
+<h2>Usuario</h2>
 <% if (!user) {%>
-  <p>Sin resultados</p>
+  <p>No hay usuario con este id</p>
 <% } else {%>
   <table id='users-show'>
     <thead>
@@ -16,9 +16,9 @@
           <td><%= user.name %></td>
           <td><%= user.username %></td>
           <td><%= user.rating %></td>
-          <td><a href="<%= editUserPath(user) %>">Editar</a> </td>
+          <td><a href="<%= editUserPath %>">Editar</a> </td>
           <td>
-            <form action="<%= deleteUserPath(user) %>" method="POST">
+            <form action="<%= deleteUserPath %>" method="POST">
               <input type="hidden" name="_method" value="delete" />
               <input type="submit" value="Delete"/>
             </form>
@@ -26,5 +26,67 @@
         </tr>
     </tbody>
   </table>
-<% }%>
 
+<h3>Evaluaciones</h3>
+<% if (!userEvaluationsList.length) { %>
+    <p>No evaluations associated</p>
+<% } else { %>
+  <table id='evaluations-list'>
+    <thead>
+      <tr>
+        <th>Calificacion</th>
+        <th>Descripcion</th>
+        <th colspan="2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% evaluationsList.forEach((evaluation) => { %>
+        <tr>
+          <td><%= evaluation.rate %></td>
+          <td><%= evaluation.description %></td>
+          <td><a href="<%= editEvaluationPath(evaluation) %>">Editar</a> </td>
+          <td>
+            <form action="<%= deleteEvaluationPath(evaluation) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete"/>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<h3>Objetos</h3>
+<% if (!userObjectsList.length) { %>
+    <p>No objects associated</p>
+<% } else { %>
+  <table id="objects-list">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripcion</th>
+        <th>Estado</th>
+        <th colspan="2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% objectsList.forEach((object) => { %>
+        <tr>
+          <td><%= object.name %></td>
+          <td><%= object.description %></td>
+          <td><%= object.status %></td>
+          <td><a href="<%= editObjectPath(object) %>">Edit</a></td>
+          <td>
+            <form action="<%= deleteObjectPath(object) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>ccccccc
+<% } %>
+
+<% }%>
