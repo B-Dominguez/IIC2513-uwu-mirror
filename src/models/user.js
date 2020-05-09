@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     rating: DataTypes.FLOAT,
+    usertype: DataTypes.INTEGER,  // 0 usuario, 1 admin, 2 superadmin
   }, {});
 
   user.associate = function associate(models) {
