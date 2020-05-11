@@ -55,6 +55,7 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
       });
     });
 
+
     router.get('users.trades', '/:id/trades', loadUser, async (ctx) => {
       const { user } = ctx.state;
       const usersession = await ctx.orm.user.findByPk(ctx.session.userId); // cambiar a token
@@ -78,6 +79,7 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
           // edit y delete solo se mostrarán a superadmin
           });
       }
+
     });
 
 
