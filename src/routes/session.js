@@ -13,6 +13,7 @@ router.put('session.create', '/', async (ctx) => {
   const isPasswordCorrect = user && await user.checkPassword(password);
   if (isPasswordCorrect) {
     ctx.session.token = user.token; // CAMBIAR USER ID, NO SE PUEDE O NOS BAJAN PUNTOS, BUSCAR OTRO METODO
+    ctx.session.usertype = user.usertype;
     return ctx.redirect(ctx.router.url('trades.list'));
   }
   return ctx.render('session/new', {

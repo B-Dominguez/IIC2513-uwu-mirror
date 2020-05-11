@@ -1,5 +1,6 @@
 const KoaRouter = require('koa-router');
 const router = new KoaRouter();
+const { Op } = require('sequelize');
 
 async function loadUser(ctx, next) {
   // Guardamos resultado (user) en state
@@ -19,6 +20,16 @@ router.get('users.list', '/', async (ctx) => {
   });
   // equiv                        {usersList: usersList}
 });
+
+
+router.get('users.myprofile', '/myprofile', async (ctx) => {
+  if (ctx.session){
+    ctx.redirect(ctx.router.url('users.show', {id: ctx.session.userId}));   // cambiar por token
+  } else {
+    ctx.redirect(ctx.router.url('session.new')); // podria redirigirse al 404
+  }
+});
+
 
 router.get('users.show', '/:id/show', loadUser, async (ctx) => {
   const { user } = ctx.state;
@@ -43,6 +54,32 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
         { id: object.id}),
       });
     });
+
+    router.get('users.trades', '/:id/trades', loadUser, async (ctx) => {
+      const { user } = ctx.state;
+      const usersession = await ctx.orm.user.findByPk(ctx.session.userId); // cambiar a token
+      if (!(ctx.session) || ((usersession.id != user.id) &&
+      (usersession.usertype == 0))) {
+        // Si no se ha iniciado sesión, o es un usuario común que quiere ver
+        // Los trades de otro usuario:
+        ctx.redirect(ctx.router.url('users.list')); // Se puede cambiar por una página para 404
+      } else {
+        const userTrades = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ]
+          }
+        });;
+        await ctx.render('users/trades', {
+          userTrades,
+          showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
+          editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
+          deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
+          // hay que ver si funciona o hay que pasarle el otro router
+          // edit y delete solo se mostrarán a superadmin
+          });
+      }
+    });
+
 
 router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
