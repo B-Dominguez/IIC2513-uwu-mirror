@@ -12,6 +12,7 @@
   <body>
 
     <header>
+      <!-- <a href="<%= tradesPath %>"><h1>X-CHANGE</h1></a> -->
 
       <div class="tab">
         <a href="/">
@@ -20,6 +21,18 @@
         <button class="tablinks"  href= >Objetos</button>
         <button class="tablinks" href="{{route('users', ['id' => 1])}}">Mis Ofertas</button>
         <button class="tablinks" href="/" >Perfil</button>
+        <div id="user-login">
+          <% if (currentUser) { %>
+            <span class="name">Bienvenido <%= currentUser.name %></span>
+            <form action="<%= destroySessionPath %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Logout" />
+            </form>
+          <% } else { %>
+            <span class="name">Bienvenido!</span>
+            <a href="<%= newSessionPath %>">Login</a>
+          <% } %>
+        </div>
       </div>
 
     </header>
