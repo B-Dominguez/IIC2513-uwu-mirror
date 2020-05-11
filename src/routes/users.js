@@ -44,6 +44,22 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
       });
     });
 
+
+router.get('users.trades', '/:id/trades', loadUser, async (ctx) => {
+  const { user } = ctx.state;
+  const userTradesList = await ctx.orm.trade.findAll({
+    where: {userId: user.id},);
+      await ctx.render('users/trades', {
+        user,
+        userTradesList,
+        editTradePath: (trade) => ctx.router.url('trades.edit',
+        { id: trade.id}),
+        deleteTradePath: (trade) => ctx.router.url('trades.delete',
+        { id: trade.id}),
+      });
+    });
+
+
 router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {

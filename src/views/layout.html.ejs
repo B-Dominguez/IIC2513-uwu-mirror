@@ -20,19 +20,17 @@
         </a>
         <div id="user-login">
           <% if (currentUser) { %>
-            <span class="name">Bienvenido <%= currentUser.name %></span>
+            <span class="welcome">Bienvenido <%= currentUser.name %></span>
+            <a>
             <form action="<%= destroySessionPath %>" method="post">
               <input type="hidden"  name="_method" value="delete" />
-              <input type="submit" value="Logout" />
+              <input type="submit" class="button" value="Cerrar sesión" />
             </form>
-            <a href="<%= profilePath %>" class="button">Perfil</a>
-            <a href="<%= tradesPath %>" class="button">Mis Ofertas</a>
+            </a>
+            <a href="/users/<%= currentUser.id %>/show"class="button">Perfil</a>
+            <a href="/users/<%= currentUser.id %>/trades"class="button">Mis Intercambios</a>
           <% } else { %>
-            <a href="<%= newSessionPath %>" class="button">Ingresar</a>
-            <a href="<%= profilePath %>" class="button">Perfil</a>
-            <a href="<%= tradesPath %>" class="button">Mis Ofertas</a>
-            
-
+            <a href="<%= newSessionPath %>" class="button">Ingresar</a>              
           <% } %>
 
         </div>
