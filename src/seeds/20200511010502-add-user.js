@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
 const faker = require('faker');
+const crypto = require('crypto');
+
+var id = crypto.randomBytes(20).toString('hex');
 
 const PASSWORD_SALT = 10;
 
@@ -18,6 +21,7 @@ module.exports = {
         updatedAt: new Date(),
         usertype: 0,
         isactive: 1,
+        token: crypto.randomBytes(20).toString('hex'),
       },
       {
         username: faker.internet.userName(),
@@ -31,6 +35,7 @@ module.exports = {
         updatedAt: new Date(),
         usertype: 0,
         isactive: 1,
+        token: crypto.randomBytes(20).toString('hex'),
       },
       {
         username: faker.internet.userName(),
@@ -44,6 +49,7 @@ module.exports = {
         updatedAt: new Date(),
         usertype: 0,
         isactive: 1,
+        token: crypto.randomBytes(20).toString('hex'),
       },
       {
         username: faker.internet.userName(),
@@ -57,6 +63,7 @@ module.exports = {
         updatedAt: new Date(),
         usertype: 1,
         isactive: 1,
+        token: crypto.randomBytes(20).toString('hex'),
       },
       {
         username: faker.internet.userName(),
@@ -70,6 +77,7 @@ module.exports = {
         updatedAt: new Date(),
         usertype: 2,
         isactive: 1,
+        token: crypto.randomBytes(20).toString('hex'),
       },
     ];
     return queryInterface.bulkInsert('users', usersData);
