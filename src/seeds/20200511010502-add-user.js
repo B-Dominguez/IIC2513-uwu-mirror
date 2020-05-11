@@ -5,17 +5,6 @@ const PASSWORD_SALT = 10;
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
-
     const usersData = [
       {
         username: faker.internet.userName(),
@@ -27,7 +16,61 @@ module.exports = {
         rating: 1.0,
         createdAt: new Date(),
         updatedAt: new Date(),
-      }
+        usertype: 0,
+        isactive: 1,
+      },
+      {
+        username: faker.internet.userName(),
+        name: faker.name.findName(),
+        phone: 123456789,
+        address: faker.address.streetName(),
+        email: 'user2@example.org',
+        password: bcrypt.hashSync('123456789', PASSWORD_SALT),
+        rating: 1.0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        usertype: 0,
+        isactive: 1,
+      },
+      {
+        username: faker.internet.userName(),
+        name: faker.name.findName(),
+        phone: 123456789,
+        address: faker.address.streetName(),
+        email: 'user3@example.org',
+        password: bcrypt.hashSync('123456789', PASSWORD_SALT),
+        rating: 1.0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        usertype: 0,
+        isactive: 1,
+      },
+      {
+        username: faker.internet.userName(),
+        name: faker.name.findName(),
+        phone: 123456789,
+        address: faker.address.streetName(),
+        email: 'admin@example.org',
+        password: bcrypt.hashSync('123456789', PASSWORD_SALT),
+        rating: 1.0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        usertype: 1,
+        isactive: 1,
+      },
+      {
+        username: faker.internet.userName(),
+        name: faker.name.findName(),
+        phone: 123456789,
+        address: faker.address.streetName(),
+        email: 'superadmin@example.org',
+        password: bcrypt.hashSync('123456789', PASSWORD_SALT),
+        rating: 1.0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        usertype: 2,
+        isactive: 1,
+      },
     ];
     return queryInterface.bulkInsert('users', usersData);
   },

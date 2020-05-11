@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     rating: DataTypes.FLOAT,
     usertype: DataTypes.INTEGER,  // 0 usuario, 1 admin, 2 superadmin
+    isactive: DataTypes.INTEGER, // 0 inactive, 1 active, ...?
   }, {});
 
   user.beforeCreate(buildPasswordHash);
