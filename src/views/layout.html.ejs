@@ -12,14 +12,38 @@
   <body>
 
     <header>
+      <!-- <a href="<%= tradesPath %>"><h1>X-CHANGE</h1></a> -->
 
       <div class="tab">
         <a href="/">
         <img src="<%= assetPath('logo.png') %>" href="/"  width="250" alt="Logo" />
         </a>
-        <button class="tablinks"  href= >Objetos</button>
-        <button class="tablinks" href="{{route('users', ['id' => 1])}}">Mis Ofertas</button>
-        <button class="tablinks" href="/" >Perfil</button>
+        <div id="user-login">
+          <% if (currentUser) { %>
+            <span class="name">Bienvenido <%= currentUser.name %></span>
+            <form action="<%= destroySessionPath %>" method="post">
+              <input type="hidden"  name="_method" value="delete" />
+              <input type="submit" value="Logout" />
+            </form>
+            <a href="<%= profilePath %>" class="button">Perfil</a>
+            <a href="<%= tradesPath %>" class="button">Mis Ofertas</a>
+          <% } else { %>
+            <a href="<%= newSessionPath %>" class="button">Ingresar</a>
+            <a href="<%= profilePath %>" class="button">Perfil</a>
+            <a href="<%= tradesPath %>" class="button">Mis Ofertas</a>
+            
+
+          <% } %>
+
+        </div>
+        <div class="search-container">
+          <form action="/action_page.php">
+            <input type="text" placeholder="Buscar..." name="search">
+            <button type="submit" class="searchButton">
+              <i class="fa fa-search"></i>
+           </button>
+          </form>
+        </div>
       </div>
 
     </header>

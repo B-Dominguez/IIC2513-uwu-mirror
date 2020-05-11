@@ -1,3 +1,15 @@
+const bcrypt = require('bcrypt');
+
+const PASSWORD_SALT = 10;
+
+async function buildPasswordHash(instance) {
+  if (instance.changed('password')) {
+    const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
+    instance.set('password', hash);
+  }
+
+}
+
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
     username:{
@@ -10,7 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     rating: DataTypes.FLOAT,
+    usertype: DataTypes.INTEGER,  // 0 usuario, 1 admin, 2 superadmin
+    isactive: DataTypes.INTEGER, // 0 inactive, 1 active, ...?
   }, {});
+
+  user.beforeCreate(buildPasswordHash);
+  user.beforeUpdate(buildPasswordHash);
 
   user.associate = function associate(models) {
     user.hasMany(models.evaluation);
@@ -18,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
     user.belongsToMany(models.trade,{ through: 'UserTrade' })
     // associations can be defined here. This method receives a models parameter.
   };
+
+  user.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.password);
+  }
 
   return user;
 };

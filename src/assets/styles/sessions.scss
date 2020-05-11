@@ -1,13 +1,13 @@
 h2{
   font-size: 30pxx;
   font-weight: bold;
-  color: #000000;
   font-family: Helvetica;
+  color: #000000;
   text-align: center;
   text-transform: uppercase;
 }
 
-#messages-list {
+#users-list {
   border: 2px solid #FFFFFF;
   background-color: #FFFFFF;
   width: 100%;
@@ -16,7 +16,6 @@ h2{
     th {
       font-size: 19px;
       font-weight: bold;
-      font-family: Helvetica;
       text-transform: uppercase;
       height: 50;
       color: #FFFFFF;
