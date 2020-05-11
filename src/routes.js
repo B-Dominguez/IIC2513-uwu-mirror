@@ -18,6 +18,8 @@ router.use(async (ctx, next) => {
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
     tradesPath: ctx.router.url('trades.list'),
+    profilePath: ctx.router.url('users.list'),
+
   });
   return next();
 });
