@@ -26,10 +26,6 @@
         <input type="integer" name="status" value="<%= trade.status %>" />
       </div>
       <div  class="field">
-        <label for="actual_offer">actual_offer</label>
-        <input type="integer" name="actual_offer" value="<%= trade.actual_offer %>" />
-      </div>
-      <div  class="field">
         <% if (trade.isNewRecord) { %>
           <input type="submit" name="create" value="Create" />
         <% } else { %>

@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     id_user1: DataTypes.INTEGER,
     id_user2: DataTypes.INTEGER,
     status: DataTypes.INTEGER,
-    actual_offer: DataTypes.INTEGER,
     date: DataTypes.DATE,
   }, {});
 

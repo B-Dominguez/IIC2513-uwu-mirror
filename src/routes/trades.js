@@ -53,7 +53,7 @@ router.get('trades.new', '/new', async(ctx) => {
 router.post('trades.create', '/', async (ctx) => {
     const trade = ctx.orm.trade.build(ctx.request.body);
     try {
-        await trade.save({ fields: ['id_user1', 'id_user2', 'status', 'actual_offer', 'date'] });
+        await trade.save({ fields: ['id_user1', 'id_user2', 'status', 'date'] });
         ctx.redirect(ctx.router.url('trades.list'));
     } catch (validationError) {
         await ctx.render('trades/new', {
@@ -75,8 +75,8 @@ router.get('trades.edit', '/:id/edit', loadTrade, async(ctx) => {
 router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
     const { trade } = ctx.state;
     try {
-        const {id_user1, id_user2, status, actual_offer, date} = ctx.request.body;
-        await trade.update({id_user1, id_user2, status, actual_offer, date});
+        const {id_user1, id_user2, status, date} = ctx.request.body;
+        await trade.update({id_user1, id_user2, status, date});
         ctx.redirect(ctx.router.url('trades.list'));
     } catch (validationError) {
         await ctx.render('trades/edit', {
