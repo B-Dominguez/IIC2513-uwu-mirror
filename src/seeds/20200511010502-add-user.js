@@ -5,17 +5,6 @@ const PASSWORD_SALT = 10;
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
-
     const usersData = [
       {
         username: faker.internet.userName(),
@@ -28,6 +17,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         usertype: 0,
+        isactive: 1,
       },
       {
         username: faker.internet.userName(),
@@ -40,6 +30,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         usertype: 0,
+        isactive: 1,
       },
       {
         username: faker.internet.userName(),
@@ -52,6 +43,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         usertype: 0,
+        isactive: 1,
       },
       {
         username: faker.internet.userName(),
@@ -64,6 +56,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         usertype: 1,
+        isactive: 1,
       },
       {
         username: faker.internet.userName(),
@@ -76,6 +69,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         usertype: 2,
+        isactive: 1,
       },
     ];
     return queryInterface.bulkInsert('users', usersData);
