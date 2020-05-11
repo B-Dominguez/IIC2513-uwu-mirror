@@ -18,8 +18,7 @@
         <input type="text" name="content" value="<%= message.content %>" />
       </div>
       <div  class="field">
-        <label for="sender">sender</label>
-        <input type="integer" name="sender" value="<%= message.sender %>" />
+        <input type="hidden" name="sender" value= "<%= currentUser.id %>" />
       </div>
       <div  class="field">
         <label for="tradeId">tradeId</label>
