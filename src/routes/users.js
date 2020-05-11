@@ -43,6 +43,7 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
         // falta new evaluation
+        newObjectPath: ctx.router.url('objects.new'),
         deleteUserPath: ctx.router.url('users.delete', { id: user.id}),
         editEvaluationPath: (evaluation) => ctx.router.url('evaluations.edit',
         { id: evaluation.id}),
@@ -54,6 +55,7 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
         { id: object.id}),
       });
     });
+
 
 
     router.get('users.trades', '/:id/trades', loadUser, async (ctx) => {
