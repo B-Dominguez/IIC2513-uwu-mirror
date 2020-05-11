@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const PASSWORD_SALT = 10;
 
@@ -7,7 +8,14 @@ async function buildPasswordHash(instance) {
     const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
     instance.set('password', hash);
   }
+}
 
+async function buildToken(instance) {
+  console.log("CREANDO TOKEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN")
+  if (instance.changed('token')) {
+    const token = crypto.randomBytes(20).toString('hex');
+    instance.set('token', token)
+  }
 }
 
 module.exports = (sequelize, DataTypes) => {
@@ -29,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
 
   user.beforeCreate(buildPasswordHash);
   user.beforeUpdate(buildPasswordHash);
+  user.beforeCreate(buildToken);
+  user.beforeUpdate(buildToken);
 
   user.associate = function associate(models) {
     user.hasMany(models.evaluation);

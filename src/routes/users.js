@@ -57,7 +57,7 @@ router.post('users.create', '/', async (ctx) =>{
   const user = ctx.orm.user.build(ctx.request.body);
   try {
     await user.save({ fields: ['username',  'password', 'name', 'email',
-    'usertype', 'phone', 'address', 'isactive', 'rating']});
+    'usertype', 'phone', 'address', 'isactive', 'rating', 'token']});
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users.new', {
@@ -80,9 +80,9 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
   try {
-    const {usertype, isactive, username, password, name, email, phone, address, rating} =
+    const {usertype, isactive, token, username, password, name, email, phone, address, rating} =
     ctx.request.body;
-    await user.update({usertype, isactive, username, password, name, email, phone, address,
+    await user.update({usertype, isactive, token, username, password, name, email, phone, address,
       rating});
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
