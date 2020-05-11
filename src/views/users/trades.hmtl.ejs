@@ -1,0 +1,35 @@
+<h3>Mis intercambios </h3>
+<% if (!userTradesList.length) { %>
+    <p>No trades associated</p>
+<% } else { %>
+    <table id='trades-list'>
+        <thead>
+            <tr>
+                <th>id_user1</th>
+                <th>id_user2</th>
+                <th>status</th>
+                <th>actual_offer</th>
+                <th>date</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% tradesList.forEach((trade) => { %>
+              <tr>
+                  <td><%= trade.id_user1 %></td>
+                  <td><%= trade.id_user2 %></td>
+                  <td><%= trade.status %></td>
+                  <td><%= trade.actual_offer %></td>
+                  <td><%= trade.date %></td>
+                  <td><a href="<%= editTradePath %>">Edit</a></td>  <!-- id dado por router -->
+                  <td>
+                      <form action="<%= deleteTradePath %>" method="POST">
+                          <input type="hidden" name="_method" value="delete" />
+                          <input type="submit" value="Delete" />
+                      </form>
+                  </td>
+              </tr>
+              <% }) %>
+        </tbody>
+    </table>
+<% } %>
