@@ -24,10 +24,12 @@
                     <td><a href="<%= showTradePath(trade) %>">Show</a></td>
                     <td><a href="<%= editTradePath(trade) %>">Edit</a></td>
                     <td>
+                        <% if (currentUser) { %>
                         <form action="<%= deleteTradePath(trade) %>" method="POST">
                             <input type="hidden" name="_method" value="delete" />
                             <input type="submit" value="Delete" />
                         </form>
+                        <% } %>
                     </td>
                 </tr>
             <% }) %>
