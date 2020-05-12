@@ -13,17 +13,17 @@
     <% if (!user.isNewRecord) { %>
       <input type="hidden" name="_method" value="patch" />
       <input type="hidden" name="isactive" value=1 />
-      <input type="hidden" name="token" value='<%= user.token %>' />
+      <input type="hidden" name="token" value=0 />
     <% } else { %>
       <select id="isactive" name="isactive">
         <option value=1>Activo</option>
         <option value=0>Inactivo</option>
       </select>
-      <input type="hidden" name="token" value='a' />
     <% } %>
     <input type="hidden" name="usertype" value=0 />
+    <input type="hidden" name="token" value=0 />
     <div  class="field">
-      <label for="username">UsernameEEEEEEEEEEe</label>
+      <label for="username">Username</label>
       <input type="text" name="username" value="<%= user.username %>" />
     </div>
     <div  class="field">

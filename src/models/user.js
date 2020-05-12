@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   user.beforeCreate(buildPasswordHash);
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildToken);
+  user.beforeUpdate(buildToken);
 
   user.associate = function associate(models) {
     user.hasMany(models.evaluation);

@@ -84,7 +84,7 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
 router.del('objects.delete', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
   await object.destroy();
-  ctx.redirect(ctx.router.url('users.myprofile'));
+  ctx.redirect(ctx.router.url('objects.list'));
 });
 
 module.exports = router;
