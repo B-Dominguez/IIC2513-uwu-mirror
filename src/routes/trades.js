@@ -29,7 +29,8 @@ router.get('trades.show', '/:id/show', loadTrade, async (ctx) => {
         tradeMessagesList,
         tradeOffersList,
         editTradePath: ctx.router.url('trades.edit', { id: trade.id}),
-        // falta new message
+        newOfferPath: ctx.router.url('offers.new'),
+        newMessagePath: ctx.router.url('messages.new'),
         deleteTradePath: ctx.router.url('trades.delete', { id: trade.id}),
         editMessagePath: (message) => ctx.router.url('messages.edit',
         { id: message.id}),
