@@ -24,7 +24,10 @@ router.get('users.list', '/', async (ctx) => {
 
 router.get('users.myprofile', '/myprofile', async (ctx) => {
   if (ctx.session){
-    ctx.redirect(ctx.router.url('users.show', {id: ctx.session.userId}));   // cambiar por token
+    const usersession = await ctx.orm.user.findOne({
+      where: {token: ctx.session.token}
+    });
+    ctx.redirect(ctx.router.url('users.show', {id: usersession.id}));   // cambiar por token
   } else {
     ctx.redirect(ctx.router.url('session.new')); // podria redirigirse al 404
   }
@@ -34,7 +37,8 @@ router.get('users.myprofile', '/myprofile', async (ctx) => {
 router.get('users.show', '/:id/show', loadUser, async (ctx) => {
   const { user } = ctx.state;
   const userEvaluationsList = await ctx.orm.evaluation.findAll({
-    where: {userId: user.id}});
+    where: {userId: user.id}
+  });
     const userObjectsList = await ctx.orm.object.findAll({
       where: {userId: user.id}});
       await ctx.render('users/show', {
@@ -60,7 +64,9 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
 
     router.get('users.trades', '/:id/trades', loadUser, async (ctx) => {
       const { user } = ctx.state;
-      const usersession = await ctx.orm.user.findByPk(ctx.session.userId); // cambiar a token
+      const usersession = await ctx.orm.user.findOne({
+        where: {token: ctx.session.token}
+      });
       if (!(ctx.session) || ((usersession.id != user.id) &&
       (usersession.usertype == 0))) {
         // Si no se ha iniciado sesión, o es un usuario común que quiere ver
@@ -98,7 +104,7 @@ router.post('users.create', '/', async (ctx) =>{
   const user = ctx.orm.user.build(ctx.request.body);
   try {
     await user.save({ fields: ['username',  'password', 'name', 'email',
-    'usertype', 'phone', 'address', 'isactive', 'rating']});
+    'usertype', 'phone', 'address', 'isactive', 'rating', 'token']});
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users.new', {
@@ -121,9 +127,9 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
   try {
-    const {usertype, isactive, username, password, name, email, phone, address, rating} =
+    const {usertype, isactive, token, username, password, name, email, phone, address, rating} =
     ctx.request.body;
-    await user.update({usertype, isactive, username, password, name, email, phone, address,
+    await user.update({usertype, isactive, token, username, password, name, email, phone, address,
       rating});
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {

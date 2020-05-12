@@ -11,30 +11,32 @@ router.get('offers.list', '/', async (ctx) => {
   const offersList = await ctx.orm.offer.findAll();
   await ctx.render('offers/index', {
     offersList,
-    newOfferPath: ctx.router.url('offers.new'),
     editOfferPath: (offer) => ctx.router.url('offers.edit', { id: offer.id }),
     deleteOfferPath: (offer) => ctx.router.url('offers.delete', { id: offer.id }),
   });
 });
 
-router.get('offers.new', '/new', async (ctx) => {
+router.get('offers.new', '/new/:tradeId', async (ctx) => {
   const offer = ctx.orm.offer.build();
+  const tradeId = ctx.params.tradeId;
   await ctx.render('offers/new', {
     offer,
-    submitOfferPath: ctx.router.url('offers.create'),
+    tradeId,
+    submitOfferPath: ctx.router.url('offers.create', {tradeId: tradeId}),
   });
 });
 
-router.post('offers.create', '/', async (ctx) => {
+router.post('offers.create', '/:tradeId', async (ctx) => {
   const offer = ctx.orm.offer.build(ctx.request.body);
+  const tradeId = ctx.params.tradeId;
   try {
     await offer.save({ fields: [, 'name', 'description','status','tradeId'] });
-    ctx.redirect(ctx.router.url('offers.list'));
+        ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
   } catch (validationError) {
     await ctx.render('offers.new', {
       offer,
       errors: validationError.errors,
-      submitOfferPath: ctx.router.url('offers.create'),
+      submitOfferPath: ctx.router.url('offers.create', {id: tradeId}),
     });
   }
 });

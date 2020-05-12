@@ -11,30 +11,32 @@ router.get('messages.list', '/', async (ctx) => {
     const messagesList = await ctx.orm.message.findAll();
     await ctx.render('messages/index', {
         messagesList,
-        newMessagePath: ctx.router.url('messages.new'),
         editMessagePath: (message) => ctx.router.url('messages.edit', { id: message.id}),
         deleteMessagePath: (message) => ctx.router.url('messages.delete', { id: message.id}),
     });
 });
 
-router.get('messages.new', '/new', async(ctx) => {
+router.get('messages.new', '/new/:tradeId', async(ctx) => {
     const message = ctx.orm.message.build();
+    const tradeId = ctx.params.tradeId;
     await ctx.render('messages/new', {
         message,
-        submitMessagePath: ctx.router.url('messages.create'),
+        tradeId,
+        submitMessagePath: ctx.router.url('messages.create', {tradeId: tradeId}),
     });
 });
 
-router.post('messages.create', '/', async (ctx) => {
+router.post('messages.create', '/:tradeId', async (ctx) => {
     const message = ctx.orm.message.build(ctx.request.body);
+    const tradeId = ctx.params.tradeId;
     try {
         await message.save({ fields: ['content', 'sender', 'tradeId'] });
-        ctx.redirect(ctx.router.url('messages.list'));
+        ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
     } catch (validationError) {
         await ctx.render('messages/new', {
             message,
             errors: validationError.errors,
-            submitMessagePath: ctx.router.url('messages.create'),
+            submitMessagePath: ctx.router.url('messages.create', {id: tradeId}),
         })
     }
 });

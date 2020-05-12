@@ -28,8 +28,8 @@ router.get('objects.new', '/new', async (ctx) => {
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   try {
-    await object.save({ fields: [, 'name', 'description','status','userId'] });
-    ctx.redirect(ctx.router.url('objects.list'));
+    await object.save({ fields: ['name', 'description','category', 'status','userId'] });
+    ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
     await ctx.render('objects.new', {
       object,
@@ -52,7 +52,7 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   try {
     const {  name, description ,status} = ctx.request.body;
     await object.update({ name, description, status });
-    ctx.redirect(ctx.router.url('objects.list'));
+    ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
     await ctx.render('objects/edit', {
       object,
