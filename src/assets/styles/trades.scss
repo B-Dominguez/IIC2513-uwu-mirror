@@ -15,6 +15,8 @@ column {
 scroll-column {
   display: inline-block;
   overflow: scroll;
+  width: 700px;
+  height: 180px;
   
 }
 
@@ -29,10 +31,18 @@ row {
 }
 
 info {
-  width: 160px;
+  width: 180px;
   background: whitesmoke;
-  padding: 20px;
+  padding: 10px;
   margin: 20px;
+  display: inline-block;
+  vertical-align: top;
+  float: left;
+}
+info-chat {
+  width: 700px;
+  background: whitesmoke;
+  margin: 10px;
   display: inline-block;
   vertical-align: top;
   float: left;
