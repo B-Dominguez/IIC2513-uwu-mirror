@@ -1,7 +1,16 @@
+
+<div class="search-container">
+  <form action="<%= searchPath %>" method="post">
+    <input type="text" placeholder="Buscar..." name="searchCat">
+    <button type="submit" class="searchButton" value="Submit">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+</div>
 <% if (!objectsList.length) { %>
   <p>No results</p>
 <% } else { %>
- 
+
 
   <% objectsList.forEach((object) => { %>
 
