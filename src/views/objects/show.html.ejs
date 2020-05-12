@@ -1,0 +1,44 @@
+<% if (!object) {%>
+    <text>No hay ningún intercambio con este id</>
+  <% } else {%>
+    <row>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <div class="name"> <%= object.name %> </div>
+          <div class="text"> <%= object.description %> </div>
+          <div class="text"> <%= object.status %> </div>
+        </info>
+      </column>
+      <column>
+        <info>
+          <div>
+            <a href="<%= editObjectPath(object) %>">Editar</a>
+          </div>
+          <div>
+            <form action="<%= deleteObjectPath %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Eliminar Intercambio" />
+            </form>
+          </div>
+        </info>
+      </column>
+    </row>
+
+  
+  <% }%>
+  

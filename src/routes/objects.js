@@ -6,7 +6,7 @@ async function loadObject(ctx, next) {
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
   return next();
 }
-
+    
 async function loadUserSession(ctx, next) {
   // Guardamos resultado (user) en state
   if (ctx.session.token == undefined) {
@@ -15,6 +15,7 @@ async function loadUserSession(ctx, next) {
   }
   ctx.state.usersession = await ctx.orm.user.findOne({
     where: {token: ctx.session.token}
+
   });
   // Despues pasa al sgte middleware
   return next();
@@ -30,6 +31,7 @@ router.get('objects.list', '/', loadUserSession, async (ctx) => {
       newObjectPath: ctx.router.url('objects.new'),
       editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
       deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
+      showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
     });
   } else {
     ctx.redirect('/');
@@ -65,6 +67,18 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
     submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
   });
 });
+
+
+router.get('object.show', '/:id/show', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+      await ctx.render('objects/show', {
+        object,
+        editObjectPath: (object) => ctx.router.url('objects.edit',
+        { id: object.id}),
+        deleteObjectPath: (object) => ctx.router.url('objects.delete',
+        { id: object.id}),
+      });
+    });
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
