@@ -1,17 +1,17 @@
 # Proyecto X-Change
 # Grupo uwu
 
-# Entrega 2
+# Entrega 3
 
 Features:
-* Base proyecto
-* CRUD Messages (/messages)
-* CRUD Evaluations (/evaluations)
-* CRUD Objects (/object)
-* CRUD Offers (/offers)
-* CRUD Trades (/trades)
-* CRUD Users (/users)
-* Cada entidad con sus asociaciones respectivas y delete/update on-cascade según corresponda
-* Pequeño avance visual
+* Todas las entidades con sus asociaciones respectivas y delete/update on-cascade según corresponda (y tablas intermedias)
+* Avance CSS
+* Sesiones
+* Mejora seguidad: Implementación de tokens para sesiones
+* Navegabilidad
+* Permisos CRUD para usuarios según corresponda su "nivel"
+* Eliminación de "actual_offer" según lo conversado en E2
+* Invalidar usuario (Estado activo/inactivo)
+
 * Deploy Heroku https://grupo-uwu.herokuapp.com/
 
