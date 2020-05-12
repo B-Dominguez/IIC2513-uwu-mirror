@@ -53,10 +53,11 @@ router.get('users.myprofile', '/myprofile', loadUserSession, async (ctx) => {
 router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => {
   const { user } = ctx.state;
   const usersession = ctx.state.usersession;
+  var editpermit = null;
+  var superpermit = null;
   if (usersession) {
-    const editpermit = usersession.usertype == 2 || usersession.id == user.id;
-  } else {
-    const editpermit = null;
+    userpermit = usersession.usertype == 2 || usersession.id == user.id;
+    superpermit = usersession.usertype == 2;
   }
   const userEvaluationsList = await ctx.orm.evaluation.findAll({
     where: {userId: user.id}
@@ -65,7 +66,8 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
       where: {userId: user.id}});
       await ctx.render('users/show', {
         user,
-        // editpermit,   COMENTE ESTA LINEA POR EL ERROR
+        userpermit,
+        superpermit, 
         userEvaluationsList,
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
