@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     date: DataTypes.DATE,
     sender: DataTypes.INTEGER,
-    trade_id: DataTypes.INTEGER,
+    tradeId: DataTypes.INTEGER,
   }, {});
 
   message.associate = function associate(models) {

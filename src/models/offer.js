@@ -3,6 +3,9 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     date: DataTypes.DATE,
     info: DataTypes.STRING,
+    tradeId: DataTypes.INTEGER,
+    sender: DataTypes.INTEGER,  // sin associate porque no necesitamos cascade
+    // es un userId
   }, {});
 
   offer.associate = function associate(models) {

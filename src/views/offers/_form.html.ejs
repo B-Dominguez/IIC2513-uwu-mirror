@@ -13,6 +13,10 @@
       <% if (!offer.isNewRecord) { %>
         <input type="hidden" name="_method" value="patch" />
       <% } %>
+      <input type="hidden" name="tradeId" value=<%= tradeId %> />
+      <div  class="field">
+        <input type="hidden" name="sender" value= "<%= currentUser.id %>" />
+      </div>
       <div  class="field">
         <label for="info">Info</label>
         <input type="text" name="info" value="<%= offer.info %>" />
@@ -20,10 +24,6 @@
       <div  class="field">
         <label for="status">Status</label>
         <textarea type="text" name="status"><%= offer.status %></textarea>
-      </div>
-      <div  class="field">
-        <label for="tradeId">tradeId</label>
-        <input type="integer" name="tradeId" value="<%= offer.tradeId %>" />
       </div>
       <div  class="field">
         <% if (offer.isNewRecord) { %>

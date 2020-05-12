@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     category: DataTypes.STRING,
     image1: DataTypes.STRING,
     image2: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
   }, {});
 
   object.associate = function associate(models) {

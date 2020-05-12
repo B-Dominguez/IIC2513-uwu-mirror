@@ -20,10 +20,7 @@
       <div  class="field">
         <input type="hidden" name="sender" value= "<%= currentUser.id %>" />
       </div>
-      <div  class="field">
-        <label for="tradeId">tradeId</label>
-        <input type="integer" name="tradeId" value="<%= message.tradeId %>" />
-      </div>
+      <input type="hidden" name="tradeId" value=<%= tradeId %> />
       <div  class="field">
         <% if (message.isNewRecord) { %>
           <input type="submit" name="create" value="Create" />
