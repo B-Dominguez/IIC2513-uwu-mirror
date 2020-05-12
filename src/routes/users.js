@@ -9,24 +9,40 @@ async function loadUser(ctx, next) {
   return next();
 }
 
-router.get('users.list', '/', async (ctx) => {
-  const usersList = await ctx.orm.user.findAll();
-  await ctx.render('users/index', {
-    usersList,
-    newUserPath: ctx.router.url('users.new'),
-    editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
-    deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
-    showUserPath: (user) => ctx.router.url('users.show', { id: user.id}),
+async function loadUserSession(ctx, next) {
+  // Guardamos resultado (user) en state
+  if (ctx.session.token == undefined) {
+    ctx.state.usersession = null;
+    return next();
+  }
+  ctx.state.usersession = await ctx.orm.user.findOne({
+    where: {token: ctx.session.token}
   });
+  // Despues pasa al sgte middleware
+  return next();
+}
+
+router.get('users.list', '/', loadUserSession, async (ctx) => {
+  const usersession = ctx.state.usersession;
+  if (usersession && usersession.usertype == 2) {
+    const usersList = await ctx.orm.user.findAll();
+    await ctx.render('users/index', {
+      usersList,
+      newUserPath: ctx.router.url('users.new'),
+      editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
+      deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
+      showUserPath: (user) => ctx.router.url('users.show', { id: user.id}),
+    });
+  } else {
+    ctx.redirect('/');
+  }
   // equiv                        {usersList: usersList}
 });
 
 
-router.get('users.myprofile', '/myprofile', async (ctx) => {
-  if (ctx.session){
-    const usersession = await ctx.orm.user.findOne({
-      where: {token: ctx.session.token}
-    });
+router.get('users.myprofile', '/myprofile', loadUserSession, async (ctx) => {
+  const usersession = ctx.state.usersession;
+  if (usersession){
     ctx.redirect(ctx.router.url('users.show', {id: usersession.id}));   // cambiar por token
   } else {
     ctx.redirect(ctx.router.url('session.new')); // podria redirigirse al 404
@@ -34,8 +50,14 @@ router.get('users.myprofile', '/myprofile', async (ctx) => {
 });
 
 
-router.get('users.show', '/:id/show', loadUser, async (ctx) => {
+router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => {
   const { user } = ctx.state;
+  const usersession = ctx.state.usersession;
+  if (usersession) {
+    const editpermit = usersession.usertype == 2 || usersession.id == user.id;
+  } else {
+    const editpermit = null;
+  }
   const userEvaluationsList = await ctx.orm.evaluation.findAll({
     where: {userId: user.id}
   });
@@ -43,6 +65,7 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
       where: {userId: user.id}});
       await ctx.render('users/show', {
         user,
+        editpermit,
         userEvaluationsList,
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
@@ -62,16 +85,14 @@ router.get('users.show', '/:id/show', loadUser, async (ctx) => {
 
 
 
-    router.get('users.trades', '/:id/trades', loadUser, async (ctx) => {
+    router.get('users.trades', '/:id/trades', loadUser, loadUserSession, async (ctx) => {
       const { user } = ctx.state;
-      const usersession = await ctx.orm.user.findOne({
-        where: {token: ctx.session.token}
-      });
-      if (!(ctx.session) || ((usersession.id != user.id) &&
+      const usersession = ctx.state.usersession;
+      if (!usersession || ((usersession.id != user.id) &&
       (usersession.usertype == 0))) {
         // Si no se ha iniciado sesión, o es un usuario común que quiere ver
         // Los trades de otro usuario:
-        ctx.redirect(ctx.router.url('users.list')); // Se puede cambiar por una página para 404
+        ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
       } else {
         const userTrades = await ctx.orm.trade.findAll({
           where: {
@@ -115,12 +136,20 @@ router.post('users.create', '/', async (ctx) =>{
   }
 });
 
-router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
+router.get('users.edit', '/:id/edit', loadUser, loadUserSession, async (ctx) => {
   const { user } = ctx.state;
-  await ctx.render('users/edit', {
-    user,
-    submitUserPath: ctx.router.url('users.update', {id: user.id}),
-  });
+  const usersession = ctx.state.usersession;
+  if (!usersession || ((usersession.id != user.id) &&
+  (usersession.usertype == 0))) {
+    // Si no se ha iniciado sesión, o es un usuario común que quiere ver
+    // Los trades de otro usuario:
+    ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
+  } else {
+    await ctx.render('users/edit', {
+      user,
+      submitUserPath: ctx.router.url('users.update', {id: user.id}),
+    });
+  }
 });
 
 

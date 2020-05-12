@@ -7,13 +7,32 @@ async function loadOffer(ctx, next) {
   return next();
 }
 
-router.get('offers.list', '/', async (ctx) => {
-  const offersList = await ctx.orm.offer.findAll();
-  await ctx.render('offers/index', {
-    offersList,
-    editOfferPath: (offer) => ctx.router.url('offers.edit', { id: offer.id }),
-    deleteOfferPath: (offer) => ctx.router.url('offers.delete', { id: offer.id }),
+async function loadUserSession(ctx, next) {
+  // Guardamos resultado (user) en state
+  if (ctx.session.token == undefined) {
+    ctx.state.usersession = null;
+    return next();
+  }
+  ctx.state.usersession = await ctx.orm.user.findOne({
+    where: {token: ctx.session.token}
   });
+  // Despues pasa al sgte middleware
+  return next();
+}
+
+
+router.get('offers.list', '/', loadUserSession, async (ctx) => {
+  const usersession = ctx.state.usersession;
+  if (usersession && usersession.usertype == 2) {
+    const offersList = await ctx.orm.offer.findAll();
+    await ctx.render('offers/index', {
+      offersList,
+      editOfferPath: (offer) => ctx.router.url('offers.edit', { id: offer.id }),
+      deleteOfferPath: (offer) => ctx.router.url('offers.delete', { id: offer.id }),
+    });
+  } else {
+    ctx.redirect('/');
+  }
 });
 
 router.get('offers.new', '/new/:tradeId', async (ctx) => {
