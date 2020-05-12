@@ -19,6 +19,7 @@ router.use(async (ctx, next) => {
     destroySessionPath: ctx.router.url('session.destroy'),
     tradesPath: ctx.router.url('trades.list'),
     profilePath: ctx.router.url('users/'+ctx.session.userId+'/show'),
+    // searchCatPath: ctx.router.url('object.searchCat')
   });
   return next();
 });

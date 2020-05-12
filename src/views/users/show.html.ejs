@@ -50,15 +50,18 @@
           </column>
           <column>
             <info>
-              <div>
-                <a href="<%= editEvaluationPath(evaluation) %>">Editar</a>
-              </div>
-              <div>
-                <form action="<%= deleteEvaluationPath(evaluation) %>" method="POST">
-                  <input type="hidden" name="_method" value="delete" />
-                  <input type="submit" value="Delete"/>
-                </form>
-              </div>
+              <% if (superpermit) { %>
+                <div>
+                  <a href="<%= editEvaluationPath(evaluation) %>">Editar</a>
+                </div>
+                <div>
+                  <form action="<%= deleteEvaluationPath(evaluation) %>" method="POST">
+                    <input type="hidden" name="_method" value="delete" />
+                    <input type="submit" value="Delete"/>
+                  </form>
+                </div>
+              <% } %>
+
             </info>
           </column>
         </row>
@@ -68,8 +71,9 @@
 
 <h3>Objetos</h3>
 <!--VALIDAR-->
-<a href="<%= newObjectPath %>">New Object</a>
-
+<% if (userpermit || superpermit) { %>
+  <a href="<%= newObjectPath %>">New Object</a>
+<% } %>
 <% if (!userObjectsList.length) { %>
   <row>
     <text>No hay objetos para mostrar :(</text>
@@ -96,15 +100,17 @@
         <div>
           <a href="<%= showObjectPath(object) %>">Ver</a>
         </div>
-        <div>
-          <a href="<%= editObjectPath(object) %>">Editar</a>
-        </div>
-        <div>
-          <form action="<%= deleteObjectPath(object) %>" method="POST">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="submit" value="Delete" />
-          </form>
-        </div>
+        <% if (userpermit || superpermit) { %>
+          <div>
+            <a href="<%= editObjectPath(object) %>">Editar</a>
+          </div>
+          <div>
+            <form action="<%= deleteObjectPath(object) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete" />
+            </form>
+          </div>
+        <% } %>
       </info>
     </column>
   </row>
