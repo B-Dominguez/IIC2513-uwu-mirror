@@ -24,9 +24,6 @@
             <td><a href="<%= showTradePath(trade) %>">Ver</a></td>
         </div>
         <div>
-          <a href="<%= editTradePath(trade) %>">Editar</a>
-        </div>
-        <div>
           <form action="<%= deleteTradePath(trade) %>" method="POST">
             <input type="hidden" name="_method" value="delete" />
             <input type="submit" value="Delete" />

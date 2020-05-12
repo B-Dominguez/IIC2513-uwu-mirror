@@ -9,23 +9,28 @@
             <div class="text"> usuario2: <%= trade.id_user2 %>  </div>
             <div class="text"> Estado: <%= trade.status %>  </div>
             <div class="text"> Estado: <%= trade.status %>  </div>
-            <div class="text"> Fecha: <%= trade.date %>  </div>
+            <div class="text"> Fecha: <%= trade.createdAt.getDate() %>/<%= trade.createdAt.getMonth()+1%>/<%= trade.createdAt.getFullYear() %> <%= trade.createdAt.getHours() %>:<%= trade.createdAt.getMinutes() %>   </div>
         </info>
       </column>
+      <column>
+                <h3>Chat</h3>
+
       <scroll-column>
-        <h3>Chat</h3>
           <% if (!tradeMessagesList.length) { %>
             <text>Aún no hay mensajes</text>
-            <a href="<%= newMessagePath %>">Nuevo Mensaje</a>
         <% } else { %>
+          <info-chat>
               <% tradeMessagesList.forEach((message) => { %>
-        <info>
-            <div class="text"> ( <%= message.date %> ) <%= message.sender %> dijo: <%= message.content %> </div>
-            <a href="<%= newMessagePath %>">Nuevo Mensaje</a>
-        </info>
+            <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <%= message.sender %> dijo: <%= message.content %> </div>
         <% }) %>
+      </info-chat>
+
         <% } %>
       </scroll-column>
+      <a href="<%= newMessagePath %>">Nuevo Mensaje</a>
+    </column>
+
+
       <column>
         <info>
           <div>
@@ -70,7 +75,7 @@
           <div>
             <form action="<%= deleteOfferPath(offer) %>" method="POST">
               <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
+              <input class="button" type="submit" value="Delete" />
             </form>
           </div>
         </info>
