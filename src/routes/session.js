@@ -14,7 +14,7 @@ router.put('session.create', '/', async (ctx) => {
   if (isPasswordCorrect) {
     ctx.session.userId = user.id; // CAMBIAR USER ID, NO SE PUEDE O NOS BAJAN PUNTOS, BUSCAR OTRO METODO
     ctx.session.usertype = user.usertype;
-    return ctx.redirect(ctx.router.url('trades.list'));
+    return ctx.redirect('/');
   }
   return ctx.render('session/new', {
     email,
