@@ -1,40 +1,40 @@
-<h2>Trades</h2>
 <% if (!tradesList.length) { %>
-    <p>No results</p>
-<% } else { %>
-    <table id='trades-list'>
-        <thead>
-            <tr>
-                <th>id_user1</th>
-                <th>id_user2</th>
-                <th>status</th>
-                <th>actual_offer</th>
-                <th>date</th>
-                <th colspan="3">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% tradesList.forEach((trade) => { %>
-                <tr>
-                    <td><%= trade.id_user1 %></td>
-                    <td><%= trade.id_user2 %></td>
-                    <td><%= trade.status %></td>
-                    <td><%= trade.actual_offer %></td>
-                    <td><%= trade.date %></td>
-                    <td><a href="<%= showTradePath(trade) %>">Show</a></td>
-                    <td><a href="<%= editTradePath(trade) %>">Edit</a></td>
-                    <td>
-                        <% if (currentUser) { %>
-                        <form action="<%= deleteTradePath(trade) %>" method="POST">
-                            <input type="hidden" name="_method" value="delete" />
-                            <input type="submit" value="Delete" />
-                        </form>
-                        <% } %>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-<% } %>
+    <text>No existe un intercambio con este id</text>
+  <% } else { %>
+    <% tradesList.forEach((trade) => { %>
+    <row>
+    <column>
+      <info>
+        <img src="http://placehold.it/150x150">
+      </info>
+    </column>
+    <column>
+      <info>
+        <div class="name"> Intercambio <%= trade.id %> </div>
+        <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+        <div class="text"> usuario2: <%= trade.id_user2 %>  </div>
+        <div class="text"> Estado: <%= trade.status %>  </div>
 
-<a href="<%= newTradePath %>">New Trade</a>
+      </info>
+    </column>
+    <column>
+
+      <info>
+        <div>
+            <td><a href="<%= showTradePath(trade) %>">Ver</a></td>
+        </div>
+        <div>
+          <a href="<%= editTradePath(trade) %>">Editar</a>
+        </div>
+        <div>
+          <form action="<%= deleteTradePath(trade) %>" method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" value="Delete" />
+          </form>
+        </div>
+      </info>
+    </column>
+  </row>
+    <% }) %>
+  <% } %>
+

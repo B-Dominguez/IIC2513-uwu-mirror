@@ -1,100 +1,84 @@
-<h2> Intercambio con id  </h2>
-
-<table id='trades-list'>
-    <thead>
-        <tr>
-            <th>id_user1</th>
-            <th>id_user2</th>
-            <th>status</th>
-            <th>actual_offer</th>
-            <th>date</th>
-            <th colspan="2">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-          <tr>
-              <td><%= trade.id_user1 %></td>
-              <td><%= trade.id_user2 %></td>
-              <td><%= trade.status %></td>
-              <td><%= trade.actual_offer %></td>
-              <td><%= trade.date %></td>
-              <td><a href="<%= editTradePath %>">Edit</a></td>  <!-- id dado por router -->
-              <td>
-                  <form action="<%= deleteTradePath %>" method="POST">
-                      <input type="hidden" name="_method" value="delete" />
-                      <input type="submit" value="Delete" />
-                  </form>
-              </td>
-          </tr>
-    </tbody>
-</table>
-
-<h3>Mensajes asociados</h3>
-
-<% if (!tradeMessagesList.length) { %>
-    <p>No messages associated</p>
-<% } else { %>
-    <table id='messages-list'>
-        <thead>
-            <tr>
-                <th>content</th>
-                <th>sender</th>
-                <th>tradeId</th>
-                <th>date</th>
-                <th colspan="2">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% tradeMessagesList.forEach((message) => { %>
-                <tr>
-                    <td><%= message.content %></td>
-                    <td><%= message.sender %></td>
-                    <td><%= message.tradeId %></td>
-                    <td><%= message.date %></td>
-                    <td><a href="<%= editMessagePath(message) %>">Edit</a></td>
-                    <td>
-                        <form action="<%= deleteMessagePath(message) %>" method="POST">
-                            <input type="hidden" name="_method" value="delete" />
-                            <input type="submit" value="Delete" />
-                        </form>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-<% } %>
-
-<h3>Ofertas asociadas</h3>
-
-<% if (!tradeOffersList.length) { %>
-    <p>No offers associated</p>
-<% } else { %>
-    <table id='offers-list'>
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Info</th>
-                <th>Trade Id</th>
-                <th colspan="2">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% tradeOffersList.forEach((offer) => { %>
-                <tr>
-                    <td><%= offer.date %></td>
-                    <td><%= offer.status %></td>
-                    <td><%= offer.info %></td>
-                    <td><%= offer.tradeId %></td>
-                    <td><a href="<%= editOfferPath(offer) %>">Edit</a></td>
-                    <td>
-                        <form action="<%= deleteOfferPath(offer) %>" method="POST">
-                            <input type="hidden" name="_method" value="delete" />
-                            <input type="submit" value="Delete" />
-                        </form>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-<% } %>
+<% if (!trade) {%>
+    <text>No hay ningún intercambio con este id</>
+  <% } else {%>
+    <row>
+      <column>
+        <info>
+            <div class="name"> Intercambio <%= trade.id %> </div>
+            <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+            <div class="text"> usuario2: <%= trade.id_user2 %>  </div>
+            <div class="text"> Estado: <%= trade.status %>  </div>
+            <div class="text"> Estado: <%= trade.status %>  </div>
+            <div class="text"> Fecha: <%= trade.date %>  </div>
+        </info>
+      </column>
+      <scroll-column>
+        <h3>Chat</h3>
+          <% if (!tradeMessagesList.length) { %>
+            <text>Aún no hay mensajes</text>
+            <a href="<%= newMessagePath %>">Nuevo Mensaje</a>
+        <% } else { %>
+              <% tradeMessagesList.forEach((message) => { %>
+        <info>
+            <div class="text"> ( <%= message.date %> ) <%= message.sender %> dijo: <%= message.content %> </div>
+            <a href="<%= newMessagePath %>">Nuevo Mensaje</a>
+        </info>
+        <% }) %>
+        <% } %>
+      </scroll-column>
+      <column>
+        <info>
+          <div>
+            <form action="<%= deleteTradePath %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Eliminar Intercambio" />
+            </form>
+          </div>
+        </info>
+      </column>
+    </row>
+    
+  
+  <h3>OFERTAS</h3>
+  <!--VALIDAR-->
+  <a href="<%= newOfferPath %>">New Offer</a>
+  
+  <% if (!tradeOffersList.length) { %>
+    <row>
+      <text>No hay ofertas para mostrar :(</text> 
+    </row>
+  <% } else { %>
+    <% tradeOffersList.forEach((offer) => { %>
+      <row>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <div class="name"> Oferta<%= offer.id %> </div>
+          <div class="text"> <%= offer.info %> </div>
+          <div class="text"> <%= offer.date %> </div>
+        </info>
+      </column>
+      <column>
+        <info>
+          <div>
+            <a href="<%= editOfferPath(offer) %>">Editar</a>
+          </div>
+          <div>
+            <form action="<%= deleteOfferPath(offer) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Delete" />
+            </form>
+          </div>
+        </info>
+      </column>
+    </row>
+        <% }) %>
+  
+  <% } %>
+  
+  <% }%>
+  
