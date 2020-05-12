@@ -24,15 +24,17 @@
       <div>
         <a href="<%= showObjectPath(object) %>">Ver</a>
       </div>
-      <div>
-        <a href="<%= editObjectPath(object) %>">Editar</a>
-      </div>
-      <div>
-        <form action="<%= deleteObjectPath(object) %>" method="POST">
-          <input type="hidden" name="_method" value="delete" />
-          <input type="submit" value="Delete" />
-        </form>
-      </div>
+      <!-- <% if (currentUser) { %>
+        <div>
+          <a href="<%= editObjectPath(object) %>">Editar</a>
+        </div>
+        <div>
+          <form action="<%= deleteObjectPath(object) %>" method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" value="Delete" />
+          </form>
+        </div>
+      <% } %> -->
     </info>
   </column>
 </row>
