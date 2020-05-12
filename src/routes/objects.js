@@ -14,6 +14,7 @@ router.get('objects.list', '/', async (ctx) => {
     newObjectPath: ctx.router.url('objects.new'),
     editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
     deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
+    showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
   });
 });
 
@@ -46,6 +47,18 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
     submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
   });
 });
+
+
+router.get('object.show', '/:id/show', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+      await ctx.render('objects/show', {
+        object,
+        editObjectPath: (object) => ctx.router.url('objects.edit',
+        { id: object.id}),
+        deleteObjectPath: (object) => ctx.router.url('objects.delete',
+        { id: object.id}),
+      });
+    });
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
