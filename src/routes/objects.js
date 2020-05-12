@@ -6,6 +6,11 @@ async function loadObject(ctx, next) {
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
   return next();
 }
+
+// async function loadObjectByCat(ctx, next) {
+//   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
+//   return next();
+// }
     
 async function loadUserSession(ctx, next) {
   // Guardamos resultado (user) en state
@@ -71,14 +76,27 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 
 router.get('object.show', '/:id/show', loadObject, async (ctx) => {
   const { object } = ctx.state;
-      await ctx.render('objects/show', {
-        object,
-        editObjectPath: (object) => ctx.router.url('objects.edit',
-        { id: object.id}),
-        deleteObjectPath: (object) => ctx.router.url('objects.delete',
-        { id: object.id}),
-      });
+  await ctx.render('objects/show', {
+    object,
+    editObjectPath: (object) => ctx.router.url('objects.edit',
+    { id: object.id}),
+    deleteObjectPath: (object) => ctx.router.url('objects.delete',
+    { id: object.id}),
+  });
+});
+
+router.get('object.searchCat', '/:cat/searchCat', loadObject, async (ctx) => {
+  const { object } = ctx.state;
+  const objectsList = await ctx.orm.object.findAll({ where: { category:ctx.params.cat} });
+  await ctx.render('objects/searchCat', {
+    objectsList,
+    newObjectPath: ctx.router.url('objects.new'),
+    editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
+    deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
+    showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+  });
     });
+    
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
