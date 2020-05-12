@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 
 async function loadUser(ctx, next) {
   // Guardamos resultado (user) en state
-  ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
+  ctx.state.user = await ctx.orm.user.findOne({ where: { token:ctx.session.token } });
   // Despues pasa al sgte middleware
   return next();
 }
@@ -82,6 +82,8 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         { id: object.id}),
       });
     });
+  });
+
 
 
 
@@ -108,8 +110,18 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
           // edit y delete solo se mostrarán a superadmin
           });
       }
+    });;
+    await ctx.render('users/trades', {
+      userTrades,
+      showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
+      editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
+      deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
+      // hay que ver si funciona o hay que pasarle el otro router
+      // edit y delete solo se mostrarán a superadmin
+      });
+  }
 
-    });
+});
 
 
 router.get('users.new', '/new', async (ctx) => {
@@ -158,10 +170,16 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
   try {
     const {usertype, isactive, token, username, password, name, email, phone, address, rating} =
     ctx.request.body;
+    // token = token[0];
+    console.log('ESTE ES EL TOKEN', token);
+    
     await user.update({usertype, isactive, token, username, password, name, email, phone, address,
       rating});
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
+    console.log('ERROOOOOOOOOOOOR');
+    console.log(validationError.errors);
+    
     await ctx.render('users.edit', {
       user,
       errors: validationError.errors,
