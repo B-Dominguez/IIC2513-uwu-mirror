@@ -65,7 +65,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
       where: {userId: user.id}});
       await ctx.render('users/show', {
         user,
-        editpermit,
+        // editpermit,   COMENTE ESTA LINEA POR EL ERROR
         userEvaluationsList,
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
@@ -160,7 +160,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
     ctx.request.body;
     await user.update({usertype, isactive, token, username, password, name, email, phone, address,
       rating});
-    ctx.redirect(ctx.router.url('users.list'));
+    ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
     await ctx.render('users.edit', {
       user,
