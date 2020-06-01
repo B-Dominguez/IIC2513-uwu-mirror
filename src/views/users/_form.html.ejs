@@ -15,47 +15,44 @@
       <input type="hidden" name="isactive" value=1 />
       <input type="hidden" name="token" value='<%= user.token %>' />
     <% } else { %>
-      <select id="isactive" name="isactive">
+      <!-- <select id="isactive" name="isactive">
         <option value=1>Activo</option>
         <option value=0>Inactivo</option>
-      </select>
+      </select> -->
+      <input type="hidden" name="isactive" value=1 />
       <input type="hidden" name="token" value='a' />
     <% } %>
     <input type="hidden" name="usertype" value=0 />
-    <div  class="field">
-      <label for="username">Username</label>
-      <input type="text" name="username" value="<%= user.username %>" />
-    </div>
-    <div  class="field">
-      <!-- <label for="password">Password</label> -->
-      <input type="hidden" name="password" value="<%= user.password %>" />
-    </div>
-    <div  class="field">
-      <label for="name">Name</label>
-      <input type="text" name="name" value="<%= user.name %>" />
-    </div>
-    <div  class="field">
-      <label for="email">Email</label>
-      <textarea type="text" name="email"><%= user.email %></textarea>
-    </div>
-    <div  class="field">
-      <label for="phone">Phone</label>
-      <textarea type="text" name="phone"><%= user.phone %></textarea>
-    </div>
-    <div  class="field">
-      <label for="address">Address</label>
-      <textarea type="text" name="address"><%= user.address %></textarea>
-    </div>
-    <div  class="field">
-      <label for="rating">rating</label>
-      <textarea type="number" name="rating"><%= user.rating %></textarea>
-    </div>
-    <div  class="field">
-      <% if (user.isNewRecord) { %>
-        <input type="submit" name="create" value="Create" />
-      <% } else { %>
-        <input type="submit" name="update" value="Update" />
-      <% } %>
+    <div class="hero">
+      <div class="form-box">
+        <div  class="field">
+          <input class="input-field" type="text" name="username" value="<%= user.username %>" placeholder="Nombre de usuario"  required/>
+        </div>
+        <div  class="field">
+          <input class="input-field" type="text" name="password" value="<%= user.password %>" placeholder="Contraseña" required/>
+        </div>
+        <div  class="field">
+          <input class="input-field" type="text" name="name" value="<%= user.name %>" placeholder="Nombre y apellido" required/>
+        </div>
+        <div  class="field">
+          <input class="input-field" type="text" name="email" placeholder="Email" required><%= user.email %></input>
+        </div>
+        <div  class="field">
+          <input class="input-field" type="text" name="phone" placeholder="Teléfono" required><%= user.phone %></input>
+        </div>
+        <div  class="field">
+          <input class="input-field" type="text" name="address" placeholder="Dirección" required><%= user.address %></input>
+        </div>
+        <div >
+          <input type="hidden" name="rating" value=5><%= user.rating %></input>
+        </div>
+        <br>
+        <% if (user.isNewRecord) { %>
+          <button class="submit-button" type="submit" name="create" value="Registrarse" />Registrarse</button>
+        <% } else { %>
+          <button class="submit-button" type="submit" name="update" value="Update" />Actualizar datos</button>
+        <% } %>
+      </div>
     </div>
   </form>
 </div>
