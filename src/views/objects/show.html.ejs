@@ -1,44 +1,60 @@
 <% if (!object) {%>
     <text>No hay ningún intercambio con este id</>
   <% } else {%>
-    <row>
-      <column>
-        <info>
-          <img src="http://placehold.it/150x150">
-        </info>
-      </column>
-      <column>
-        <info>
-          <img src="http://placehold.it/150x150">
-        </info>
-      </column>
-      <column>
-        <info>
-          <img src="http://placehold.it/150x150">
-        </info>
-      </column>
-      <column>
-        <info>
-          <div class="name"> <%= object.name %> </div>
-          <div class="text"> <%= object.description %> </div>
-          <div class="text"> <%= object.status %> </div>
-        </info>
-      </column>
-      <column>
-        <info>
-          <div>
-            <a href="<%= editObjectPath(object) %>">Editar</a>
-          </div>
-          <div>
-            <form action="<%= deleteObjectPath %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Eliminar Objeto" />
-            </form>
-          </div>
-        </info>
-      </column>
-    </row>
+    <div class="item-box-show">
+      <!-- Slider idea from https://www.youtube.com/watch?v=L3XYrfitoIQ -->
+      <div class="image-container">
+        <div class="image-box">
+          <input type="radio" id="1" name="image-slide" hidden />
+          <input type="radio" id="2" name="image-slide" hidden />
+          <input type="radio" id="3" name="image-slide" hidden />
 
+          <div class="slide">
+            <div class="item-slide">
+              <img src="https://i.blogs.es/f32de3/nintendo-switch-2019/1366_2000.jpg">
+            </div>
+
+            <div class="item-slide">
+              <img src="https://i.blogs.es/5a70dc/trucos-switch/1366_2000.jpg">
+            </div>
+
+            <div class="item-slide">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTVtaDNSIC38xEKRe1iNHPZCOMiKywCA6sFBucNPpTgcVOVYt1O&usqp=CAU">
+            </div>
+          </div>
+
+          <div class="pagination">
+            <label for="1" class="pagination-item">
+              <img src="https://i.blogs.es/f32de3/nintendo-switch-2019/1366_2000.jpg">
+            </label>
+            <label for="2" class="pagination-item">
+              <img src="https://i.blogs.es/5a70dc/trucos-switch/1366_2000.jpg">
+            </label>
+            <label for="3" class="pagination-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTVtaDNSIC38xEKRe1iNHPZCOMiKywCA6sFBucNPpTgcVOVYt1O&usqp=CAU">
+            </label>
+          </div>
+    
+        </div>
+      </div>
+
+
+
+      <div class="info-box-show">
+        <div class="item-title"> <h2><%= object.name %></h2></div>
+        <div> <%= object.description %> </div>
+        <div> <%= object.status %> </div>
+      </div>
+      <div class="links-box">
+        <a class="button-link" href="<%= editObjectPath(object) %>">Editar</a>
+      </div>
+      <!-- <div>
+        <form action="<%= deleteObjectPath %>" method="POST">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="submit" value="Eliminar Objeto" />
+        </form>
+      </div> -->
+    </div>
   
   <% }%>
   

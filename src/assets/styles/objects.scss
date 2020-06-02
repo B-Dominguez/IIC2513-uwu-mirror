@@ -99,3 +99,145 @@ info {
   text-decoration: none;
   font-size: 23px;
 }
+
+.item-box-show {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  justify-content: space-around;
+  border: 1px solid grey;
+  max-width: 70%;
+  margin-left: 15%;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.item-title {
+  font-size: 25px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-family: Helvetica;
+}
+
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.image-box {
+  position: relative;
+  max-width: 250px;
+  max-height: 250px;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.slide {
+ display: flex;
+ transform: translate3d(0,0,0);
+ transition: all 600ms;
+ animation: autoplay;
+ animation-duration: 6.5s;
+ animation-direction: alternate;
+ animation-fill-mode: forwards;
+ animation-iteration-count: infinite;
+}
+
+.item-slide {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  max-width: 100%;
+}
+
+.item-slide img {
+  max-width:100%;
+  height:auto;
+}
+
+.pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.pagination-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid grey;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255,255,255,0.5);
+  margin: 0 10px;
+  text-align: center;
+  transition: all 300ms;
+}
+
+.pagination-item:hover {
+  transform: scale(2);
+}
+
+.pagination-item img{
+  display: inline-block;
+  max-width: none;
+  height: 100%;
+  transform: scale(1);
+  opacity: 0;
+  transition: all 300ms;
+}
+
+.pagination-item:hover img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+input[id="1"]:checked ~ .slide{
+  animation: none;
+  transform: translate3d(0, 0, 0);
+}
+
+input[id="1"]:checked ~ .pagination .pagination-item[for="1"]{
+  background: #FFFFFF;
+}
+input[id="2"]:checked ~ .slide{
+  animation: none;
+  transform: translate3d(calc(-100% * 1), 0, 0);
+}
+
+input[id="2"]:checked ~ .pagination .pagination-item[for="2"]{
+  background: #FFFFFF;
+}
+input[id="3"]:checked ~ .slide{
+  animation: none;
+  transform: translate3d(calc(-100% * 2), 0, 0);
+}
+
+input[id="3"]:checked ~ .pagination .pagination-item[for="3"]{
+  background: #FFFFFF;
+}
+
+.button-link {
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #7aa8b7;
+  border-radius: 6px;
+  outline: none;
+  max-height: 10%;
+}
