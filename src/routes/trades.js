@@ -46,6 +46,8 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
       // Los trades de otro usuario:
       ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
     } else {
+      const user1 = await ctx.orm.user.findByPk(trade.id_user1);
+      const user2 = await ctx.orm.user.findByPk(trade.id_user2);
       var superpermit = null;
       var offerIsMine = null;
       const tradeMessagesList = await ctx.orm.message.findAll({
@@ -69,6 +71,8 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
           offerIsMine = true;
         }
       }
+      const user1Name = user1.name;
+      const user2Name = user2.name;
       await ctx.render('trades/show', {
           userId,
           superpermit,
@@ -76,6 +80,8 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
           tradeMessagesList,
           tradeOffer,
           user1or2,
+          user1Name,
+          user2Name,
           offerIsMine,
           message,
           editTradePath: ctx.router.url('trades.edit', { id: trade.id}),

@@ -12,11 +12,16 @@
             <% } else {%>
               <% if (user1or2 == 1) {%>
                 <div class="text">
-                  Con usuario linkauser2
+                  Con usuario <a href= <%= "/users/" + trade.id_user2 + "/show"%>> <%= user2Name %></a>
                 </div>
               <% } else {%>
                 <div class="text">
-                  Con usuario linkauser1
+                  Con usuario
+                  <% if (user1or2 == 1) {%>
+                    <a href= <%= "/users/" + trade.id_user1 + "/show"%>> <%= user2Name %></a>
+                  <% } else {%>
+                    <a href= <%= "/users/" + trade.id_user1 + "/show"%>> <%= user1Name %></a>
+                  <% } %>
                 </div>
               <% } %>
             <% } %>
@@ -82,8 +87,20 @@
             <text>Aún no hay mensajes</text>
         <% } else { %>
           <info-chat>
-              <% tradeMessagesList.forEach((message) => { %>
-            <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <%= message.sender %> dijo: <%= message.content %> </div>
+            <% tradeMessagesList.forEach((message) => { %>
+            <% if (message.sender == trade.id_user1 && user1or2 == 2) {%>
+              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/" + message.sender + "/show"%>> <%= user1Name %></a> dijo: <%= message.content %> </div>
+            <% } %>
+            <% if (message.sender == trade.id_user2 && user1or2 == 1) {%>
+              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/" + message.sender + "/show"%>> <%= user2Name %></a> dijo: <%= message.content %> </div>
+            <% } %>
+            <% if (message.sender == trade.id_user1 && user1or2 == 1) {%>
+              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/myprofile"%>> Tú </a> dijiste: <%= message.content %> </div>
+            <% } %>
+            <% if (message.sender == trade.id_user2 && user1or2 == 2) {%>
+              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/myprofile"%>> Tú </a> dijiste: <%= message.content %> </div>
+            <% } %>
+            <% } %>
         <% }) %>
       </info-chat>
 
