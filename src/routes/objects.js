@@ -4,6 +4,7 @@ const router = new KoaRouter();
 
 async function loadObject(ctx, next) {
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
+  console.log(ctx.state.object);
   return next();
 }
 
@@ -77,8 +78,13 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 
 router.get('object.show', '/:id/show', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const seller = await ctx.orm.user.findOne({
+    where: {id: object.userId}});
+  // console.log(seller);
+  
   await ctx.render('objects/show', {
-    object,
+    object, 
+    seller,
     editObjectPath: (object) => ctx.router.url('objects.edit',
     { id: object.id}),
     deleteObjectPath: (object) => ctx.router.url('objects.delete',

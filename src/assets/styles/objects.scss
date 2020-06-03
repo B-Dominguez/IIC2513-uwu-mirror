@@ -241,3 +241,10 @@ input[id="3"]:checked ~ .pagination .pagination-item[for="3"]{
   outline: none;
   max-height: 10%;
 }
+
+.info-box-show a {
+  text-decoration: none;
+  color: black;
+  font-family: Helvetica;
+  font-size: 19px;
+}
