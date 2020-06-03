@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const offer = sequelize.define('offer', {
-    status: DataTypes.STRING,
+    status: DataTypes.INTEGER, // 0=rejected ; 1 = pending ; 2 = accepted
     date: DataTypes.DATE,
     info: DataTypes.STRING,
     tradeId: DataTypes.INTEGER,
