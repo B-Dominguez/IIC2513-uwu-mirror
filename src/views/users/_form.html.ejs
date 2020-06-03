@@ -21,8 +21,9 @@
       </select> -->
       <input type="hidden" name="isactive" value=1 />
       <input type="hidden" name="token" value='a' />
+      <input type="hidden" name="usertype" value=0 />
+      <input type="hidden" name="rating" value=5><%= user.rating %></input>
     <% } %>
-    <input type="hidden" name="usertype" value=0 />
     <div class="hero">
       <div class="form-box">
         <div  class="field">
@@ -42,9 +43,6 @@
         </div>
         <div  class="field">
           <input class="input-field" type="text" name="address" placeholder="Dirección" required><%= user.address %></input>
-        </div>
-        <div >
-          <input type="hidden" name="rating" value=5><%= user.rating %></input>
         </div>
         <br>
         <% if (user.isNewRecord) { %>
