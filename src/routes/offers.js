@@ -35,12 +35,26 @@ router.get('offers.list', '/', loadUserSession, async (ctx) => {
   }
 });
 
-router.get('offers.new', '/new/:tradeId', async (ctx) => {
+router.get('offers.new', '/new/:tradeId/:id1/:id2', async (ctx) => {
   const offer = ctx.orm.offer.build();
   const tradeId = ctx.params.tradeId;
+  const id1 = ctx.params.id1;
+  const id2 = ctx.params.id2;
+  const user1 = await ctx.orm.user.findOne({
+    where: {id: id1}});
+  const user2 = await ctx.orm.user.findOne({
+    where: {id: id2}});
+  const user1ObjectsList = await ctx.orm.object.findAll({
+    where: {userId: id1}});
+  const user2ObjectsList = await ctx.orm.object.findAll({
+    where: {userId: id2}});
   await ctx.render('offers/new', {
     offer,
     tradeId,
+    user1,
+    user2,
+    user1ObjectsList,
+    user2ObjectsList,
     submitOfferPath: ctx.router.url('offers.create', {tradeId: tradeId}),
   });
 });

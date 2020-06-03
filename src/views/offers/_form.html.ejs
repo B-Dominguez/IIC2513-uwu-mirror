@@ -9,6 +9,35 @@
         </ul>
       </div>
     <% } %>
+    <div class="trade-box">
+      <div class="box-user">
+        <div class="owner">
+          <p>Tus objetos</p>
+        </div>
+        <% user1ObjectsList.forEach((object) => { %>
+        <form action="/"></form>
+        <div class="item">
+          <div class="selector">
+            <input type="radio" id="<%= object.id %>" name="items1" value="item1">
+          </div>
+          <div class="item-img">
+            <img src="https://via.placeholder.com/150" alt="F servidor :(">
+          </div>
+          <div class="item-name">
+            <p><%= object.name %></p>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <div class="box-user">
+        <div class="owner">
+          <p>Objetos de <%= user2.name %></p>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <br>
     <form action="<%= submitOfferPath %>" method="post">
       <% if (!offer.isNewRecord) { %>
         <input type="hidden" name="_method" value="patch" />

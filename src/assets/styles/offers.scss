@@ -31,3 +31,30 @@ h2{
       padding: 30px;
     }
 }
+
+.trade-box {
+  display: flex;
+  justify-content: space-between;
+  max-width: 70%;
+  margin-left: 15%;
+}
+
+.box-user{
+  display: flex;
+  flex-direction: column;
+}
+
+.item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.item-img{
+  margin-right: 10px;
+}
+
+.owner {
+  text-align: center;
+}
