@@ -53,7 +53,7 @@ router.get('users.myprofile', '/myprofile', loadUserSession, async (ctx) => {
 router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => {
   const { user } = ctx.state;
   const usersession = ctx.state.usersession;
-  var editpermit = null;
+  var userpermit = null;
   var superpermit = null;
   if (usersession) {
     userpermit = usersession.usertype == 2 || usersession.id == user.id;
@@ -67,7 +67,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
       await ctx.render('users/show', {
         user,
         userpermit,
-        superpermit, 
+        superpermit,
         userEvaluationsList,
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
@@ -82,7 +82,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         { id: object.id}),
         deleteObjectPath: (object) => ctx.router.url('objects.delete',
         { id: object.id}),
-        showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+        showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
 
       });
     });

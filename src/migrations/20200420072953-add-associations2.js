@@ -13,7 +13,7 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-      }
+      },
     )
      .then(() => {
         return queryInterface.addColumn(
@@ -27,9 +27,9 @@ module.exports = {
             },
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE',
-          }
+          },
         );
-      })
+      }),
   },
 
   down: (queryInterface, Sequelize) => {

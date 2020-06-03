@@ -55,6 +55,9 @@
     <form action="<%= submitOfferPath %>" method="post">
       <% if (!offer.isNewRecord) { %>
         <input type="hidden" name="_method" value="patch" />
+      <% } else {%>
+        <input type="hidden" name="status" value=1 />
+        <input type="hidden" name="sender" value= "<%= userId %>" />
       <% } %>
       <input type="hidden" name="tradeId" value=<%= tradeId %> />
       <div  class="field">

@@ -35,7 +35,15 @@ router.get('offers.list', '/', loadUserSession, async (ctx) => {
   }
 });
 
-router.get('offers.new', '/new/:tradeId/:id1/:id2', async (ctx) => {
+
+router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx) => {
+  const usersession = ctx.state.usersession;
+  if (!usersession) {
+    // Si no se ha iniciado sesión, o es un usuario común que quiere ver
+    // Los trades de otro usuario:
+    ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
+  }
+  const userId = usersession.id
   const offer = ctx.orm.offer.build();
   const tradeId = ctx.params.tradeId;
   const id1 = ctx.params.id1;
@@ -55,6 +63,7 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', async (ctx) => {
     user2,
     user1ObjectsList,
     user2ObjectsList,
+    userId,
     submitOfferPath: ctx.router.url('offers.create', {tradeId: tradeId}),
   });
 });
@@ -63,7 +72,8 @@ router.post('offers.create', '/:tradeId', async (ctx) => {
   const offer = ctx.orm.offer.build(ctx.request.body);
   const tradeId = ctx.params.tradeId;
   try {
-    await offer.save({ fields: [, 'name', 'description','status','tradeId'] });
+    await offer.save({ fields: [, 'name', 'description','status','tradeId',
+    'sender'] });
         ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
   } catch (validationError) {
     await ctx.render('offers.new', {
@@ -76,8 +86,10 @@ router.post('offers.create', '/:tradeId', async (ctx) => {
 
 router.get('offers.edit', '/:id/edit', loadOffer, async (ctx) => {
   const { offer } = ctx.state;
+  const tradeId = ctx.params.tradeId;
   await ctx.render('offers/edit', {
     offer,
+    tradeId,
     submitOfferPath: ctx.router.url('offers.update', { id: offer.id }),
   });
 });
@@ -87,6 +99,10 @@ router.patch('offers.update', '/:id', loadOffer, async (ctx) => {
   try {
     const {  name, description ,status} = ctx.request.body;
     await offer.update({ name, description, status });
+    if (status && status == 2) {
+      const trade = await ctx.orm.trade.findByPk(offer.tradeId);
+      await trade.update({status: 2});
+    }
     ctx.redirect(ctx.router.url('offers.list'));
   } catch (validationError) {
     await ctx.render('offers/edit', {

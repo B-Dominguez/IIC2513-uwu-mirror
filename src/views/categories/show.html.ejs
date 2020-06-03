@@ -1,0 +1,39 @@
+<% if (!category) {%>
+    <text>No hay categoria con este id</>
+  <% } else {%>
+  
+    <h3> Objetos en <%= category.name %> </h3>
+  <!--VALIDAR-->
+
+  <% if (!categoryObjectsList.length) { %>
+    <p>No results</p>
+  <% } else { %>
+  
+    
+    <div class="item-list">
+    <% categoryObjectsList.forEach((object) => { %>
+      <a href="<%= showObjectPath(object) %>">
+        <div class="item-box">
+          <div class="img-box">
+            <img src="http://placehold.it/150x150">
+          </div>
+          <div class="description-box">
+            <br>
+            <a href="<%= showObjectPath(object) %>"><%= object.name %></a>
+            <p><%= object.description %></p>
+            <p><%= object.status %></p>
+          </div>
+          <div class="category-box">
+            <br>
+            <br>
+            <p>Vendedor: XX</p>
+          </div>
+        </div>
+      </a>
+    <% }) %>
+    </div>
+  <% } %>
+  <% }%>
+
+  
+  

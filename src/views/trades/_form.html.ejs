@@ -12,6 +12,13 @@
     <form action="<%= submitTradePath %>" method="post">
       <% if (!trade.isNewRecord) { %>
         <input type="hidden" name="_method" value="patch" />
+        <div  class="field">
+          <input type="integer" name="status" value="<%= trade.status %>" />
+        </div>
+      <% } else {%>
+        <input type="hidden" name="user1_confirms" value=0 />
+        <input type="hidden" name="user2_confirms" value=0 />
+        <input type="hidden" name="status" value=1 />
       <% } %>
       <div  class="field">
         <label for="id_user1">id_user1</label>
@@ -20,10 +27,6 @@
       <div  class="field">
         <label for="id_user2">id_user2</label>
         <input type="integer" name="id_user2" value="<%= trade.id_user2 %>" />
-      </div>
-      <div  class="field">
-        <label for="status">status</label>
-        <input type="integer" name="status" value="<%= trade.status %>" />
       </div>
       <div  class="field">
         <% if (trade.isNewRecord) { %>

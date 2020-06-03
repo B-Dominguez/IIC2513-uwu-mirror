@@ -45,20 +45,41 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
       // Los trades de otro usuario:
       ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
     } else {
-      const fullpermit = usersession.usertype != 1;
+      var superpermit = null;
+      var offerIsMine = null;
       const tradeMessagesList = await ctx.orm.message.findAll({
         where: {tradeId: trade.id}});
-      const tradeOffersList = await ctx.orm.offer.findAll({
-        where: {tradeId: trade.id}});
+      const tradeOffer = await ctx.orm.offer.findOne({
+        where: {tradeId: trade.id},
+        order: [ [ 'createdAt', 'DESC' ]],
+      });
+      var user1or2 = null;
+      if (usersession) {
+        superpermit = usersession.usertype == 2;
+        if (usersession.id == trade.id_user1) {
+          user1or2 = 1;
+        }
+        if (usersession.id == trade.id_user2) {
+          user1or2 = 2;
+        }
+        if (tradeOffer && tradeOffer.sender == usersession.id ) {
+          offerIsMine = true;
+        }
+      }
       await ctx.render('trades/show', {
-          fullpermit,
+          superpermit,
           trade,
           tradeMessagesList,
-          tradeOffersList,
+          tradeOffer,
+          user1or2,
+          offerIsMine,
           editTradePath: ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: ctx.router.url('trades.delete', { id: trade.id}),
           newMessagePath: ctx.router.url('messages.new', {tradeId: trade.id}),
           newOfferPath: ctx.router.url('offers.new', {tradeId: trade.id}),
+          updateTradePath: ctx.router.url('trades.update', { id: trade.id }),
+          updateOfferPath: (offer) => ctx.router.url('offers.update',
+          { id: offer.id }),
           editMessagePath: (message) => ctx.router.url('messages.edit',
           { id: message.id}),
           deleteMessagePath: (message) => ctx.router.url('messages.delete',
@@ -81,15 +102,14 @@ router.get('trades.new', '/new', async(ctx) => {
 
 router.post('trades.create', '/', loadUserSession, async (ctx) => {
     const usersession = ctx.state.usersession;
-    if (!usersession || ((usersession.id != trade.id_user1) &&
-    (usersession.id != trade.id_user2) && (usersession.usertype == 0))) {
-      // Si no se ha iniciado sesión, o es un usuario común que quiere ver
-      // Los trades de otro usuario:
+    if (!usersession) {
+      // Si no se ha iniciado sesión
       ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
     } else {
       const trade = ctx.orm.trade.build(ctx.request.body);
       try {
-          await trade.save({ fields: ['id_user1', 'id_user2', 'status', 'date'] });
+          await trade.save({ fields: ['id_user1', 'id_user2', 'user1_confirms',
+          'user2_confirms', 'status', 'date'] });
           ctx.redirect(ctx.router.url('trades.list'));
       } catch (validationError) {
           await ctx.render('trades/new', {
@@ -117,8 +137,15 @@ router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) =
 router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
     const { trade } = ctx.state;
     try {
-        const {id_user1, id_user2, status, date} = ctx.request.body;
-        await trade.update({id_user1, id_user2, status, date});
+        const {id_user1, id_user2, status, date, user1_confirms,
+          user2_confirms} = ctx.request.body;
+        await trade.update({id_user1, id_user2, status, user1_confirms,
+          user2_confirms, date});
+
+          if (trade.user1_confirms && trade.user2_confirms) {
+            await trade.update({status: 3});
+          }
+
         ctx.redirect(ctx.router.url('trades.list'));
     } catch (validationError) {
         await ctx.render('trades/edit', {

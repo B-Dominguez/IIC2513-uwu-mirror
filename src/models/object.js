@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     status: DataTypes.STRING ||'available',
-    category: DataTypes.STRING,
     image1: DataTypes.STRING,
     image2: DataTypes.STRING,
     userId: DataTypes.INTEGER,
@@ -11,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
 
   object.associate = function associate(models) {
     object.belongsTo(models.user);
-    object.belongsToMany(models.offer,{ through: 'ObjectOffer' })
+    object.belongsTo(models.category);
+    object.belongsToMany(models.offer,{ through: 'ObjectOffer' });
     // associations can be defined here. This method receives a models parameter.
   };
 
