@@ -39,6 +39,14 @@
 
     } %>
 
+    <form action="<%= updateTradePath %>" method="post">
+      <input type="hidden" name="_method" value="patch" />
+      <input type="hidden" name="status" value=0 >
+      <div  class="field">
+        <input type="submit" name="update" value="Cancelar intercambio" />
+      </div>
+    </form>
+
 
     <row>
       <column>
@@ -84,6 +92,7 @@
       </column>
     </row>
 
+<% if (trade.status) { %>
 
   <h3>OFERTAS</h3>
 
@@ -94,104 +103,106 @@
     <!--VALIDAR-->
     <a href="<%= newOfferPath %>">Realizar oferta</a>
 
-  <% } else { %>
+    <% } else { %>
       <row>
-      <column>
-        <info>
-          <img src="http://placehold.it/150x150">
-        </info>
-      </column>
-      <column>
-        <info>
-          <div class="name"> Oferta<%= tradeOffer.id %> </div>
-          <div class="text"> <%= tradeOffer.info %> </div>
-          <div class="text"> <%= tradeOffer.date %> </div>
-        </info>
-      </column>
-      <column>
-        <info>
-          <% if (superpermit) { %>
-            <div>
-              <a href="<%= editOfferPath(tradeOffer) %>">Editar</a>
-            </div>
-          <% } %>
-          <% if (superpermit) { %>
-            <div>
-              <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
-                <input type="hidden" name="_method" value="delete" />
-                <input class="button" type="submit" value="Delete" />
-              </form>
-            </div>
-          <% } %>
-          <% if (tradeOffer.status == 0) { %>
-            <% if (offerIsMine) { %>
+        <column>
+          <info>
+            <img src="http://placehold.it/150x150">
+          </info>
+        </column>
+        <column>
+          <info>
+            <div class="name"> Oferta<%= tradeOffer.id %> </div>
+            <div class="text"> <%= tradeOffer.info %> </div>
+            <div class="text"> <%= tradeOffer.date %> </div>
+          </info>
+        </column>
+        <column>
+          <info>
+            <% if (superpermit) { %>
               <div>
-                  <p>Tu oferta fue rechazada</p>
-                  <div>
-                      <a href="<%= newOfferPath %>">Realizar otra oferta</a>
-                  </div>
+                <a href="<%= editOfferPath(tradeOffer) %>">Editar</a>
               </div>
-            <% } else {%>
-              <div>
-                  <p>Has rechazado esta oferta</p>
-                  <div>
-                      <a href="<%= newOfferPath %>">Realizar otra oferta</a>
-                  </div>
-              </div>
-            <% } %>
-          <% } %>
-          <% if (tradeOffer.status == 1) { %>
-            <% if (offerIsMine) { %>
-              <div>
-                  <p>Esta oferta que enviaste aún no ha sido contestada</p>
-                  <div>
-                    <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
-                      <input type="hidden" name="_method" value="delete" />
-                      <input class="button" type="submit" value="Cancelar Oferta" />
-                    </form>
-                  </div>
-              </div>
-              <div>
-                  <a href="<%= newOfferPath %>">Cambiar por nueva oferta</a>
-              </div>
-            <% } else {%>
-              <div>
-                <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
-                  <input type="hidden" name="_method" value="patch" />
-                  <input type="hidden" name="status" value=2 />
-                  <div  class="field">
-                    <input type="submit" name="update" value="Aceptar Oferta" />
-                  </div>
-                </form>
-
-                <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
-                  <input type="hidden" name="_method" value="patch" />
-                  <input type="hidden" name="status" value=0 />
-                  <div  class="field">
-                    <input type="submit" name="update" value="Rechazar Oferta" />
-                  </div>
-                </form>
-
+              <% } %>
+              <% if (superpermit) { %>
                 <div>
-                    <a href="<%= newOfferPath %>">Realizar contraoferta</a>
+                  <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <input class="button" type="submit" value="Delete" />
+                  </form>
                 </div>
-              </div>
-            <% } %>
-          <% } %>
-          <% if (tradeOffer.status == 2) { %>
-            <% if (offerIsMine) { %>
-              <div>
-                  <p>Tu oferta fue aceptada</p>
-              </div>
-            <% } else {%>
-              <div>
-                  <p>Has aceptado esta oferta</p>
-              </div>
-            <% } %>
-          <% } %>
-        </info>
-      </column>
-    </row>
-  <% } %>
+                <% } %>
+                <% if (tradeOffer.status == 0) { %>
+                  <% if (offerIsMine) { %>
+                    <div>
+                      <p>Tu oferta fue rechazada</p>
+                      <div>
+                        <a href="<%= newOfferPath %>">Realizar otra oferta</a>
+                      </div>
+                    </div>
+                    <% } else {%>
+                      <div>
+                        <p>Has rechazado esta oferta</p>
+                        <div>
+                          <a href="<%= newOfferPath %>">Realizar otra oferta</a>
+                        </div>
+                      </div>
+                      <% } %>
+                      <% } %>
+                      <% if (tradeOffer.status == 1) { %>
+                        <% if (offerIsMine) { %>
+                          <div>
+                            <p>Esta oferta que enviaste aún no ha sido contestada</p>
+                            <div>
+                              <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
+                                <input type="hidden" name="_method" value="delete" />
+                                <input class="button" type="submit" value="Cancelar Oferta" />
+                              </form>
+                            </div>
+                          </div>
+                          <div>
+                            <a href="<%= newOfferPath %>">Cambiar por nueva oferta</a>
+                          </div>
+                          <% } else {%>
+                            <div>
+                              <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
+                                <input type="hidden" name="_method" value="patch" />
+                                <input type="hidden" name="status" value=2 />
+                                <div  class="field">
+                                  <input type="submit" name="update" value="Aceptar Oferta" />
+                                </div>
+                              </form>
+
+                              <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
+                                <input type="hidden" name="_method" value="patch" />
+                                <input type="hidden" name="status" value=0 />
+                                <div  class="field">
+                                  <input type="submit" name="update" value="Rechazar Oferta" />
+                                </div>
+                              </form>
+
+                              <div>
+                                <a href="<%= newOfferPath %>">Realizar contraoferta</a>
+                              </div>
+                            </div>
+                            <% } %>
+                            <% } %>
+                            <% if (tradeOffer.status == 2) { %>
+                              <% if (offerIsMine) { %>
+                                <div>
+                                  <p>Tu oferta fue aceptada</p>
+                                </div>
+                                <% } else {%>
+                                  <div>
+                                    <p>Has aceptado esta oferta</p>
+                                  </div>
+                                  <% } %>
+                                  <% } %>
+                                </info>
+                              </column>
+                            </row>
+                            <% } %>
+
+<% } %>
 
   <% }%>
