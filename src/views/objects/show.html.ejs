@@ -42,8 +42,11 @@
 
       <div class="info-box-show">
         <div class="item-title"> <h2><%= object.name %></h2></div>
+        <div>Vendido por <a href= <%= "/users/" + seller.id + "/show"%>> <%= seller.name %></a></div>
+        <br>
         <div> <%= object.description %> </div>
         <div> <%= object.status %> </div>
+        <div> <p>Fecha de publicación: <%= object.createdAt.getDate() + "/" + object.createdAt.getMonth() + "/" + object.createdAt.getFullYear() %></p></div>
       </div>
       <div class="links-box">
         <a class="button-link" href="<%= editObjectPath(object) %>">Editar</a>

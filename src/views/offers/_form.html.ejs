@@ -9,6 +9,49 @@
         </ul>
       </div>
     <% } %>
+    <div class="trade-box">
+      <div class="box-user">
+        <div class="owner">
+          <p>Tus objetos</p>
+        </div>
+        <% user1ObjectsList.forEach((object) => { %>
+        <form action="/"></form>
+        <div class="item">
+          <div class="selector">
+            <input type="checkbox" id="<%= object.id %>" name="items1" value="item1">
+          </div>
+          <div class="item-img">
+            <img src="https://via.placeholder.com/150" alt="F servidor :(">
+          </div>
+          <div class="item-name">
+            <p><%= object.name %></p>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <div class="box-user">
+        <div class="owner">
+          <p>Objetos de <%= user2.name %></p>
+        </div>
+        <% user2ObjectsList.forEach((object) => { %>
+        <form action="/"></form>
+        <div class="item">
+          <div class="selector">
+            <input type="checkbox" id="<%= object.id %>" name="items1" value="item1">
+          </div>
+          <div class="item-img">
+            <img src="https://via.placeholder.com/150" alt="F servidor :(">
+          </div>
+          <div class="item-name">
+            <p><%= object.name %></p>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <br>
+    <br>
     <form action="<%= submitOfferPath %>" method="post">
       <% if (!offer.isNewRecord) { %>
         <input type="hidden" name="_method" value="patch" />
@@ -18,15 +61,39 @@
       <% } %>
       <input type="hidden" name="tradeId" value=<%= tradeId %> />
       <div  class="field">
-        <label for="info">Info</label>
-        <input type="text" name="info" value="<%= offer.info %>" />
+        <input type="hidden" name="sender" value= "<%= currentUser.id %>" />
       </div>
-      <div  class="field">
-        <% if (offer.isNewRecord) { %>
-          <input type="submit" name="create" value="Create" />
-        <% } else { %>
-          <input type="submit" name="update" value="Update" />
-        <% } %>
+      <div class="final-box">
+        <div>
+          <label for="info">Aquí puedes ingresar información adicional !</label>
+          <div class="aux-box">
+            <input type="text" name="info" value="<%= offer.info %>" class="info-input" />
+            <% if (offer.isNewRecord) { %>
+              <div>
+                <input type="submit" name="create" value="Enviar oferta" />
+              </div>
+            <% } else { %>
+              <div>
+                <input type="submit" name="update" value="Update" />
+              </div>
+            <% } %>
+          </div>
+        </div>
+        <div  class="field">
+          <input type="hidden" name="status" value ="1"/>
+        </div>
       </div>
+        <div  class="field">
+          <% if (offer.isNewRecord) { %>
+            <div>
+              <input type="submit" name="create" value="Enviar oferta" />
+            </div>
+          <% } else { %>
+            <div>
+              <input type="submit" name="update" value="Update" />
+            </div>
+          <% } %>
+        </div>
+      
     </form>
   </div>

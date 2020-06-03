@@ -31,3 +31,55 @@ h2{
       padding: 30px;
     }
 }
+
+.trade-box {
+  display: flex;
+  justify-content: space-between;
+  max-width: 60%;
+  margin-left: 20%;
+}
+
+.box-user{
+  display: flex;
+  flex-direction: column;
+}
+
+.item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.item-img{
+  margin-right: 10px;
+}
+
+.owner {
+  text-align: center;
+}
+
+.selector input[type=checkbox] {
+  transform: scale(2);
+  margin-right: 30px;
+}
+
+.final-box {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  max-width: 60%;
+  margin-left: 20%;
+  margin-bottom: 100px;
+}
+
+.info-input {
+  width: 550px;
+}
+
+.aux-box {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  padding-right: 100px;
+}
