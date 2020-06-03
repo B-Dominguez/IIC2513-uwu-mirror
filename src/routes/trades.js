@@ -58,14 +58,17 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
       });
       var user1or2 = null;
       var userId = null;
+      var otherId = null;
       if (usersession) {
         userId = usersession.id;
         superpermit = usersession.usertype == 2;
         if (usersession.id == trade.id_user1) {
           user1or2 = 1;
+          otherId = trade.id_user2;
         }
         if (usersession.id == trade.id_user2) {
           user1or2 = 2;
+          otherId = trade.id_user1;
         }
         if (tradeOffer && tradeOffer.sender == usersession.id ) {
           offerIsMine = true;
@@ -87,7 +90,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
           editTradePath: ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: ctx.router.url('trades.delete', { id: trade.id}),
           submitMessagePath: ctx.router.url('messages.create', {tradeId: trade.id}),
-          newOfferPath: ctx.router.url('offers.new', {tradeId: trade.id}),
+          newOfferPath: ctx.router.url('offers.new', {tradeId: trade.id, id1: userId, id2: otherId }),
           updateTradePath: ctx.router.url('trades.update', { id: trade.id }),
           updateOfferPath: (offer) => ctx.router.url('offers.update',
           { id: offer.id }),

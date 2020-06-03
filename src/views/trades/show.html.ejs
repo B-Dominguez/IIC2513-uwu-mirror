@@ -100,7 +100,6 @@
             <% if (message.sender == trade.id_user2 && user1or2 == 2) {%>
               <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/myprofile"%>> Tú </a> dijiste: <%= message.content %> </div>
             <% } %>
-            <% } %>
         <% }) %>
       </info-chat>
 
@@ -214,64 +213,66 @@
                       <div>
                         <a href="<%= newOfferPath %>">Realizar otra oferta</a>
                       </div>
+                    <% } %>
+                  <% } %>
+
+                  <% if (tradeOffer.status == 1) { %>
+                    <% if (offerIsMine) { %>
+                      <div>
+                        <div class="text">
+                          Esta oferta que enviaste aún no ha sido contestada
+                        </div>
+                        <div>
+                          <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input class="button" type="submit" value="Cancelar Oferta" />
+                          </form>
+                        </div>
+                      </div>
+                      <div>
+                        <a href="<%= newOfferPath %>">Cambiar por nueva oferta</a>
+                      </div>
+                      <% } else {%>
+                        <div>
+                          <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
+                            <input type="hidden" name="_method" value="patch" />
+                            <input type="hidden" name="status" value=2 />
+                            <div  class="field">
+                              <input type="submit" name="update" value="Aceptar Oferta" />
+                            </div>
+                          </form>
+
+                          <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
+                            <input type="hidden" name="_method" value="patch" />
+                            <input type="hidden" name="status" value=0 />
+                            <div  class="field">
+                              <input type="submit" name="update" value="Rechazar Oferta" />
+                            </div>
+                          </form>
+
+                          <div>
+                            <a href="<%= newOfferPath %>">Realizar contraoferta</a>
+                          </div>
+                        </div>
+                        <% } %>
                       <% } %>
-                      <% } %>
-                      <% if (tradeOffer.status == 1) { %>
+
+                      <% if (tradeOffer.status == 2) { %>
                         <% if (offerIsMine) { %>
-                          <div>
-                            <div class="text">
-                              Esta oferta que enviaste aún no ha sido contestada
-                            </div>
-                            <div>
-                              <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
-                                <input type="hidden" name="_method" value="delete" />
-                                <input class="button" type="submit" value="Cancelar Oferta" />
-                              </form>
-                            </div>
+                          <div class="text">
+                            Tu oferta fue aceptada
                           </div>
-                          <div>
-                            <a href="<%= newOfferPath %>">Cambiar por nueva oferta</a>
+                        <% } else {%>
+                          <div class="text">
+                            Has aceptado esta oferta
                           </div>
-                          <% } else {%>
-                            <div>
-                              <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
-                                <input type="hidden" name="_method" value="patch" />
-                                <input type="hidden" name="status" value=2 />
-                                <div  class="field">
-                                  <input type="submit" name="update" value="Aceptar Oferta" />
-                                </div>
-                              </form>
+                        <% } %>
+                      <% } %>
+                    </info>
+                  </column>
+                </row>
+    <% } %>
 
-                              <form action="<%= updateOfferPath(tradeOffer) %>" method="post">
-                                <input type="hidden" name="_method" value="patch" />
-                                <input type="hidden" name="status" value=0 />
-                                <div  class="field">
-                                  <input type="submit" name="update" value="Rechazar Oferta" />
-                                </div>
-                              </form>
+  <% } %>
 
-                              <div>
-                                <a href="<%= newOfferPath %>">Realizar contraoferta</a>
-                              </div>
-                            </div>
-                            <% } %>
-                            <% } %>
-                            <% if (tradeOffer.status == 2) { %>
-                              <% if (offerIsMine) { %>
-                                <div class="text">
-                                  Tu oferta fue aceptada
-                                </div>
-                                <% } else {%>
-                                  <div class="text">
-                                    Has aceptado esta oferta
-                                  </div>
-                                  <% } %>
-                                  <% } %>
-                                </info>
-                              </column>
-                            </row>
-                            <% } %>
-
-<% } %>
-
-  <% }%>
+<% }%>
