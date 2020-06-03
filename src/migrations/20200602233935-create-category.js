@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('objects', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('categories', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -8,18 +8,6 @@ module.exports = {
     },
 
     name: {
-      type: Sequelize.STRING,
-    },
-    description: {
-      type: Sequelize.TEXT,
-    },
-    status: {
-      type: Sequelize.STRING,
-    },
-    image1: {
-      type: Sequelize.STRING,
-    },
-    image2: {
       type: Sequelize.STRING,
     },
 
@@ -33,5 +21,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('objects'),
+  down: (queryInterface) => queryInterface.dropTable('categories'),
 };

@@ -82,7 +82,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         { id: object.id}),
         deleteObjectPath: (object) => ctx.router.url('objects.delete',
         { id: object.id}),
-        showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+        showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
 
       });
     });

@@ -35,3 +35,22 @@
   <% }) %>
   </div>
 <% } %>
+
+<% if (!categoriesList.length) { %>
+  <p>No results</p>
+<% } else { %>
+
+  
+  <div class="item-list">
+  <% categoriesList.forEach((category) => { %>
+    <a href="<%= showCategoryPath(category) %>">
+      <div class="item-box">
+        <div class="description-box">
+          <br>
+          <a href="<%= showCategoryPath(category) %>"><%= category.name %></a>
+        </div>
+      </div>
+    </a>
+  <% }) %>
+  </div>
+<% } %>
