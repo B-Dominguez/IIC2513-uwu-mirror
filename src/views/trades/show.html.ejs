@@ -1,62 +1,77 @@
 <% if (!trade) {%>
     <text>No hay ningún intercambio con este id</>
   <% } else {%>
-    <% switch (trade.status) {
-    case 0 : %>
-            Este intercambio fue cancelado
-            <% break;
-
-    case 1 : %>
-            Este intercambio se encuentra activo
-            <% break;
-
-    case 2 : %>
-            Este intercambio se encuentra pendiente de confirmación
-            <% if ((user1or2 == 1 && !trade.user1_confirms) ||
-            (user1or2 == 2 && !trade.user2_confirms)) {%>
-              <form action="<%= updateTradePath %>" method="post">
-                <input type="hidden" name="_method" value="patch" />
-                <% if (user1or2 == 1) {%>
-                  <input type="hidden" name="user1_confirms" value=1 />
-                <% } else { %>
-                  <input type="hidden" name="user2_confirms" value=1 />
-                <% } %>
-                <div  class="field">
-                  <input type="submit" name="update" value="Confirmar que intercambio fue realizado" />
-                </div>
-              </form>
-            <%}%>
-            <% if ((user1or2 == 1 && trade.user1_confirms) ||
-            (user1or2 == 2 && trade.user2_confirms)) {%>
-              Esperando que el otro usuario confirme realización de intercambio
-            <%}%>
-
-            <% break;
-
-    case 3 : %>
-            Este intercambio ya fue realizado
-            <% break;
-
-    } %>
-
-    <form action="<%= updateTradePath %>" method="post">
-      <input type="hidden" name="_method" value="patch" />
-      <input type="hidden" name="status" value=0 >
-      <div  class="field">
-        <input type="submit" name="update" value="Cancelar intercambio" />
-      </div>
-    </form>
-
 
     <row>
       <column>
         <info>
             <div class="name"> Intercambio <%= trade.id %> </div>
-            <div class="text"> usuario1: <%= trade.id_user1 %> </div>
-            <div class="text"> usuario2: <%= trade.id_user2 %>  </div>
-            <div class="text"> Estado: <%= trade.status %>  </div>
-            <div class="text"> Estado: <%= trade.status %>  </div>
-            <div class="text"> Fecha: <%= trade.createdAt.getDate() %>/<%= trade.createdAt.getMonth()+1%>/<%= trade.createdAt.getFullYear() %> <%= trade.createdAt.getHours() %>:<%= trade.createdAt.getMinutes() %>   </div>
+            <% if (!user1or2) {%>
+              <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+              <div class="text"> usuario2: <%= trade.id_user2 %>  </div>
+            <% } else {%>
+              <% if (user1or2 == 1) {%>
+                <div class="text">
+                  Con usuario linkauser2
+                </div>
+              <% } else {%>
+                <div class="text">
+                  Con usuario linkauser1
+                </div>
+              <% } %>
+            <% } %>
+            <div class="text"> Creado el <%= trade.createdAt.getDate() %>/<%= trade.createdAt.getMonth()+1%>/<%= trade.createdAt.getFullYear() %> a las <%= trade.createdAt.getHours() %>:<%= trade.createdAt.getMinutes() %>   </div>
+            <div class="text">
+
+              <% switch (trade.status) {
+              case 0 : %>
+                      Este intercambio fue cancelado
+                      <% break;
+
+              case 1 : %>
+                      Este intercambio se encuentra activo
+                      <% break;
+
+              case 2 : %>
+                      Este intercambio se encuentra pendiente de confirmación
+                      <% if ((user1or2 == 1 && !trade.user1_confirms) ||
+                      (user1or2 == 2 && !trade.user2_confirms)) {%>
+                        <form action="<%= updateTradePath %>" method="post">
+                          <input type="hidden" name="_method" value="patch" />
+                          <% if (user1or2 == 1) {%>
+                            <input type="hidden" name="user1_confirms" value=1 />
+                          <% } else { %>
+                            <input type="hidden" name="user2_confirms" value=1 />
+                          <% } %>
+                          <div  class="field">
+                            <input type="submit" name="update" value="Confirmar que intercambio fue realizado" />
+                          </div>
+                        </form>
+                      <%}%>
+                      <% if ((user1or2 == 1 && trade.user1_confirms) ||
+                      (user1or2 == 2 && trade.user2_confirms)) {%>
+                        Esperando que el otro usuario confirme realización de intercambio
+                      <%}%>
+
+                      <% break;
+
+              case 3 : %>
+                      Este intercambio ya fue realizado
+                      <% break;
+
+              } %>
+
+              <% if (trade.status == 1 || trade.status == 2) {%>
+                <form action="<%= updateTradePath %>" method="post">
+                  <input type="hidden" name="_method" value="patch" />
+                  <input type="hidden" name="status" value=0 >
+                  <div  class="field">
+                    <input type="submit" name="update" value="Cancelar intercambio" />
+                  </div>
+                </form>
+              <% } %>
+
+            </div>
         </info>
       </column>
       <column>
@@ -129,7 +144,9 @@
 
   <% if (!tradeOffer) { %>
     <row>
-      <text>Aún no se ha realizado ninguna oferta. ¡Toma la inciativa!</text>
+      <div class="text">
+        Aún no se ha realizado ninguna oferta. ¡Toma la inciativa!
+      </div>
     </row>
     <!--VALIDAR-->
     <a href="<%= newOfferPath %>">Realizar oferta</a>
@@ -166,24 +183,28 @@
                 <% if (tradeOffer.status == 0) { %>
                   <% if (offerIsMine) { %>
                     <div>
-                      <p>Tu oferta fue rechazada</p>
+                      <div class="text">
+                        Tu oferta fue rechazada
+                      </div>
                       <div>
                         <a href="<%= newOfferPath %>">Realizar otra oferta</a>
                       </div>
                     </div>
                     <% } else {%>
+                      <div class="text">
+                        Has rechazado esta oferta
+                      </div>
                       <div>
-                        <p>Has rechazado esta oferta</p>
-                        <div>
-                          <a href="<%= newOfferPath %>">Realizar otra oferta</a>
-                        </div>
+                        <a href="<%= newOfferPath %>">Realizar otra oferta</a>
                       </div>
                       <% } %>
                       <% } %>
                       <% if (tradeOffer.status == 1) { %>
                         <% if (offerIsMine) { %>
                           <div>
-                            <p>Esta oferta que enviaste aún no ha sido contestada</p>
+                            <div class="text">
+                              Esta oferta que enviaste aún no ha sido contestada
+                            </div>
                             <div>
                               <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
                                 <input type="hidden" name="_method" value="delete" />
@@ -220,12 +241,12 @@
                             <% } %>
                             <% if (tradeOffer.status == 2) { %>
                               <% if (offerIsMine) { %>
-                                <div>
-                                  <p>Tu oferta fue aceptada</p>
+                                <div class="text">
+                                  Tu oferta fue aceptada
                                 </div>
                                 <% } else {%>
-                                  <div>
-                                    <p>Has aceptado esta oferta</p>
+                                  <div class="text">
+                                    Has aceptado esta oferta
                                   </div>
                                   <% } %>
                                   <% } %>
