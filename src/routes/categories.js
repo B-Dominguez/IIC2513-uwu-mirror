@@ -77,12 +77,12 @@ router.get('categories.show', '/:id/show', loadCategory, async (ctx) => {
         await ctx.render('categories/show', {
           category,
           categoryObjectsList,
-          newObjectPath: ctx.router.url('object.new'),
-          editObjectPath: (object) => ctx.router.url('object.edit',
+          newObjectPath: ctx.router.url('objects.new'),
+          editObjectPath: (object) => ctx.router.url('objects.edit',
           { id: object.id}),
-          deleteObjectPath: (object) => ctx.router.url('object.delete',
+          deleteObjectPath: (object) => ctx.router.url('objects.delete',
           { id: object.id}),
-          showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+          showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
 
         });
       });
