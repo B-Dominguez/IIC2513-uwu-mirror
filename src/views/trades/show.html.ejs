@@ -74,7 +74,38 @@
 
         <% } %>
       </scroll-column>
-      <a href="<%= newMessagePath %>">Nuevo Mensaje</a>
+
+      <% if (user1or2 || superpermit) { %>
+        <div>
+          <% if (locals.errors) { %>
+            <div class="errors">
+              You need to fix the following errors:
+              <ul>
+                <% errors.forEach(error => { %>
+                  <li><%= error.message %></li>
+                  <% }); %>
+              </ul>
+            </div>
+          <% } %>
+          <form action="<%= submitMessagePath %>" method="post">
+            <% if (!message.isNewRecord) { %>
+              <input type="hidden" name="_method" value="patch" />
+              <% } %>
+              <div  class="field">
+                <label for="id_user1">Nuevo mensaje</label>
+                <input type="text" name="content" value="<%= message.content %>" />
+              </div>
+              <div  class="field">
+                <input type="hidden" name="sender" value= "<%= userId %>" />
+              </div>
+              <input type="hidden" name="tradeId" value=<%= trade.id %> />
+              <div  class="field">
+                <input type="submit" name="create" value="Enviar" />
+              </div>
+          </form>
+        </div>
+      <% } %>
+
     </column>
 
 

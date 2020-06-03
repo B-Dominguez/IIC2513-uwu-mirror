@@ -38,6 +38,7 @@ router.get('trades.list', '/', loadUserSession, async (ctx) => {
 
 router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) => {
     const { trade } = ctx.state;
+    const message = ctx.orm.message.build();
     const usersession = ctx.state.usersession;
     if (!usersession || ((usersession.id != trade.id_user1) &&
     (usersession.id != trade.id_user2) && (usersession.usertype == 0))) {
@@ -54,7 +55,9 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
         order: [ [ 'createdAt', 'DESC' ]],
       });
       var user1or2 = null;
+      var userId = null;
       if (usersession) {
+        userId = usersession.id;
         superpermit = usersession.usertype == 2;
         if (usersession.id == trade.id_user1) {
           user1or2 = 1;
@@ -67,15 +70,17 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
         }
       }
       await ctx.render('trades/show', {
+          userId,
           superpermit,
           trade,
           tradeMessagesList,
           tradeOffer,
           user1or2,
           offerIsMine,
+          message,
           editTradePath: ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: ctx.router.url('trades.delete', { id: trade.id}),
-          newMessagePath: ctx.router.url('messages.new', {tradeId: trade.id}),
+          submitMessagePath: ctx.router.url('messages.create', {tradeId: trade.id}),
           newOfferPath: ctx.router.url('offers.new', {tradeId: trade.id}),
           updateTradePath: ctx.router.url('trades.update', { id: trade.id }),
           updateOfferPath: (offer) => ctx.router.url('offers.update',
