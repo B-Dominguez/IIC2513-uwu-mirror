@@ -12,6 +12,9 @@
     <form action="<%= submitObjectPath %>" method="post">
       <% if (!object.isNewRecord) { %>
         <input type="hidden" name="_method" value="patch" />
+      <% } else {%>
+        <input type="hidden" name="userId" value= "<%= currentUser.id %>" />
+        <input type="hidden" name="status" value='available' />
       <% } %>
       <div  class="field">
         <label for="name">Nombre</label>
@@ -32,12 +35,6 @@
       <div  class="field">
         <label for="file">Agrega una segunda imagen</label>
         <input type="file" name="image2"  accept="image/*" value="<%= object.image2 %>" />
-      </div>
-      <div  class="field">
-      <input type="hidden" name="userId" value= "<%= currentUser.id %>" />
-      </div>
-      <div  class="field">
-        <input type="hidden" name="status" value='available' />
       </div>
       <div  class="field">
         <% if (object.isNewRecord) { %>
