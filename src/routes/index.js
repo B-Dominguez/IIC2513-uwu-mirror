@@ -14,7 +14,7 @@ router.get('objects.list', '/', async (ctx) => {
     searchPath: ctx.router.url('objects.searchForm'),
     editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
     deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
-    showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+    showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
     showCategoryPath: (category) => ctx.router.url('categories.show', { id: category.id}),
   });
 });

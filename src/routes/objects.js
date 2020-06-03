@@ -39,7 +39,7 @@ router.get('objects.list', '/', loadUserSession, async (ctx) => {
       searchPath: ctx.router.url('objects.searchForm'),
       editObjectPath: (object) => ctx.router.url('objects.edit', { id: object.id }),
       deleteObjectPath: (object) => ctx.router.url('objects.delete', { id: object.id }),
-      showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+      showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
       showCategoryPath: (category) => ctx.router.url('categories.show', { id: category.id}),
     });
   } else {
@@ -49,8 +49,10 @@ router.get('objects.list', '/', loadUserSession, async (ctx) => {
 
 router.get('objects.new', '/new', async (ctx) => {
   const object = ctx.orm.object.build();
+  const categoriesList = await ctx.orm.category.findAll();
   await ctx.render('objects/new', {
     object,
+    categoriesList,
     submitObjectPath: ctx.router.url('objects.create'),
   });
 });
@@ -58,7 +60,7 @@ router.get('objects.new', '/new', async (ctx) => {
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
   try {
-    await object.save({ fields: ['name', 'description','category', 'status','userId'] });
+    await object.save({ fields: ['name', 'description','categoryId', 'status','userId'] });
     ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
     await ctx.render('objects.new', {
@@ -71,14 +73,16 @@ router.post('objects.create', '/', async (ctx) => {
 
 router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  const categoriesList = await ctx.orm.category.findAll();
   await ctx.render('objects/edit', {
     object,
+    categoriesList,
     submitObjectPath: ctx.router.url('objects.update', { id: object.id }),
   });
 });
 
 
-router.get('object.show', '/:id/show', loadObject, async (ctx) => {
+router.get('objects.show', '/:id/show', loadObject, async (ctx) => {
   const { object } = ctx.state;
   await ctx.render('objects/show', {
     object,
