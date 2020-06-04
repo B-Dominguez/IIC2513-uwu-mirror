@@ -55,9 +55,11 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
   const usersession = ctx.state.usersession;
   var userpermit = null;
   var superpermit = null;
+  var myId = null;
   if (usersession) {
     userpermit = usersession.usertype == 2 || usersession.id == user.id;
     superpermit = usersession.usertype == 2;
+    myId = usersession.id;
   }
   const userEvaluationsList = await ctx.orm.evaluation.findAll({
     where: {userId: user.id}
@@ -66,6 +68,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
       where: {userId: user.id}});
       await ctx.render('users/show', {
         user,
+        myId,
         userpermit,
         superpermit,
         userEvaluationsList,
@@ -83,6 +86,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         deleteObjectPath: (object) => ctx.router.url('objects.delete',
         { id: object.id}),
         showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
+        submitTradePath: ctx.router.url('trades.create'),
 
       });
     });

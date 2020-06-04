@@ -30,6 +30,30 @@
     </column>
   </row>
 
+  <% if (myId && !userpermit) { // logeado, no es su propio perfil%>
+
+    <% if (locals.errors) { %>
+      <div class="errors">
+        You need to fix the following errors:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+      <form action="<%= submitTradePath %>" method="post">
+        <input type="hidden" name="user1_confirms" value=0 />
+        <input type="hidden" name="user2_confirms" value=0 />
+        <input type="hidden" name="status" value=1 />
+        <input type="hidden" name="id_user1" value="<%= user.id %>" />
+        <input type="hidden" name="id_user2" value="<%= myId %>" />
+        <div  class="field">
+          <input type="submit" name="create" value="Iniciar nueva negociación" />
+        </div>
+      </form>
+    <% } %>
+
 
 <h3>Reseñas</h3>
 <% if (!userEvaluationsList.length) { %>
@@ -117,5 +141,8 @@
       <% }) %>
 
 <% } %>
+
+
+
 
 <% }%>

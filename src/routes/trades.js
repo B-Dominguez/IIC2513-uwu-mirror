@@ -119,16 +119,22 @@ router.get('trades.new', '/new', async(ctx) => {
 });
 
 router.post('trades.create', '/', loadUserSession, async (ctx) => {
+    console.log("111111111111111");
     const usersession = ctx.state.usersession;
     if (!usersession) {
       // Si no se ha iniciado sesión
+      console.log("2222222222222222222");
       return ctx.throw(401, 'Unauthorized');
     } else {
       const trade = ctx.orm.trade.build(ctx.request.body);
+      console.log("333333333333333333333");
       try {
+        console.log("4444444444444444");
           await trade.save({ fields: ['id_user1', 'id_user2', 'user1_confirms',
           'user2_confirms', 'status', 'date'] });
-          ctx.redirect(ctx.router.url('trades.list'));
+          console.log("55555555555555");
+          ctx.redirect(ctx.router.url('trades.show', { id: trade.id}));
+          console.log("666666666666");
       } catch (validationError) {
           await ctx.render('trades/new', {
               trade,
