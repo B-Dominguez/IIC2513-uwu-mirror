@@ -98,13 +98,40 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         // Los trades de otro usuario:
         ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
       } else {
-        const userTrades = await ctx.orm.trade.findAll({
+        const userTradesPromised = await ctx.orm.trade.findAll({
           where: {
-            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ]
-          }
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 2,
+          },
+          order: [ [ 'id', 'DESC' ]],
+        });
+        const userTradesActive = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 1,
+          },
+          order: [ [ 'id', 'DESC' ]],
         });;
+        const userTradesDone = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 3,
+          },
+          order: [ [ 'id', 'DESC' ]],
+        });;
+        const userTradesCanceled = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 0,
+          },
+          order: [ [ 'id', 'DESC' ]],
+        });;
+
         await ctx.render('users/trades', {
-          userTrades,
+          userTradesPromised,
+          userTradesActive,
+          userTradesDone,
+          userTradesCanceled,
           showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
           editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),

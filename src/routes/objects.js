@@ -31,7 +31,7 @@ async function loadUserSession(ctx, next) {
 router.get('objects.list', '/', loadUserSession, async (ctx) => {
   const usersession = ctx.state.usersession;
     if (usersession && usersession.usertype == 2) {
-    const objectsList = await ctx.orm.object.findAll();
+    const objectsList = await ctx.orm.object.findAll({order: [ [ 'id', 'DESC' ]]});
     const categoriesList = await ctx.orm.category.findAll();
     await ctx.render('objects/index', {
       objectsList,
@@ -88,9 +88,9 @@ router.get('objects.show', '/:id/show', loadObject, async (ctx) => {
   const seller = await ctx.orm.user.findOne({
     where: {id: object.userId}});
   // console.log(seller);
-  
+
   await ctx.render('objects/show', {
-    object, 
+    object,
     seller,
     editObjectPath: (object) => ctx.router.url('objects.edit',
     { id: object.id}),
@@ -106,7 +106,10 @@ router.post('objects.searchForm', 'objects/searchCat', async (ctx) => {
 
 router.get('objects.searchCat', 'objects/:cat/searchCat', loadObject, async (ctx) => {
   const { object } = ctx.state;
-  const objectsList = await ctx.orm.object.findAll({ where: { category:ctx.params.cat} });
+  const objectsList = await ctx.orm.object.findAll({
+    where: { category:ctx.params.cat} ,
+    order: [ [ 'id', 'DESC' ]],
+  });
   await ctx.render('objects/searchCat', {
     objectsList,
     searchPath: ctx.router.url('objects.searchForm'),

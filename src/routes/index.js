@@ -5,7 +5,7 @@ const router = new KoaRouter();
 
 
 router.get('objects.list', '/', async (ctx) => {
-  const objectsList = await ctx.orm.object.findAll();
+  const objectsList = await ctx.orm.object.findAll({order: [ [ 'id', 'DESC' ]]});
   const categoriesList = await ctx.orm.category.findAll();
   await ctx.render('objects/index', {
     objectsList,
