@@ -31,8 +31,8 @@ router.get('trades.list', '/', loadUserSession, async (ctx) => {
           deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
           showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
       });
-  } else {
-    ctx.redirect('/');
+  } else { // 401
+    return ctx.throw(401, 'Unauthorized');
   }
 });
 
@@ -44,7 +44,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
     (usersession.id != trade.id_user2) && (usersession.usertype == 0))) {
       // Si no se ha iniciado sesión, o es un usuario común que quiere ver
       // Los trades de otro usuario:
-      ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
+      return ctx.throw(401, 'Unauthorized');
     } else {
       const user1 = await ctx.orm.user.findByPk(trade.id_user1);
       const user2 = await ctx.orm.user.findByPk(trade.id_user2);
@@ -107,6 +107,10 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
 });
 
 router.get('trades.new', '/new', async(ctx) => {
+    if (!usersession) {
+      // Si no se ha iniciado sesión
+      return ctx.throw(401, 'Unauthorized');
+    }
     const trade = ctx.orm.trade.build();
     await ctx.render('trades/new', {
         trade,
@@ -118,7 +122,7 @@ router.post('trades.create', '/', loadUserSession, async (ctx) => {
     const usersession = ctx.state.usersession;
     if (!usersession) {
       // Si no se ha iniciado sesión
-      ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
+      return ctx.throw(401, 'Unauthorized');
     } else {
       const trade = ctx.orm.trade.build(ctx.request.body);
       try {
@@ -136,9 +140,13 @@ router.post('trades.create', '/', loadUserSession, async (ctx) => {
 });
 
 router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) => {
+    if (!usersession) { // 401 mejorar
+      // Si no se ha iniciado sesión
+      return ctx.throw(401, 'Unauthorized');
+    }
     const usersession = ctx.state.usersession;
     const { trade } = ctx.state;
-    if (!usersession || usersession) {
+    if (!usersession || usersession.id != 2) {
       ctx.redirect('/');
     } else {
       await ctx.render('trades/edit', {
@@ -149,6 +157,10 @@ router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) =
 });
 
 router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
+    if (!usersession) { // 401
+      // Si no se ha iniciado sesión
+      return ctx.throw(401, 'Unauthorized');
+    }
     const { trade } = ctx.state;
     try {
         const {id_user1, id_user2, status, date, user1_confirms,
@@ -171,6 +183,10 @@ router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
 });
 
 router.del('trades.delete', '/:id', loadTrade, async (ctx) => {
+    if (!usersession) { // 401
+      // Si no se ha iniciado sesión
+      return ctx.throw(401, 'Unauthorized');
+    }
     const { trade } = ctx.state;
     await trade.destroy();
     ctx.redirect(ctx.router.url('trades.list'));

@@ -31,11 +31,15 @@ router.get('messages.list', '/', loadUserSession, async (ctx) => {
           deleteMessagePath: (message) => ctx.router.url('messages.delete', { id: message.id}),
         });
     } else {
-      ctx.redirect('/');
+        return ctx.throw(401, 'Unauthorized');
     }
 });
 
 router.get('messages.new', '/new/:tradeId', async(ctx) => {
+    if (!usersession || usersession.usertype != 2) {
+      // Si no se ha iniciado sesión
+      return ctx.throw(401, 'Unauthorized');
+    }
     const message = ctx.orm.message.build();
     const tradeId = ctx.params.tradeId;
     await ctx.render('messages/new', {

@@ -32,6 +32,9 @@ app.context.orm = orm;
  */
 
 // expose running mode in ctx.state
+
+
+
 app.use((ctx, next) => {
   ctx.state.env = ctx.app.env;
   return next();

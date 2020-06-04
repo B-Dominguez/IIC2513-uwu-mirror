@@ -44,7 +44,7 @@ router.get('objects.list', '/', loadUserSession, async (ctx) => {
       showCategoryPath: (category) => ctx.router.url('categories.show', { id: category.id}),
     });
   } else {
-    ctx.redirect('/');
+    return ctx.throw(401, 'Unauthorized');
   }
 });
 

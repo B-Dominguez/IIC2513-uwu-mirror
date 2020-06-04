@@ -31,7 +31,7 @@ router.get('offers.list', '/', loadUserSession, async (ctx) => {
       deleteOfferPath: (offer) => ctx.router.url('offers.delete', { id: offer.id }),
     });
   } else {
-    ctx.redirect('/');
+    return ctx.throw(401, 'Unauthorized');
   }
 });
 
@@ -41,7 +41,7 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
   if (!usersession) {
     // Si no se ha iniciado sesión, o es un usuario común que quiere ver
     // Los trades de otro usuario:
-    ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
+    return ctx.throw(401, 'Unauthorized');
   }
   const userId = usersession.id
   const offer = ctx.orm.offer.build();
