@@ -11,6 +11,7 @@ module.exports = {
         image1: 'imagen1.png',
         image2: 'imagen2.png',
         categoryId: 1,
+        userId: 1,
       },
       {
         id: 2,
@@ -22,6 +23,8 @@ module.exports = {
         image1: 'imagen1.png',
         image2: 'imagen2.png',
         categoryId: 1,
+        userId: 1,
+
       },
       {
         id: 3,
@@ -33,6 +36,8 @@ module.exports = {
         image1: 'imagen1.png',
         image2: 'imagen2.png',
         categoryId: 2,
+        userId: 1,
+
       },
     ];
 

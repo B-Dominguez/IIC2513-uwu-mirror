@@ -9,8 +9,23 @@
 <% if (!objectsList.length) { %>
   <p>No results</p>
 <% } else { %>
-
+  <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:10%">
+    <% if (!categoriesList.length) { %>
+  <% } else { %>
+      <% categoriesList.forEach((category) => { %>
+        <a href="<%= showCategoryPath(category) %>">
+          <div >
+            <div class="category-box">
+              <br>
+              <a href="<%= showCategoryPath(category) %>"><%= category.name %></a>
+            </div>
+          </div>
+        </a>
+      <% }) %>
+  <% } %>
   
+  </div>
+    
   <div class="item-list">
   <% objectsList.forEach((object) => { %>
     <a href="<%= showObjectPath(object) %>">
@@ -24,33 +39,9 @@
           <p><%= object.description %></p>
           <p><%= object.status %></p>
         </div>
-        <div class="category-box">
-          <br>
-          <br>
-          <p>Categoria tecnologia</p>
-          <p>Vendedor: XX</p>
-        </div>
       </div>
     </a>
   <% }) %>
   </div>
 <% } %>
 
-<% if (!categoriesList.length) { %>
-  <p>No results</p>
-<% } else { %>
-
-  
-  <div class="item-list">
-  <% categoriesList.forEach((category) => { %>
-    <a href="<%= showCategoryPath(category) %>">
-      <div class="item-box">
-        <div class="description-box">
-          <br>
-          <a href="<%= showCategoryPath(category) %>"><%= category.name %></a>
-        </div>
-      </div>
-    </a>
-  <% }) %>
-  </div>
-<% } %>
