@@ -276,3 +276,37 @@
   <% } %>
 
 <% }%>
+
+<div class="trade-box">
+  <div class="box-user">
+    <div class="owner">
+      <p>Tus objetos</p>
+    </div>
+    <% objects1.forEach((object) => { %>
+    <div class="item">
+      <div class="item-img">
+        <img src="https://via.placeholder.com/150" alt="F servidor :(">
+      </div>
+      <div class="item-name">
+        <p><%= object.name %></p>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <div class="box-user">
+    <div class="owner">
+      <p>Objetos que te ofrecen</p>
+    </div>
+    <% objects2.forEach((object) => { %>
+    <form action="/"></form>
+    <div class="item">
+      <div class="item-img">
+        <img src="https://via.placeholder.com/150" alt="F servidor :(">
+      </div>
+      <div class="item-name">
+        <p><%= object.name %></p>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>

@@ -57,6 +57,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
         where: {tradeId: trade.id},
         order: [ [ 'id', 'DESC' ]],  // id en vez de created_at pq es PK y no necesito hacer index para que sea eficiente
       });
+      
       var user1or2 = null;
       var userId = null;
       var otherId = null;
@@ -75,9 +76,44 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
           offerIsMine = true;
         }
       }
+      
       const user1Name = user1.name;
       const user2Name = user2.name;
+
+      objectsAll = await tradeOffer.getObjects();
+      // const objects1 = await ctx.orm.object.findAll({
+      //   where: {userId: usersession.id}});
+      var objects1 = [];
+      var objects2 = [];
+      // objects1.forEach ((object) => {
+      //   objects1Array.push(object.id)
+      // });
+
+      // objectsAll.forEach ((object) => {
+      //   if (!objects1Array.includes(object.id)) {
+      //     objects2Array,push(object.id)
+      //   }
+      // });
+      console.log("CCCCCCCCCCCCCc");
+      
+      console.log(objectsAll);
+      
+
+      objectsAll.forEach((object) => {
+        if (object.userId != usersession.id) {
+          objects2.push(object)
+        }
+        else {
+          objects1.push(object)
+        }
+      });
+
+      console.log(objects2);
+      
+      
       await ctx.render('trades/show', {
+          objects1,
+          objects2,
           userId,
           superpermit,
           trade,
