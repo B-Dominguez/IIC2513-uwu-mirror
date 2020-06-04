@@ -5,22 +5,39 @@ html, body {
 .tab {
   overflow: hidden;
   display: block;
+  height: 125px;
   border: 1px solid #0076CE;
   background-color: #0076CE;
+  position: relative;
 }
 
+.button-tab {
+  background-color: inherit;
+  font-family: Helvetica;
+  float: right;
+  border: none;
+  outline: none;
+  color:white;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  text-decoration: none;
+  width: 200px;
+}
 .button {
   background-color: inherit;
   font-family: Helvetica;
   float: right;
   border: none;
   outline: none;
-  color: #ffffff;
+  color:black;
   text-transform: uppercase;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
   text-decoration: none;
+  width: 200px;
 }
 
 .welcome{
@@ -35,22 +52,34 @@ html, body {
   background-color: #8BBEE8;
 
 }
+img{
+  float: left;
+}
 
 #user-login{
   text-align: right;
 }
+.w3-sidebar{
+  height:100%;
+  width:100px;
+  border: 4px white;
+  background-color:rgb(36, 36, 36);
+  z-index:1;
+  overflow:auto;
+  position: fixed;
 
+}
 .search-container {
-  float: right;
+  float: left;
   justify-content: center;
-  margin-right: 40px;
-    display: block;
+  margin-left: 100px;
   }
 
-.input[type=text] {
+input {
   padding: 6px;
   margin-top: 8px;
-  width: 100px;
+  width: 600px;
+  height: 50px;
   font-size: 17px;
   border: none;
 }
@@ -59,15 +88,17 @@ html, body {
   float: right;
   padding: 0px 20px 20px 0px;
   margin-top: 8px;
-  height: 10px;
-  width: 10px;
+  height: 62px;
+  width: 62px;
+  text-align: right;
   margin-right: 45px;
   background: #ddd;
-  font-size: 20px;
+  font-size: 45px;
   border: none;
+  color: white;
   cursor: pointer;
 }
 
 .searchButton:hover {
-  background: #ccc;
+  background: #8BBEE8;
 }

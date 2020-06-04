@@ -5,6 +5,7 @@ const router = new KoaRouter();
 router.get('session.new', '/new', (ctx) => ctx.render('session/new', {
   createSessionPath: ctx.router.url('session.create'),
   notice: ctx.flashMessage.notice,
+  searchPath: ctx.router.url('objects.searchForm'),
 }));
 
 router.put('session.create', '/', async (ctx) => {
@@ -18,6 +19,7 @@ router.put('session.create', '/', async (ctx) => {
   }
   return ctx.render('session/new', {
     email,
+    searchPath: ctx.router.url('objects.searchForm'),
     createSessionPath: ctx.router.url('session.create'),
     error: 'Incorrect mail or password',
   });

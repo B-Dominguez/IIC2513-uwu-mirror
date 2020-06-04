@@ -1,4 +1,4 @@
-<div>
+<div class="nuevo_form">
   <% if (locals.errors) { %>
     <div class="errors">
       You need to fix the following errors:
@@ -21,12 +21,13 @@
       <input type="text" name="name" value="<%= object.name %>" />
     </div>
     <div  class="field">
-      <label for="description">Description</label>
+      <label for="description">Descripción</label>
       <textarea type="text" name="description"><%= object.description %></textarea>
     </div>
     <div  class="field">
       <label for="category">Categoria</label>
-      <select id="category" value= "<%= object.categoryId %>">
+      <select name="categoryId" value= "<%= object.categoryId %>">
+        <option hidden="hidden" selected="selected" value= NULL> Selecciona</option>
         <% categoriesList.forEach((category) => { %>
           <option value= <%= category.id %>> <%= category.name %></option>
             <% }) %>   
@@ -42,9 +43,9 @@
     </div>
     <div  class="field">
       <% if (object.isNewRecord) { %>
-        <input type="submit" name="create" value="Create" />
+        <input type="submit" name="create" value="Crear" />
       <% } else { %>
-        <input type="submit" name="update" value="Update" />
+        <input type="submit" name="update" value="Actualizar" />
       <% } %>
     </div>
   </form>

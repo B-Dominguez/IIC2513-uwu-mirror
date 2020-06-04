@@ -243,7 +243,7 @@ input[id="3"]:checked ~ .pagination .pagination-item[for="3"]{
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  color: #ffffff;
+  color: #ffbffff;
   background-color: #7aa8b7;
   border-radius: 6px;
   outline: none;
@@ -298,8 +298,13 @@ info-chat {
   height:100%;
   width:100px;
   border: 4px white;
-    background-color:rgb(36, 36, 36);
+  background-color:rgb(36, 36, 36);
   position:fixed!important;
   z-index:1;
   overflow:auto;
+}
+.nuevo_form{
+  margin-left: 600px;
+  align-self: center;
+  text-align: justify;
 }

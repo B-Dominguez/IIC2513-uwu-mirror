@@ -28,6 +28,7 @@ router.get('users.list', '/', loadUserSession, async (ctx) => {
     const usersList = await ctx.orm.user.findAll();
     await ctx.render('users/index', {
       usersList,
+      searchPath: ctx.router.url('objects.searchForm'),
       newUserPath: ctx.router.url('users.new'),
       editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
       deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
@@ -74,7 +75,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         userEvaluationsList,
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
-        // falta new evaluation
+        searchPath: ctx.router.url('objects.searchForm'),
         newObjectPath: ctx.router.url('objects.new'),
         deleteUserPath: ctx.router.url('users.delete', { id: user.id}),
         editEvaluationPath: (evaluation) => ctx.router.url('evaluations.edit',
@@ -136,6 +137,7 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
           userTradesActive,
           userTradesDone,
           userTradesCanceled,
+          searchPath: ctx.router.url('objects.searchForm'),
           showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
           editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
@@ -151,6 +153,7 @@ router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
+    searchPath: ctx.router.url('objects.searchForm'),
     submitUserPath: ctx.router.url('users.create'),
    });
   // equiv                        {user: user}
@@ -182,6 +185,7 @@ router.get('users.edit', '/:id/edit', loadUser, loadUserSession, async (ctx) => 
   } else {
     await ctx.render('users/edit', {
       user,
+      searchPath: ctx.router.url('objects.searchForm'),
       submitUserPath: ctx.router.url('users.update', {id: user.id}),
     });
   }
@@ -199,6 +203,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
   } catch (validationError) {
     await ctx.render('users.edit', {
       user,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitUserPath: ctx.router.url('users.update', {id: user.id}),
     });

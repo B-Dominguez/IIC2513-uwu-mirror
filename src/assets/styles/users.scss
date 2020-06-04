@@ -108,6 +108,8 @@ a{
   border-bottom: 1px solid #999;
   outline: none;
   background: transparent;
+  cursor: pointer;
+
 }
 
 .submit-button {
@@ -116,10 +118,11 @@ a{
   cursor: pointer;
   display: block;
   margin: auto;
-  background: linear-gradient(to right, #0076CE,#FFFFFF);
   border: solid 0.5px grey;
   outline: none;
   border-radius: 30px;
+  cursor: pointer;
+
 }
 
 #h2-form {
