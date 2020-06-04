@@ -1,39 +1,150 @@
 
-<h3>Mis intercambios </h3>
-<% if (!userTrades.length) { %>
-    <text>No tienes ningún intercambio</text>
+<h2>Mis intercambios </h2>
+
+<h3>Intecambios esperando confirmación de realización</h3>
+<% if (!userTradesPromised.length) { %>
+    <text>No tienes ningún intercambio esperando confirmación de realización</text>
   <% } else { %>
-    <% userTrades.forEach((trade) => { %>
-    <row>
-    <column>
-      <info>
-        <img src="http://placehold.it/150x150">
-      </info>
-    </column>
-    <column>
-      <info>
-        <div class="name"> Intercambio <%= trade.id %> </div>
-        <div class="text"> usuario1: <%= trade.id_user1 %> </div>
-        <div class="text"> usuario2<%= trade.id_user2 %>  </div>
-        <div class="text"> Estado: <%= trade.status %>  </div>
+    <% userTradesPromised.forEach((trade) => { %>
+      <row>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <div class="name"> Intercambio <%= trade.id %> </div>
+          <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+          <div class="text"> usuario2<%= trade.id_user2 %>  </div>
 
-      </info>
-    </column>
-    <column>
-
-      <info>
+        </info>
+      </column>
+      <column>
         <div>
-          <a href="<%= showTradePath(trade) %>">Ver</a>
+          <form action="<%= showTradePath(trade) %>" method="get">
+            <input type="submit" class="button"  value="Ver" />
+          </form>
         </div>
         <div>
           <form action="<%= deleteTradePath(trade) %>" method="POST">
             <input type="hidden" name="_method" value="delete" />
-            <input type="submit" value="Delete" />
+            <input type="submit" class="button" value="BORRAR" />
           </form>
         </div>
-      </info>
-    </column>
-  </row>
-    <% }) %>
-  <% } %>
+      </column>
+    </row>
+  <% }) %>
+<% } %>
 
+
+<h3>Intecambios activos</h3>
+<% if (!userTradesActive.length) { %>
+    <text>No tienes ningún intercambio activo</text>
+  <% } else { %>
+    <% userTradesActive.forEach((trade) => { %>
+      <row>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <div class="name"> Intercambio <%= trade.id %> </div>
+          <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+          <div class="text"> usuario2<%= trade.id_user2 %>  </div>
+          <div class="text"> Estado: <%= trade.status %>  </div>
+
+        </info>
+      </column>
+      <column>
+        <div>
+          <form action="<%= showTradePath(trade) %>" method="get">
+            <input type="submit" class="button"  value="Ver" />
+          </form>
+        </div>
+        <div>
+          <form action="<%= deleteTradePath(trade) %>" method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" class="button" value="BORRAR" />
+          </form>
+        </div>
+      </column>
+    </row>
+  <% }) %>
+<% } %>
+
+
+<h3>Intecambios pasados efectuados</h3>
+<% if (!userTradesDone.length) { %>
+    <text>No tienes ningún intercambio pasado completado</text>
+  <% } else { %>
+    <% userTradesDone.forEach((trade) => { %>
+      <row>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <div class="name"> Intercambio <%= trade.id %> </div>
+          <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+          <div class="text"> usuario2<%= trade.id_user2 %>  </div>
+
+        </info>
+      </column>
+      <column>
+        <div>
+          <form action="<%= showTradePath(trade) %>" method="get">
+            <input type="submit" class="button"  value="Ver" />
+          </form>
+        </div>
+        <div>
+          <form action="<%= deleteTradePath(trade) %>" method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" class="button" value="BORRAR" />
+          </form>
+        </div>
+      </column>
+    </row>
+  <% }) %>
+<% } %>
+
+
+<h3>Intecambios pasados cancelados</h3>
+<% if (!userTradesCanceled.length) { %>
+    <text>No tienes ningún intercambio cancelado</text>
+  <% } else { %>
+    <% userTradesCanceled.forEach((trade) => { %>
+      <row>
+      <column>
+        <info>
+          <img src="http://placehold.it/150x150">
+        </info>
+      </column>
+      <column>
+        <info>
+          <div class="name"> Intercambio <%= trade.id %> </div>
+          <div class="text"> usuario1: <%= trade.id_user1 %> </div>
+          <div class="text"> usuario2<%= trade.id_user2 %>  </div>
+
+        </info>
+      </column>
+      <column>
+        <div>
+          <form action="<%= showTradePath(trade) %>" method="get">
+            <input type="submit" class="button"  value="Ver" />
+          </form>
+        </div>
+        <div>
+          <form action="<%= deleteTradePath(trade) %>" method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" class="button" value="BORRAR" />
+          </form>
+        </div>
+      </column>
+    </row>
+  <% }) %>
+<% } %>

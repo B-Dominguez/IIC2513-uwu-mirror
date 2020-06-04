@@ -28,13 +28,14 @@ router.get('users.list', '/', loadUserSession, async (ctx) => {
     const usersList = await ctx.orm.user.findAll();
     await ctx.render('users/index', {
       usersList,
+      searchPath: ctx.router.url('objects.searchForm'),
       newUserPath: ctx.router.url('users.new'),
       editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
       deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
       showUserPath: (user) => ctx.router.url('users.show', { id: user.id}),
     });
   } else {
-    ctx.redirect('/');
+    return ctx.throw(401, 'Unauthorized');
   }
   // equiv                        {usersList: usersList}
 });
@@ -53,11 +54,13 @@ router.get('users.myprofile', '/myprofile', loadUserSession, async (ctx) => {
 router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => {
   const { user } = ctx.state;
   const usersession = ctx.state.usersession;
-  var editpermit = null;
+  var userpermit = null;
   var superpermit = null;
+  var myId = null;
   if (usersession) {
     userpermit = usersession.usertype == 2 || usersession.id == user.id;
     superpermit = usersession.usertype == 2;
+    myId = usersession.id;
   }
   const userEvaluationsList = await ctx.orm.evaluation.findAll({
     where: {userId: user.id}
@@ -66,12 +69,13 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
       where: {userId: user.id}});
       await ctx.render('users/show', {
         user,
+        myId,
         userpermit,
-        superpermit, 
+        superpermit,
         userEvaluationsList,
         userObjectsList,
         editUserPath: ctx.router.url('users.edit', { id: user.id}),
-        // falta new evaluation
+        searchPath: ctx.router.url('objects.searchForm'),
         newObjectPath: ctx.router.url('objects.new'),
         deleteUserPath: ctx.router.url('users.delete', { id: user.id}),
         editEvaluationPath: (evaluation) => ctx.router.url('evaluations.edit',
@@ -82,7 +86,8 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
         { id: object.id}),
         deleteObjectPath: (object) => ctx.router.url('objects.delete',
         { id: object.id}),
-        showObjectPath: (object) => ctx.router.url('object.show', { id: object.id}),
+        showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
+        submitTradePath: ctx.router.url('trades.create'),
 
       });
     });
@@ -96,15 +101,43 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
       (usersession.usertype == 0))) {
         // Si no se ha iniciado sesión, o es un usuario común que quiere ver
         // Los trades de otro usuario:
-        ctx.redirect(ctx.router.url('/')); // Se puede cambiar por una página para 404
+        return ctx.throw(401, 'Unauthorized');
       } else {
-        const userTrades = await ctx.orm.trade.findAll({
+        const userTradesPromised = await ctx.orm.trade.findAll({
           where: {
-            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ]
-          }
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 2,
+          },
+          order: [ [ 'id', 'DESC' ]],
+        });
+        const userTradesActive = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 1,
+          },
+          order: [ [ 'id', 'DESC' ]],
         });;
+        const userTradesDone = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 3,
+          },
+          order: [ [ 'id', 'DESC' ]],
+        });;
+        const userTradesCanceled = await ctx.orm.trade.findAll({
+          where: {
+            [Op.or]: [{id_user1: user.id}, {id_user2: user.id} ],
+            status: 0,
+          },
+          order: [ [ 'id', 'DESC' ]],
+        });;
+
         await ctx.render('users/trades', {
-          userTrades,
+          userTradesPromised,
+          userTradesActive,
+          userTradesDone,
+          userTradesCanceled,
+          searchPath: ctx.router.url('objects.searchForm'),
           showTradePath: (trade) => ctx.router.url('trades.show', { id: trade.id}),
           editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
@@ -120,6 +153,7 @@ router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
+    searchPath: ctx.router.url('objects.searchForm'),
     submitUserPath: ctx.router.url('users.create'),
    });
   // equiv                        {user: user}
@@ -151,6 +185,7 @@ router.get('users.edit', '/:id/edit', loadUser, loadUserSession, async (ctx) => 
   } else {
     await ctx.render('users/edit', {
       user,
+      searchPath: ctx.router.url('objects.searchForm'),
       submitUserPath: ctx.router.url('users.update', {id: user.id}),
     });
   }
@@ -168,6 +203,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
   } catch (validationError) {
     await ctx.render('users.edit', {
       user,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitUserPath: ctx.router.url('users.update', {id: user.id}),
     });

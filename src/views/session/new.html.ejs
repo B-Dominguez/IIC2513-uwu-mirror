@@ -3,23 +3,24 @@
   <% if (locals.notice) { %>
     <div className="notice"><%= notice %></div>
   <% } %>
-  <h1>Login</h1>
+  <h1 id="login-title">¡Bienvenido! Inicia sesión</h1>
   <% if (locals.error) { %>
     <div class="error">
-      <%= error %>
+      <p><%= error %></p>
     </div>
   <% } %>
   <form action="<%= createSessionPath %>" method="post">
-    <input type="hidden" name="_method" value="put" />
-    <div class="field">
-      <label for="email">Email</label>
-      <input type="email" name="email" value="<%= locals.email %>" />
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input type="password" name="password" value="<%= locals.password %>" />
-    </div>
-    <div class="field">
-      <input type="submit" name="sign-in" value="Sign In" />
+    <div class="form-box">
+      <input type="hidden" name="_method" value="put" />
+      <div class="field">
+        <input class="input-field" type="email" name="email" value="<%= locals.email %>" placeholder="Email"/>
+      </div>
+      <div class="field">
+        <input class="input-field" type="password" name="password" value="<%= locals.password %>" placeholder="Password"/>
+      </div>
+      <br>
+      <div class="field">
+        <button class="submit-button" type="submit" name="sign-in"/>Iniciar sesión</button>
+      </div>
     </div>
   </form>

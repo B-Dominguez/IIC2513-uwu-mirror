@@ -16,19 +16,47 @@
       </info>
     </column>
     <column>
+      <% if (superpermit) { %>
       <info>
         <div>
-          <a href="<%= editUserPath %>">Editar</a>
+          <form action="<%= editUserPath %>" method="get">
+            <input type="submit" class="button"  value="Editar" />
+          </form>
         </div>
         <div>
           <form action="<%= deleteUserPath %>" method="POST">
             <input type="hidden" name="_method" value="delete" />
-            <input type="submit" value="Delete" />
+            <input type="submit" class="button" value="BORRAR" />
           </form>
         </div>
       </info>
+      <% } %>
     </column>
   </row>
+
+  <% if (myId && !userpermit) { // logeado, no es su propio perfil%>
+
+    <% if (locals.errors) { %>
+      <div class="errors">
+        You need to fix the following errors:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+      <form action="<%= submitTradePath %>" method="post">
+        <input type="hidden" name="user1_confirms" value=0 />
+        <input type="hidden" name="user2_confirms" value=0 />
+        <input type="hidden" name="status" value=1 />
+        <input type="hidden" name="id_user1" value="<%= user.id %>" />
+        <input type="hidden" name="id_user2" value="<%= myId %>" />
+        <div  class="field">
+          <input type="submit" name="create" value="Iniciar nueva negociación" />
+        </div>
+      </form>
+    <% } %>
 
 
 <h3>Reseñas</h3>
@@ -57,7 +85,7 @@
                 <div>
                   <form action="<%= deleteEvaluationPath(evaluation) %>" method="POST">
                     <input type="hidden" name="_method" value="delete" />
-                    <input type="submit" value="Delete"/>
+                    <input type="submit" class="button" value="BORRAR"/>
                   </form>
                 </div>
               <% } %>
@@ -72,7 +100,15 @@
 <h3>Objetos</h3>
 <!--VALIDAR-->
 <% if (userpermit || superpermit) { %>
-  <a href="<%= newObjectPath %>">New Object</a>
+  <row>
+    <column>
+    <form action="<%= newObjectPath %>" method="get">
+      <input type="submit" class="button"  value="nuevo objeto" />
+    </form>
+    </column>
+  </row>
+ 
+  
 <% } %>
 <% if (!userObjectsList.length) { %>
   <row>
@@ -98,16 +134,20 @@
     <column>
       <info>
         <div>
-          <a href="<%= showObjectPath(object) %>">Ver</a>
+          <form action="<%= showObjectPath(object) %>" method="get">
+            <input type="submit" class="button"  value="Ver" />
+          </form>
         </div>
         <% if (userpermit || superpermit) { %>
           <div>
-            <a href="<%= editObjectPath(object) %>">Editar</a>
+            <form action="<%= editObjectPath(object) %>" method="get">
+              <input type="submit" class="button"  value="Editar" />
+            </form>
           </div>
           <div>
             <form action="<%= deleteObjectPath(object) %>" method="POST">
               <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Delete" />
+              <input type="submit" class="button" value="BORRAR" />
             </form>
           </div>
         <% } %>
@@ -117,5 +157,8 @@
       <% }) %>
 
 <% } %>
+
+
+
 
 <% }%>
