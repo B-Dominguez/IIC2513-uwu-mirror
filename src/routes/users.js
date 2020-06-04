@@ -144,10 +144,6 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
 
 
 router.get('users.new', '/new', async (ctx) => {
-  if (!usersession || usersession.usertype != 2) {
-    // Si no se ha iniciado sesión
-    return ctx.throw(401, 'Unauthorized');
-  }
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
