@@ -79,34 +79,38 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
       
       const user1Name = user1.name;
       const user2Name = user2.name;
-
-      objectsAll = await tradeOffer.getObjects();
-      // const objects1 = await ctx.orm.object.findAll({
-      //   where: {userId: usersession.id}});
       var objects1 = [];
       var objects2 = [];
-      // objects1.forEach ((object) => {
-      //   objects1Array.push(object.id)
-      // });
+      var objectsAll = null;
 
-      // objectsAll.forEach ((object) => {
-      //   if (!objects1Array.includes(object.id)) {
-      //     objects2Array,push(object.id)
-      //   }
-      // });
-      console.log("CCCCCCCCCCCCCc");
+      if (tradeOffer) {
+        objectsAll = await tradeOffer.getObjects();
       
-      console.log(objectsAll);
-      
+        // const objects1 = await ctx.orm.object.findAll({
+        //   where: {userId: usersession.id}});
+        // objects1.forEach ((object) => {
+        //   objects1Array.push(object.id)
+        // });
 
-      objectsAll.forEach((object) => {
-        if (object.userId != usersession.id) {
-          objects2.push(object)
-        }
-        else {
-          objects1.push(object)
-        }
-      });
+        // objectsAll.forEach ((object) => {
+        //   if (!objects1Array.includes(object.id)) {
+        //     objects2Array,push(object.id)
+        //   }
+        // });
+        console.log("CCCCCCCCCCCCCc");
+        
+        console.log(objectsAll);
+        
+
+        objectsAll.forEach((object) => {
+          if (object.userId != usersession.id) {
+            objects2.push(object)
+          }
+          else {
+            objects1.push(object)
+          }
+        });
+      };
 
       console.log(objects2);
       
@@ -203,10 +207,6 @@ router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) =
 });
 
 router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
-    if (!usersession) { // 401
-      // Si no se ha iniciado sesión
-      return ctx.throw(401, 'Unauthorized');
-    }
     const { trade } = ctx.state;
     try {
         const {id_user1, id_user2, status, date, user1_confirms,
@@ -218,7 +218,7 @@ router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
             await trade.update({status: 3});
           }
 
-        ctx.redirect(ctx.router.url('trades.list'));
+        ctx.redirect(ctx.router.url('trades.show', {id:trade.id}));
     } catch (validationError) {
         await ctx.render('trades/edit', {
             trade,

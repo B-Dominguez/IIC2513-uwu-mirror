@@ -154,6 +154,8 @@
       </column>
     </row>
 
+    <column>
+
 <% if (trade.status) { %>
 
   <h3>OFERTAS</h3>
@@ -222,6 +224,7 @@
                         <div class="text">
                           Esta oferta que enviaste aún no ha sido contestada
                         </div>
+                        
                         <div>
                           <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
                             <input type="hidden" name="_method" value="delete" />
@@ -271,12 +274,14 @@
                     </info>
                   </column>
                 </row>
+              </column>
     <% } %>
 
   <% } %>
 
 <% }%>
 
+<% if (objects1.length || objects2.length) { %>
 <div class="trade-box">
   <div class="box-user">
     <div class="owner">
@@ -310,3 +315,5 @@
     <% }) %>
   </div>
 </div>
+
+<% }%>
