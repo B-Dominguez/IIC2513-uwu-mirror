@@ -73,12 +73,18 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
 });
 
 router.post('offers.create', '/:tradeId', async (ctx) => {
+  console.log("Este es el body !!")
+  console.log(ctx.request.body);
   const offer = ctx.orm.offer.build(ctx.request.body);
   const tradeId = ctx.params.tradeId;
+  console.log(tradeId);
   try {
-    await offer.save({ fields: [, 'name', 'description','status','tradeId',
+    await offer.save({ fields: ['info', 'date','status','tradeId',
     'sender'] });
-        ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
+    ctx.request.body.items1.forEach((object) => {
+      offer.setObjects(object);
+    })
+    ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
   } catch (validationError) {
     await ctx.render('offers.new', {
       offer,
