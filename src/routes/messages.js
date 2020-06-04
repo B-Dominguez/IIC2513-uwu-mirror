@@ -27,6 +27,7 @@ router.get('messages.list', '/', loadUserSession, async (ctx) => {
       const messagesList = await ctx.orm.message.findAll();
       await ctx.render('messages/index', {
           messagesList,
+          searchPath: ctx.router.url('objects.searchForm'),
           editMessagePath: (message) => ctx.router.url('messages.edit', { id: message.id}),
           deleteMessagePath: (message) => ctx.router.url('messages.delete', { id: message.id}),
         });
@@ -45,6 +46,7 @@ router.get('messages.new', '/new/:tradeId', async(ctx) => {
     await ctx.render('messages/new', {
         message,
         tradeId,
+        searchPath: ctx.router.url('objects.searchForm'),
         submitMessagePath: ctx.router.url('messages.create', {tradeId: tradeId}),
     });
 });
@@ -58,6 +60,7 @@ router.post('messages.create', '/:tradeId', async (ctx) => {
     } catch (validationError) {
         await ctx.render('messages/new', {
             message,
+            searchPath: ctx.router.url('objects.searchForm'),
             errors: validationError.errors,
             submitMessagePath: ctx.router.url('messages.create', {id: tradeId}),
         })
@@ -68,6 +71,7 @@ router.get('messages.edit', '/:id/edit', loadMessage, async(ctx) => {
     const { message } = ctx.state;
     await ctx.render('messages/edit', {
         message,
+        searchPath: ctx.router.url('objects.searchForm'),
         submitMessagePath: ctx.router.url('messages.update', { id: message.id }),
     });
 });
@@ -81,6 +85,7 @@ router.patch('messages.update', '/:id', loadMessage, async (ctx) => {
     } catch (validationError) {
         await ctx.render('messages/edit', {
             message,
+            searchPath: ctx.router.url('objects.searchForm'),
             errors: validationError.errors,
             submitMessagePath: ctx.router.url('messages.update', {id: message.id }),
         });

@@ -18,19 +18,32 @@
         <a href="/">
         <img src="<%= assetPath('logo.png') %>" href="/"  width="250" alt="Logo" />
         </a>
+
         <div id="user-login">
+          <div class="search-container">
+            <form action="<%= searchPath %>" method="post">
+              <input type="text" placeholder="Busca productos para intercambiar..." name="searchCat" required>
+              <button type="submit" class="searchButton" value="Submit">
+                  :)
+              </button>
+            </form>
+          </div>
           <% if (currentUser) { %>
             <span class="welcome">Bienvenido <%= currentUser.name %></span>
-            <a>
             <form action="<%= destroySessionPath %>" method="post">
               <input type="hidden"  name="_method" value="delete" />
-              <input type="submit" class="button" value="Cerrar sesión" />
+              <input type="submit" class="button-tab" value="Cerrar sesión" />
             </form>
-            </a>
-            <a href="/users/<%= currentUser.id %>/show"class="button">Perfil</a>
-            <a href="/users/<%= currentUser.id %>/trades"class="button">Mis Intercambios</a>
+            <form action="/users/<%= currentUser.id %>/show" method="get">
+              <input type="submit" class="button-tab"  value="Mi Perfil" />
+            </form>
+            <form action="/users/<%= currentUser.id %>/trades" method="get">
+              <input type="submit" class="button-tab" value="Mis Intercambios" />
+            </form>
           <% } else { %>
-            <a href="<%= newSessionPath %>" class="button">Ingresar</a>
+            <form action="<%= newSessionPath %>" method="get">
+              <input type="submit" class="button-tab"  value="Ingresar" />
+            </form>
           <% } %>
 
         </div>

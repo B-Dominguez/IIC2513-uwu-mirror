@@ -88,6 +88,7 @@ router.post('offers.create', '/:tradeId', async (ctx) => {
   } catch (validationError) {
     await ctx.render('offers.new', {
       offer,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitOfferPath: ctx.router.url('offers.create', {id: tradeId}),
     });
@@ -99,6 +100,7 @@ router.get('offers.edit', '/:id/edit', loadOffer, async (ctx) => {
   const tradeId = ctx.params.tradeId;
   await ctx.render('offers/edit', {
     offer,
+    searchPath: ctx.router.url('objects.searchForm'),
     tradeId,
     submitOfferPath: ctx.router.url('offers.update', { id: offer.id }),
   });
@@ -117,6 +119,7 @@ router.patch('offers.update', '/:id', loadOffer, async (ctx) => {
   } catch (validationError) {
     await ctx.render('offers/edit', {
       offer,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitOfferPath: ctx.router.url('offers.update', { id: offer.id }),
     });

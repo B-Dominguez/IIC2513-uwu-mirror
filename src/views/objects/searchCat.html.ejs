@@ -1,14 +1,6 @@
 
-<div class="search-container">
-  <form action="<%= searchPath %>" method="post">
-    <input type="text" placeholder="Buscar..." name="searchCat">
-    <button type="submit" class="searchButton" value="Submit">
-      <i class="fa fa-search"></i>
-    </button>
-  </form>
-</div>
 <% if (!objectsList.length) { %>
-  <p>No results</p>
+  <h2>No se encontraron productos :(</h2>
 <% } else { %>
 
 
@@ -30,7 +22,9 @@
   <column>
     <info>
       <div>
-        <a href="<%= showObjectPath(object) %>">Ver</a>
+        <form action="<%= showObjectPath(object) %>" method="get">
+          <input type="submit" class="button"  value="Ver" />
+        </form>
       </div>
       <!-- <% if (currentUser) { %>
         <div>

@@ -12,6 +12,8 @@ router.get('evaluations.list', '/', async (ctx) => {
   const evaluationsList = await ctx.orm.evaluation.findAll();
   await ctx.render('evaluations/index', {
     evaluationsList,
+    searchPath: ctx.router.url('objects.searchForm'),
+
     newEvaluationPath: ctx.router.url('evaluations.new'),
     editEvaluationPath: (evaluation) => ctx.router.url('evaluations.edit', { id: evaluation.id }),
     deleteEvaluationPath: (evaluation) => ctx.router.url('evaluations.delete', { id: evaluation.id }),
@@ -21,6 +23,7 @@ router.get('evaluations.list', '/', async (ctx) => {
 
 router.get('evaluations.new', '/new', async (ctx) => {
   const evaluation = ctx.orm.evaluation.build();
+  searchPath: ctx.router.url('objects.searchForm'),
   await ctx.render('evaluations/new', {
     evaluation,
     submitEvaluationPath: ctx.router.url('evaluations.create'),
@@ -36,6 +39,7 @@ router.post('evaluations.create', '/', async (ctx) =>{
   } catch (validationError) {
     await ctx.render('evaluations.new', {
       evaluation,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitEvaluationPath: ctx.router.url('evaluations.create'),
     });
@@ -46,6 +50,7 @@ router.get('evaluations.edit', '/:id/edit', loadEvaluation, async (ctx) => {
   const { evaluation } = ctx.state;
   await ctx.render('evaluations/edit', {
     evaluation,
+    searchPath: ctx.router.url('objects.searchForm'),
     submitEvaluationPath: ctx.router.url('evaluations.update', {id: evaluation.id}),
   });
 });
@@ -59,6 +64,7 @@ router.patch('evaluations.update', '/:id', loadEvaluation, async (ctx) => {
   } catch (validationError) {
     await ctx.render('evaluations.edit', {
       evaluation,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitEvaluationPath: ctx.router.url('evaluations.update', {id: evaluation.id}),
     });

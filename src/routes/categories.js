@@ -29,6 +29,7 @@ router.get('categories.list', '/', loadUserSession, async (ctx) => {
     const categoriesList = await ctx.orm.category.findAll();
     await ctx.render('categories/index', {
       categoriesList,
+      searchPath: ctx.router.url('objects.searchForm'),
       newCategoryPath: ctx.router.url('categories.new'),
       editCategoryPath: (category) => ctx.router.url('categories.edit', { id: category.id }),
       deleteCategoryPath: (category) => ctx.router.url('categories.delete', { id: category.id }),
@@ -43,6 +44,7 @@ router.get('categories.new', '/new', async (ctx) => {
   const category = ctx.orm.category.build();
   await ctx.render('categories/new', {
     category,
+    searchPath: ctx.router.url('objects.searchForm'),
     submitCategoryPath: ctx.router.url('categories.create'),
   });
 });
@@ -64,6 +66,7 @@ router.get('categories.edit', '/:id/edit', loadCategory, async (ctx) => {
   const { category } = ctx.state;
   await ctx.render('categories/edit', {
     category,
+    searchPath: ctx.router.url('objects.searchForm'),
     submitCategoryPath: ctx.router.url('categories.update', { id: category.id }),
   });
 });
@@ -76,6 +79,7 @@ router.get('categories.show', '/:id/show', loadCategory, async (ctx) => {
         });
         await ctx.render('categories/show', {
           category,
+          searchPath: ctx.router.url('objects.searchForm'),
           categoryObjectsList,
           newObjectPath: ctx.router.url('objects.new'),
           editObjectPath: (object) => ctx.router.url('objects.edit',
@@ -97,6 +101,7 @@ router.patch('categories.update', '/:id', loadCategory, async (ctx) => {
   } catch (validationError) {
     await ctx.render('categories/edit', {
       category,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitCategoryPath: ctx.router.url('categories.update', { id: category.id }),
     });

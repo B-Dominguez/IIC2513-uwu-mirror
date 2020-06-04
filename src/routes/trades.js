@@ -26,6 +26,7 @@ router.get('trades.list', '/', loadUserSession, async (ctx) => {
       const tradesList = await ctx.orm.trade.findAll();
       await ctx.render('trades/index', {
           tradesList,
+          searchPath: ctx.router.url('objects.searchForm'),
           newTradePath: ctx.router.url('trades.new'),
           editTradePath: (trade) => ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: (trade) => ctx.router.url('trades.delete', { id: trade.id}),
@@ -87,6 +88,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
           user2Name,
           offerIsMine,
           message,
+          searchPath: ctx.router.url('objects.searchForm'),
           editTradePath: ctx.router.url('trades.edit', { id: trade.id}),
           deleteTradePath: ctx.router.url('trades.delete', { id: trade.id}),
           submitMessagePath: ctx.router.url('messages.create', {tradeId: trade.id}),
@@ -115,6 +117,7 @@ router.get('trades.new', '/new', async(ctx) => {
     await ctx.render('trades/new', {
         trade,
         submitTradePath: ctx.router.url('trades.create'),
+        searchPath: ctx.router.url('objects.searchForm'),
     });
 });
 
@@ -152,6 +155,7 @@ router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) =
       await ctx.render('trades/edit', {
           trade,
           submitTradePath: ctx.router.url('trades.update', { id: trade.id }),
+          searchPath: ctx.router.url('objects.searchForm'),
       });
     }
 });
@@ -178,6 +182,8 @@ router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
             trade,
             errors: validationError.errors,
             submitTradePath: ctx.router.url('trades.update', {id: trade.id }),
+            searchPath: ctx.router.url('objects.searchForm'),
+
         });
     }
 });
