@@ -29,6 +29,7 @@ router.get('offers.list', '/', loadUserSession, async (ctx) => {
       offersList,
       editOfferPath: (offer) => ctx.router.url('offers.edit', { id: offer.id }),
       deleteOfferPath: (offer) => ctx.router.url('offers.delete', { id: offer.id }),
+      searchPath: ctx.router.url('objects.searchForm'),
     });
   } else {
     return ctx.throw(401, 'Unauthorized');
@@ -69,6 +70,7 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
     user2ObjectsList,
     userId,
     submitOfferPath: ctx.router.url('offers.create', {tradeId: tradeId}),
+    searchPath: ctx.router.url('objects.searchForm'),
   });
 });
 
@@ -88,6 +90,7 @@ router.post('offers.create', '/:tradeId', async (ctx) => {
   } catch (validationError) {
     await ctx.render('offers.new', {
       offer,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitOfferPath: ctx.router.url('offers.create', {id: tradeId}),
     });
@@ -99,6 +102,7 @@ router.get('offers.edit', '/:id/edit', loadOffer, async (ctx) => {
   const tradeId = ctx.params.tradeId;
   await ctx.render('offers/edit', {
     offer,
+    searchPath: ctx.router.url('objects.searchForm'),
     tradeId,
     submitOfferPath: ctx.router.url('offers.update', { id: offer.id }),
   });
@@ -117,6 +121,7 @@ router.patch('offers.update', '/:id', loadOffer, async (ctx) => {
   } catch (validationError) {
     await ctx.render('offers/edit', {
       offer,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitOfferPath: ctx.router.url('offers.update', { id: offer.id }),
     });

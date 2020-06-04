@@ -2,7 +2,7 @@
     <text>No hay categoria con este id</>
   <% } else {%>
   
-    <h3> Objetos en <%= category.name %> </h3>
+    <h2> Objetos en <%= category.name %> </h2>
   <!--VALIDAR-->
 
   <% if (!categoryObjectsList.length) { %>
@@ -21,12 +21,11 @@
             <br>
             <a href="<%= showObjectPath(object) %>"><%= object.name %></a>
             <p><%= object.description %></p>
-            <p><%= object.status %></p>
-          </div>
-          <div class="category-box">
-            <br>
-            <br>
-            <p>Vendedor: XX</p>
+            <% if (object.status == "available") {%>
+            <p>Disponible !</p>
+            <% } else { %>
+            <p>No disponible :(</p>
+            <% } %>
           </div>
         </div>
       </a>
