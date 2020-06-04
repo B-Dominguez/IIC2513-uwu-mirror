@@ -37,7 +37,7 @@
           <form action="/"></form>
           <div class="item">
             <div class="selector">
-              <input type="checkbox" id="<%= object.id %>" name="items2" value="<%= object.id %>">
+              <input type="checkbox" id="<%= object.id %>" name="items1" value="<%= object.id %>">
             </div>
             <div class="item-img">
               <img src="https://via.placeholder.com/150" alt="F servidor :(">
@@ -59,7 +59,7 @@
           <input type="hidden" name="status" value=1 />
           <input type="hidden" name="sender" value="<%= userId %>"/>
         <% } %>
-        <!-- <input type="hidden" name="tradeId" value=<%= tradeId %> /> -->
+        <input type="hidden" name="tradeId" value=<%= tradeId %> />
         <div class="final-box">
           <div>
             <label for="info">Aquí puedes ingresar información adicional !</label>

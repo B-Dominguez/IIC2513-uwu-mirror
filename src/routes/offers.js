@@ -81,7 +81,10 @@ router.post('offers.create', '/:tradeId', async (ctx) => {
   try {
     await offer.save({ fields: ['info', 'date','status','tradeId',
     'sender'] });
-        ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
+    ctx.request.body.items1.forEach((object) => {
+      offer.setObjects(object);
+    })
+    ctx.redirect(ctx.router.url('trades.show', {id: tradeId}));
   } catch (validationError) {
     await ctx.render('offers.new', {
       offer,
