@@ -54,7 +54,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
         where: {tradeId: trade.id}});
       const tradeOffer = await ctx.orm.offer.findOne({
         where: {tradeId: trade.id},
-        order: [ [ 'createdAt', 'DESC' ]],
+        order: [ [ 'id', 'DESC' ]],  // id en vez de created_at pq es PK y no necesito hacer index para que sea eficiente
       });
       var user1or2 = null;
       var userId = null;

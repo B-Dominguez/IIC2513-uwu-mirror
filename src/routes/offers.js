@@ -53,9 +53,13 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
   const user2 = await ctx.orm.user.findOne({
     where: {id: id2}});
   const user1ObjectsList = await ctx.orm.object.findAll({
-    where: {userId: id1}});
+    where: {userId: id1},
+    order: [ [ 'id', 'DESC' ]],
+  });
   const user2ObjectsList = await ctx.orm.object.findAll({
-    where: {userId: id2}});
+    where: {userId: id2},
+    order: [ [ 'id', 'DESC' ]],
+  });
   await ctx.render('offers/new', {
     offer,
     tradeId,
