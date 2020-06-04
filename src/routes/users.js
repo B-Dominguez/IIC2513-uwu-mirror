@@ -199,6 +199,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
   } catch (validationError) {
     await ctx.render('users.edit', {
       user,
+      searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitUserPath: ctx.router.url('users.update', {id: user.id}),
     });

@@ -19,6 +19,7 @@ router.put('session.create', '/', async (ctx) => {
   }
   return ctx.render('session/new', {
     email,
+    searchPath: ctx.router.url('objects.searchForm'),
     createSessionPath: ctx.router.url('session.create'),
     error: 'Incorrect mail or password',
   });

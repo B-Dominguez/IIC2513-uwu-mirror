@@ -29,6 +29,7 @@ router.get('offers.list', '/', loadUserSession, async (ctx) => {
       offersList,
       editOfferPath: (offer) => ctx.router.url('offers.edit', { id: offer.id }),
       deleteOfferPath: (offer) => ctx.router.url('offers.delete', { id: offer.id }),
+      searchPath: ctx.router.url('objects.searchForm'),
     });
   } else {
     return ctx.throw(401, 'Unauthorized');
@@ -69,6 +70,7 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
     user2ObjectsList,
     userId,
     submitOfferPath: ctx.router.url('offers.create', {tradeId: tradeId}),
+    searchPath: ctx.router.url('objects.searchForm'),
   });
 });
 

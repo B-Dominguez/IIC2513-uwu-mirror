@@ -53,14 +53,21 @@
         <div> <p>Fecha de publicación: <%= object.createdAt.getDate() + "/" + object.createdAt.getMonth() + "/" + object.createdAt.getFullYear() %></p></div>
       </div>
       <div class="links-box">
-        <a class="button" href="<%= editObjectPath(object) %>">Editar</a>
+        <% if (userpermit || superpermit) { %>
+            <div>
+              <form action="<%= editObjectPath(object) %>" method="get">
+                <input type="submit" class="button"  value="Editar" />
+              </form>
+            </div>
+            <div>
+              <form action="<%= deleteObjectPath %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input type="submit" class="button" value="BORRAR" />
+              </form>
+            </div>
+          <% } %>
       </div>
-      <!-- <div>
-        <form action="<%= deleteObjectPath %>" method="POST">
-          <input type="hidden" name="_method" value="delete" />
-          <input type="submit" value="Eliminar Objeto" />
-        </form>
-      </div> -->
+
     </div>
   
   <% }%>

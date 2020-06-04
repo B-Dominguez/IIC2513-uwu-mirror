@@ -7,6 +7,8 @@ async function loadObject(ctx, next) {
   console.log(ctx.state.object);
   return next();
 }
+
+
 // async function loadObjectByCat(ctx, next) {
 //   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
 //   return next();
@@ -85,8 +87,15 @@ router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
 });
 
 
-router.get('objects.show', '/:id/show', loadObject, async (ctx) => {
+router.get('objects.show', '/:id/show', loadObject, loadUserSession, async (ctx) => {
   const { object } = ctx.state;
+  const usersession = ctx.state.usersession;
+  var userpermit = null;
+  var superpermit = null;
+  if (usersession) {
+    userpermit = usersession.usertype == 2 || usersession.id == object.userId;
+    superpermit = usersession.usertype == 2;
+  }
   const seller = await ctx.orm.user.findOne({
     where: {id: object.userId}});
   // console.log(seller);
@@ -94,6 +103,8 @@ router.get('objects.show', '/:id/show', loadObject, async (ctx) => {
   await ctx.render('objects/show', {
     object,
     seller,
+    userpermit,
+    superpermit,
     searchPath: ctx.router.url('objects.searchForm'),
     editObjectPath: (object) => ctx.router.url('objects.edit',
     { id: object.id}),
