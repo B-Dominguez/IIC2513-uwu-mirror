@@ -45,7 +45,11 @@
         <div>Vendido por <a href= <%= "/users/" + seller.id + "/show"%>> <%= seller.name %></a></div>
         <br>
         <div> <%= object.description %> </div>
-        <div> <%= object.status %> </div>
+        <% if (object.status == "available") {%>
+        <p>Disponible !</p>
+        <% } else { %>
+        <p>No disponible :(</p>
+        <% } %>
         <div> <p>Fecha de publicación: <%= object.createdAt.getDate() + "/" + object.createdAt.getMonth() + "/" + object.createdAt.getFullYear() %></p></div>
       </div>
       <div class="links-box">

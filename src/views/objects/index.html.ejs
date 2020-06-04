@@ -37,7 +37,11 @@
           <br>
           <a href="<%= showObjectPath(object) %>"><%= object.name %></a>
           <p><%= object.description %></p>
-          <p><%= object.status %></p>
+          <% if (object.status == "available") {%>
+          <p>Disponible !</p>
+          <% } else { %>
+          <p>No disponible :(</p>
+          <% } %>
         </div>
       </div>
     </a>
