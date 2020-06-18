@@ -1,6 +1,8 @@
 const KoaRouter = require('koa-router');
 const { Op } = require('sequelize');
 const router = new KoaRouter();
+const fs = require('fs');
+const fileStorage = require('../services/file-storage');
 
 async function loadObject(ctx, next) {
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
@@ -62,8 +64,10 @@ router.get('objects.new', '/new', async (ctx) => {
 
 router.post('objects.create', '/', async (ctx) => {
   const object = ctx.orm.object.build(ctx.request.body);
+  const { image1 } = ctx.request.files;
   try {
     await object.save({ fields: ['name', 'description','categoryId', 'status','userId'] });
+
     ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
     await ctx.render('objects.new', {
@@ -135,13 +139,32 @@ router.get('objects.searchCat', 'objects/:cat/searchCat', loadObject, async (ctx
 
 router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
+  console.log("hooooooooooooooooooooooooooooo");
+  console.log('ctx.request.files', ctx.request.files);
+  console.log('ctx.request.body', ctx.request.body);
+  console.log('ctx.request.files.image1', ctx.request.files.image1);
+  console.log(fileStorage);
+  await fileStorage.upload(ctx.request.files.image1, 'imgtest.jpg');
+  console.log("looooooooooooooooooooooooooooo");
+  const { image1 } = ctx.request.files.image1;
+  const { imagef } = ctx.request.files;
+  console.log(imagef);
   try {
+    console.log("Hay image?");
+    if (image1.size == 0) {
+      console.log("no hay image 1 \n");
+    } else {
+      console.log("Hay imagen \n");
+    }
+    console.log("deberias saber");
     const {  name, description,categoryId,status} = ctx.request.body;
     await object.update({ name, description,categoryId, status });
     ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
+    const categoriesList = await ctx.orm.category.findAll();
     await ctx.render('objects/edit', {
       object,
+      categoriesList,
       searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
       submitObjectPath: ctx.router.url('objects.update', { id: object.id }),

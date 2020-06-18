@@ -9,7 +9,7 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= submitObjectPath %>" method="post">
+  <form action="<%= submitObjectPath %>" enctype="multipart/form-data" method="post">
     <% if (!object.isNewRecord) { %>
       <input type="hidden" name="_method" value="patch" />
     <% } else {%>
@@ -30,16 +30,13 @@
         <option hidden="hidden" selected="selected" value= NULL> Selecciona</option>
         <% categoriesList.forEach((category) => { %>
           <option value= <%= category.id %>> <%= category.name %></option>
-            <% }) %>   
+            <% }) %>
       </select>
     </div>
     <div  class="field">
-      <label for="file">Agrega una imagen</label>
+      <label for="file">Imagen 1:</label>
       <input type="file" name="image1"  accept="image/*" value="<%= object.image1 %>" />
     </div>
-    <div  class="field">
-      <label for="file">Agrega una segunda imagen</label>
-      <input type="file" name="image2"  accept="image/*" value="<%= object.image2 %>" />
     </div>
     <div  class="field">
       <% if (object.isNewRecord) { %>
@@ -50,4 +47,3 @@
     </div>
   </form>
 </div>
-
