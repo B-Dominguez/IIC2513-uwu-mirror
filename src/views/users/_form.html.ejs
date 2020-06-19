@@ -9,7 +9,7 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= submitUserPath %>" method="post">
+  <form action="<%= submitUserPath %>" enctype="multipart/form-data" method="post">
     <% if (!user.isNewRecord) { %>
       <input type="hidden" name="_method" value="patch" />
       <input type="hidden" name="isactive" value=1 />
@@ -45,6 +45,13 @@
           <input class="input-field" type="text" name="address" placeholder="Dirección" required><%= user.address %></input>
         </div>
         <br>
+        <% if (!user.profileimg) { %>
+          <label for="file">Foto de perfil:</label>
+        <% } else {%>
+          <label for="file">Reemplazar foto de perfil:</label>
+        <% } %>
+        <input type="file" name="profileimg"  accept="image/*" value="<%= user.profileimg %>" />
+
         <% if (user.isNewRecord) { %>
           <button class="submit-button" type="submit" name="create" value="Registrarse" />Registrarse</button>
         <% } else { %>

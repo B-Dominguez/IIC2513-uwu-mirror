@@ -1,6 +1,8 @@
 const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 const { Op } = require('sequelize');
+const fs = require('fs');
+const fileStorage = require('../services/file-storage');
 
 async function loadUser(ctx, next) {
   // Guardamos resultado (user) en state
@@ -163,9 +165,20 @@ router.get('users.new', '/new', async (ctx) => {
 
 router.post('users.create', '/', async (ctx) =>{
   const user = ctx.orm.user.build(ctx.request.body);
+  const size = ctx.request.files.profileimg.size;
+  var profileimg = null;
   try {
     await user.save({ fields: ['username',  'password', 'name', 'email',
     'usertype', 'phone', 'address', 'isactive', 'rating', 'token']});
+    if (size == 0) {
+      console.log("No hay image\n");
+    } else {
+      console.log("Hay imagen\n");
+      profileimg =  "imguser"+user.id+".jpg";
+      ctx.request.files.profileimg.name = profileimg;
+      await fileStorage.upload(ctx.request.files.profileimg);
+      await object.update({ profileimg });
+    }
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users.new', {
@@ -196,11 +209,21 @@ router.get('users.edit', '/:id/edit', loadUser, loadUserSession, async (ctx) => 
 
 router.patch('users.update', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
+  const size = ctx.request.files.profileimg.size;
+  var profileimg = user.profileimg;
   try {
     const {usertype, isactive, token, username, password, name, email, phone, address, rating} =
     ctx.request.body;
+    if (size == 0) {
+      console.log("No hay image\n");
+    } else {
+      console.log("Hay imagen\n");
+      profileimg =  "imguser"+user.id+".jpg";
+      ctx.request.files.profileimg.name = profileimg;
+      await fileStorage.upload(ctx.request.files.profileimg);
+    }
     await user.update({usertype, isactive, token, username, password, name, email, phone, address,
-      rating});
+      rating, profileimg});
     ctx.redirect(ctx.router.url('users.myprofile'));
   } catch (validationError) {
     await ctx.render('users.edit', {

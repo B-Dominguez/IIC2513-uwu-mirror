@@ -5,7 +5,11 @@
   <row>
     <column>
       <info>
-        <img src="http://placehold.it/150x150">
+        <% if (user.profileimg) { %>
+          <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=user.profileimg%>">
+        <% } else { %>
+          <img src="http://placehold.it/150x150">
+        <% } %>
       </info>
     </column>
     <column>
