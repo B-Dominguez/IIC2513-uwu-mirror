@@ -22,12 +22,13 @@
         <div id="user-login">
           <div class="search-container">
             <form action="<%= searchPath %>" method="post">
-              <input type="text" placeholder="Busca productos para intercambiar..." name="searchCat" required>
+              <div id="react-app"></div>
               <button type="submit" class="searchButton" value="Submit">
                   :)
               </button>
             </form>
           </div>
+
           <% if (currentUser) { %>
             <span class="welcome">Bienvenido <%= currentUser.name %></span>
             <form action="<%= destroySessionPath %>" method="post">

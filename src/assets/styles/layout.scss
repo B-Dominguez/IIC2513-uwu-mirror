@@ -9,6 +9,8 @@ html, body {
   border: 1px solid #0076CE;
   background-color: #0076CE;
   position: relative;
+  z-index: 0;
+  overflow: visible;
 }
 
 .button-tab {
@@ -62,17 +64,24 @@ img{
 .w3-sidebar{
   height:100%;
   width:100px;
-  border: 4px white;
-  background-color:rgb(36, 36, 36);
+  border: 4px rgb(36, 36, 36) solid;
+  background-color:#CCC;
   z-index:1;
-  overflow:auto;
+  margin-left: 25px;
+  margin-top: 10px;
+  overflow:scroll;
   position: fixed;
+  text-align: center;
 
 }
-.search-container {
+.busqueda {
   float: left;
   justify-content: center;
   margin-left: 100px;
+  width: 600px;
+  height: 50px;
+  position: relative;
+  z-index: 1;
   }
 
 input {
@@ -85,17 +94,19 @@ input {
 }
 
 .searchButton {
-  float: right;
+  position: absolute;
+  right: 386px;
   padding: 0px 20px 20px 0px;
-  margin-top: 8px;
-  height: 62px;
-  width: 62px;
+  margin-top: 1px;
+  height: 71px;
+  width: 70px;
   text-align: right;
-  margin-right: 45px;
+  margin-right: 300px;
   background: #ddd;
   font-size: 45px;
   border: none;
   color: white;
+
   cursor: pointer;
 }
 
