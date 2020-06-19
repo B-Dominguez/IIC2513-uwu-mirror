@@ -33,18 +33,18 @@
         <div class="layoutButtonsContainer">
           <% if (currentUser) { %>
             <span class="welcome">Bienvenido <%= currentUser.name %></span>
-            <div class="button">
+            <div class="buttonNavBar">
               <form action="<%= destroySessionPath %>" method="post">
                 <input type="hidden"  name="_method" value="delete" />
                 <input type="submit" class="button-tab" value="Cerrar sesión" />
               </form>
             </div>
-            <div class="button">
+            <div class="buttonNavBar">
               <form action="/users/<%= currentUser.id %>/show" method="get">
                 <input type="submit" class="button-tab"  value="Mi perfil" />
               </form>
             </div>
-            <div class="button">
+            <div class="buttonNavBar">
               <form action="/users/<%= currentUser.id %>/trades" method="get">
                 <input type="submit" class="button-tab" value="Mis Intercambios" />
               </form>
