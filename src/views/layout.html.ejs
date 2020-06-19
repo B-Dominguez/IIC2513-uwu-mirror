@@ -10,47 +10,54 @@
   </head>
 
   <body>
-
     <header>
-      <!-- <a href="<%= tradesPath %>"><h1>X-CHANGE</h1></a> -->
-
-      <div class="tab">
-        <a href="/">
-        <img src="<%= assetPath('logo.png') %>" href="/"  width="250" alt="Logo" />
-        </a>
-
-        <div id="user-login">
-          <div class="search-container">
-            <form action="<%= searchPath %>" method="post">
-              <input type="text" placeholder="Busca productos para intercambiar..." name="searchCat" required>
-              <button type="submit" class="searchButton" value="Submit">
-                  :)
-              </button>
-            </form>
-          </div>
-          <% if (currentUser) { %>
-            <span class="welcome">Bienvenido <%= currentUser.name %></span>
-            <form action="<%= destroySessionPath %>" method="post">
-              <input type="hidden"  name="_method" value="delete" />
-              <input type="submit" class="button-tab" value="Cerrar sesión" />
-            </form>
-            <form action="/users/<%= currentUser.id %>/show" method="get">
-              <input type="submit" class="button-tab"  value="Mi Perfil" />
-            </form>
-            <form action="/users/<%= currentUser.id %>/trades" method="get">
-              <input type="submit" class="button-tab" value="Mis Intercambios" />
-            </form>
-          <% } else { %>
-            <form action="<%= newSessionPath %>" method="get">
-              <input type="submit" class="button-tab"  value="Ingresar" />
-            </form>
-          <% } %>
-
+      <div class="layoutContainer">
+        <div class="logoContainer">
+          <a href="/">
+            <img src="<%= assetPath('logo.png') %>" href="/"  width="250" alt="Logo" />
+          </a>
         </div>
 
-
-    </div>
-
+        <div class="search-container">
+          <div class="reactSearch">
+            <form action="<%= searchPath %>" method="post">
+              <div id="react-app"></div>
+            
+          </div>
+          <div class="seactButtonContainer">
+            <button type="submit" class="searchButton" value="Submit"> :)</button>
+          </div>
+        </form>
+        </div>
+        
+        <div class="layoutButtonsContainer">
+          <% if (currentUser) { %>
+            <span class="welcome">Bienvenido <%= currentUser.name %></span>
+            <div class="button">
+              <form action="<%= destroySessionPath %>" method="post">
+                <input type="hidden"  name="_method" value="delete" />
+                <input type="submit" class="button-tab" value="Cerrar sesión" />
+              </form>
+            </div>
+            <div class="button">
+              <form action="/users/<%= currentUser.id %>/show" method="get">
+                <input type="submit" class="button-tab"  value="Mi perfil" />
+              </form>
+            </div>
+            <div class="button">
+              <form action="/users/<%= currentUser.id %>/trades" method="get">
+                <input type="submit" class="button-tab" value="Mis Intercambios" />
+              </form>
+            </div>
+          <% } else { %>
+            <div class="button-single">
+              <form action="<%= newSessionPath %>" method="get">
+                <input type="submit" class="button-tab"  value="Ingresar" />
+              </form>
+            </div>
+          <% } %>
+        </div>
+      </div>
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>

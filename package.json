@@ -15,6 +15,7 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
@@ -38,6 +39,7 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "bcrypt": "^4.0.1",
     "core-js": "^3.6.4",
     "faker": "^4.1.0",
@@ -59,6 +61,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.13.0",
     "react-hot-loader": "^4.12.16",
+    "react-select": "^3.1.0",
     "sequelize": "^5.21.5",
     "sequelize-cli": "^5.5.1"
   },
