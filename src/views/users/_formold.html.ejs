@@ -50,6 +50,15 @@
       <label for="rating">rating</label>
       <textarea type="number" name="rating"><%= user.rating %></textarea>
     </div>
+  </div>
+
+  <% if (!user.profileimg) { %>
+    <label for="file">Foto de perfil:</label>
+  <% } else {%>
+    <label for="file">Reemplazar foto de perfil:</label>
+  <% } %>
+  <input type="file" name="profileimg"  accept="image/*" value="<%= user.profileimg %>" />
+
     <div  class="field">
       <% if (user.isNewRecord) { %>
         <input type="submit" name="create" value="Create" />

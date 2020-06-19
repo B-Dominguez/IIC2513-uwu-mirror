@@ -56,7 +56,7 @@ app.use(async(ctx, next) => {
       });
     } else {
       //other_error jade
-      console.log("Other error");
+      console.log("Other error", ctx.status, err.status);
     }
   }
 })
