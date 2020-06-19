@@ -16,23 +16,19 @@ class FileStorage {
     }
   }
 
-  upload(fileData, remotePath) {
+  upload(fileData) {
     return new Promise((resolve, reject) => {
       if (!this.client) {
-        console.log('00000001');
         reject(this.noClientError);
       }
-      console.log('1111111111');
-      const writeStream = this.client.upload({ container: CONTAINER_NAME, remotePath });
-      console.log('11222222222');
+      const remote = fileData.name;
+      console.log("remote ", fileData.name);
+      const writeStream = this.client.upload({ container: CONTAINER_NAME, remote, ExtraArgs:{
+ACL: 'public-read'}, ACL:'public-read'}); // No funciona public read
       writeStream.on('error', reject);
-      console.log('111133333333333');
       writeStream.on('success', resolve);
-      console.log('111144444444');
       const fileStream = fs.createReadStream(fileData.path);
-      console.log('111115555555555555');
       fileStream.pipe(writeStream);
-      console.log('11111666666666666');
     });
   }
 

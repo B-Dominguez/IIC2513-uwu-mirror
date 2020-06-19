@@ -16,15 +16,19 @@
         </a>
       <% }) %>
   <% } %>
-  
+
   </div>
-    
+
   <div class="item-list">
   <% objectsList.forEach((object) => { %>
     <a href="<%= showObjectPath(object) %>">
       <div class="item-box">
         <div class="img-box">
-          <img src="http://placehold.it/150x150">
+          <% if (object.image1) { %>
+            <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
+          <% } else { %>
+            <img src="http://placehold.it/150x150">
+          <% } %>
         </div>
         <div class="description-box">
           <br>
@@ -41,4 +45,3 @@
   <% }) %>
   </div>
 <% } %>
-
