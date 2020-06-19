@@ -27,7 +27,23 @@ html, body {
   text-decoration: none;
   width: 100%;
 }
+
 .button {
+  background-color: inherit;
+  font-family: Helvetica;
+  float: right;
+  border: none;
+  outline: none;
+  color:black;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  text-decoration: none;
+  width: 200px;
+}
+
+.buttonNavBar {
   background-color: inherit;
   font-family: Helvetica;
   color:black;
