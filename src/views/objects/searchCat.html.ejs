@@ -9,7 +9,11 @@
   <row>
   <column>
     <info>
-      <img src="http://placehold.it/150x150">
+      <% if (object.image1) { %>
+        <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
+      <% } else { %>
+        <img src="http://placehold.it/150x150">
+      <% } %>
     </info>
   </column>
   <column>

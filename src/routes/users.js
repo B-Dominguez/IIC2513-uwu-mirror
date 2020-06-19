@@ -67,7 +67,8 @@ router.get('users.show', '/:id/show', loadUser, loadUserSession, async (ctx) => 
   });
     const userObjectsList = await ctx.orm.object.findAll({
       where: {userId: user.id},
-      order: [ [ 'id', 'DESC' ]]});
+      order: [[ 'id', 'DESC' ]],
+    });
       await ctx.render('users/show', {
         user,
         myId,

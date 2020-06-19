@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING ||'available',
     image1: DataTypes.STRING,
     image2: DataTypes.STRING,
+    image3: DataTypes.STRING,
     userId: DataTypes.INTEGER,
   }, {});
 
