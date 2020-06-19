@@ -8,44 +8,60 @@ html, body {
   height: 125px;
   border: 1px solid #0076CE;
   background-color: #0076CE;
+  overflow: visible;
   position: relative;
   z-index: 0;
-  overflow: visible;
+
 }
 
 .button-tab {
   background-color: inherit;
   font-family: Helvetica;
-  float: right;
   border: none;
   outline: none;
   color:white;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 14px 16px;
+  padding-top: 5px;
   transition: 0.3s;
   text-decoration: none;
-  width: 200px;
+  width: 100%;
 }
 .button {
   background-color: inherit;
   font-family: Helvetica;
-  float: right;
-  border: none;
-  outline: none;
   color:black;
   text-transform: uppercase;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
   text-decoration: none;
-  width: 200px;
+  width: 25%;
+}
+.button-single {
+  background-color: inherit;
+  font-family: Helvetica;
+  color:black;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  text-decoration: none;
+  width: 100%;
+}
+
+.button-single:hover {
+  background-color: #8BBEE8;
 }
 
 .welcome{
+  margin-top: 25px;
+  margin-left: 10px;
   font-family: Helvetica;
   color: #ffffff;
+  width: 20%;
 }
+
 .button:hover {
   background-color: #8BBEE8;
 }
@@ -94,22 +110,40 @@ input {
 }
 
 .searchButton {
-  position: absolute;
-  right: 386px;
   padding: 0px 20px 20px 0px;
-  margin-top: 1px;
-  height: 71px;
-  width: 70px;
-  text-align: right;
-  margin-right: 300px;
+  margin-left: 5px;
+  text-align: center;
   background: #ddd;
   font-size: 45px;
   border: none;
   color: white;
+  border-radius: 6px;
 
   cursor: pointer;
 }
 
 .searchButton:hover {
   background: #8BBEE8;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.searchButtonContainer {
+  height: 100px;
+  width: 100px;
+}
+
+.layoutContainer {
+  display: flex;
+  background-color: #0076CE;
+  overflow: visible;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.layoutButtonsContainer {
+  display: flex;
 }
