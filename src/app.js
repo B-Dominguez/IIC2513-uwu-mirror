@@ -40,6 +40,26 @@ app.use((ctx, next) => {
   return next();
 });
 
+app.use(async(ctx, next) => {
+  try {
+    await next()
+    const status = ctx.status || 404
+    if (status === 404) {
+        ctx.throw(404)
+    }
+  } catch (err) {
+    ctx.status = err.status || 500
+    if (ctx.status === 401) {
+      //Your 404.jade
+      await ctx.render('401', {
+        searchPath: ctx.router.url('objects.searchForm'),
+      });
+    } else {
+      //other_error jade
+      console.log("Other error");
+    }
+  }
+})
 // log requests
 app.use(koaLogger());
 

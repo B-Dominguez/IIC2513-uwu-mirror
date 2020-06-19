@@ -107,6 +107,12 @@ info {
   font-size: 23px;
 }
 
+.category-box{
+  background-color: #CCC;
+  padding-bottom: 5px;
+
+}
+
 
 .item-box-show {
   display: flex;
@@ -120,6 +126,10 @@ info {
   border-radius: 15px;
 }
 
+.item-list{
+  position: relative;
+  z-index: 0;
+}
 .item-title {
   font-size: 25px;
   margin-bottom: 10px;
@@ -297,14 +307,17 @@ info-chat {
 .w3-sidebar{
   height:100%;
   width:100px;
-  border: 4px white;
-  background-color:rgb(36, 36, 36);
-  position:fixed!important;
+  border: 10px black;
   z-index:1;
   overflow:auto;
+  margin-bottom: 10px;;
 }
 .nuevo_form{
   margin-left: 600px;
   align-self: center;
   text-align: justify;
+}
+
+.category-box:hover{
+  background-color: #0076CE;
 }

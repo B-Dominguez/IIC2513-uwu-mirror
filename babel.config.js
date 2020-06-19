@@ -17,6 +17,12 @@ module.exports = function babelConfig(api) {
 
   const plugins = [
     'react-hot-loader/babel',
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
   ];
   return { presets, plugins };
 };

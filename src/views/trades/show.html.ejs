@@ -224,7 +224,7 @@
                         <div class="text">
                           Esta oferta que enviaste aún no ha sido contestada
                         </div>
-                        
+
                         <div>
                           <form action="<%= deleteOfferPath(tradeOffer) %>" method="post">
                             <input type="hidden" name="_method" value="delete" />
@@ -290,7 +290,11 @@
     <% objects1.forEach((object) => { %>
     <div class="item">
       <div class="item-img">
-        <img src="https://via.placeholder.com/150" alt="F servidor :(">
+        <% if (object.image1) { %>
+          <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
+        <% } else { %>
+          <img src="http://placehold.it/150x150">
+        <% } %>
       </div>
       <div class="item-name">
         <p><%= object.name %></p>
@@ -305,9 +309,11 @@
     <% objects2.forEach((object) => { %>
     <form action="/"></form>
     <div class="item">
-      <div class="item-img">
-        <img src="https://via.placeholder.com/150" alt="F servidor :(">
-      </div>
+      <% if (object.image1) { %>
+        <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
+      <% } else { %>
+        <img src="http://placehold.it/150x150">
+      <% } %>
       <div class="item-name">
         <p><%= object.name %></p>
       </div>
