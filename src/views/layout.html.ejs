@@ -14,7 +14,7 @@
       <div class="layoutContainer">
         <div class="logoContainer">
           <a href="/">
-            <img src="<%= assetPath('logo.png') %>" href="/"  width="250" alt="Logo" />
+            <img src="<%= assetPath('logo.png') %>" href="/" alt="Logo" />
           </a>
         </div>
 
@@ -22,14 +22,13 @@
           <div class="reactSearch">
             <form action="<%= searchPath %>" method="post">
               <div id="react-app"></div>
-            
+            </form>
           </div>
           <div class="seactButtonContainer">
             <button type="submit" class="searchButton" value="Submit"> :)</button>
           </div>
-        </form>
         </div>
-        
+
         <div class="layoutButtonsContainer">
           <% if (currentUser) { %>
             <span class="welcome">Bienvenido <%= currentUser.name %></span>
