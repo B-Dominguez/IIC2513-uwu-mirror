@@ -18,7 +18,7 @@ fetch('https://grupo-uwu.herokuapp.com/objects')
       })
     })
   });
-  
+
 const filterObjects = (inputValue) => {
   return objectOptions.filter(i =>
     i.label.toLowerCase().includes(inputValue.toLowerCase())
