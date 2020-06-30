@@ -1,9 +1,7 @@
-'use strict';
-
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface, Sequelize) =>
     // Product belongsToMany Tag
-    return queryInterface.createTable(
+    queryInterface.createTable(
       'UserTrade',
       {
         createdAt: {
@@ -22,11 +20,8 @@ module.exports = {
           type: Sequelize.INTEGER,
           primaryKey: true,
         },
-      }
-    );
-  },
+      },
+    ),
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserTrade');
-  },
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('UserTrade'),
 };

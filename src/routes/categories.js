@@ -7,7 +7,6 @@ async function loadCategory(ctx, next) {
   return next();
 }
 
-
 async function loadUserSession(ctx, next) {
   // Guardamos resultado (user) en state
   if (ctx.session.token == undefined) {
@@ -15,17 +14,16 @@ async function loadUserSession(ctx, next) {
     return next();
   }
   ctx.state.usersession = await ctx.orm.user.findOne({
-    where: {token: ctx.session.token}
+    where: { token: ctx.session.token },
 
   });
   // Despues pasa al sgte middleware
   return next();
 }
 
-
 router.get('categories.list', '/', loadUserSession, async (ctx) => {
-  const usersession = ctx.state.usersession;
-    if (usersession && usersession.usertype == 2) {
+  const { usersession } = ctx.state;
+  if (usersession && usersession.usertype == 2) {
     const categoriesList = await ctx.orm.category.findAll();
     await ctx.render('categories/index', {
       categoriesList,
@@ -33,7 +31,7 @@ router.get('categories.list', '/', loadUserSession, async (ctx) => {
       newCategoryPath: ctx.router.url('categories.new'),
       editCategoryPath: (category) => ctx.router.url('categories.edit', { id: category.id }),
       deleteCategoryPath: (category) => ctx.router.url('categories.delete', { id: category.id }),
-      showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
+      showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id }),
     });
   } else {
     ctx.redirect('/');
@@ -71,32 +69,29 @@ router.get('categories.edit', '/:id/edit', loadCategory, async (ctx) => {
   });
 });
 
-
 router.get('categories.show', '/:id/show', loadCategory, async (ctx) => {
-    const { category } = ctx.state;
-    const categoryObjectsList = await ctx.orm.object.findAll({
-        where: {categoryId: category.id}
-        });
-        await ctx.render('categories/show', {
-          category,
-          searchPath: ctx.router.url('objects.searchForm'),
-          categoryObjectsList,
-          newObjectPath: ctx.router.url('objects.new'),
-          editObjectPath: (object) => ctx.router.url('objects.edit',
-          { id: object.id}),
-          deleteObjectPath: (object) => ctx.router.url('objects.delete',
-          { id: object.id}),
-          showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id}),
+  const { category } = ctx.state;
+  const categoryObjectsList = await ctx.orm.object.findAll({
+    where: { categoryId: category.id },
+  });
+  await ctx.render('categories/show', {
+    category,
+    searchPath: ctx.router.url('objects.searchForm'),
+    categoryObjectsList,
+    newObjectPath: ctx.router.url('objects.new'),
+    editObjectPath: (object) => ctx.router.url('objects.edit',
+      { id: object.id }),
+    deleteObjectPath: (object) => ctx.router.url('objects.delete',
+      { id: object.id }),
+    showObjectPath: (object) => ctx.router.url('objects.show', { id: object.id }),
 
-        });
-      });
-
-
+  });
+});
 
 router.patch('categories.update', '/:id', loadCategory, async (ctx) => {
   const { category } = ctx.state;
   try {
-    const {  name} = ctx.request.body;
+    const { name } = ctx.request.body;
     await category.update({ name });
   } catch (validationError) {
     await ctx.render('categories/edit', {

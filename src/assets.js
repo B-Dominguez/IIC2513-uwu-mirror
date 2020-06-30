@@ -8,7 +8,6 @@ try {
   // noop
 }
 
-
 module.exports = function assetsBuilder(developmentMode) {
   function assetPath(path) {
     return (!developmentMode && manifest && manifest[path]) || `/assets/${path}`;

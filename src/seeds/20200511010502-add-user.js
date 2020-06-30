@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const faker = require('faker');
 const crypto = require('crypto');
 
-var id = crypto.randomBytes(20).toString('hex');
+const id = crypto.randomBytes(20).toString('hex');
 
 const PASSWORD_SALT = 10;
 
@@ -10,7 +10,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     const usersData = [
       {
-        id:1,
+        id: 1,
         username: faker.internet.userName(),
         name: faker.name.findName(),
         phone: 123456789,
@@ -25,7 +25,7 @@ module.exports = {
         token: crypto.randomBytes(20).toString('hex'),
       },
       {
-        id:2,
+        id: 2,
         username: faker.internet.userName(),
         name: faker.name.findName(),
         phone: 123456789,
@@ -40,7 +40,7 @@ module.exports = {
         token: crypto.randomBytes(20).toString('hex'),
       },
       {
-        id:3,
+        id: 3,
         username: faker.internet.userName(),
         name: faker.name.findName(),
         phone: 123456789,
@@ -55,7 +55,7 @@ module.exports = {
         token: crypto.randomBytes(20).toString('hex'),
       },
       {
-        id:4,
+        id: 4,
         username: faker.internet.userName(),
         name: faker.name.findName(),
         phone: 123456789,
@@ -70,7 +70,7 @@ module.exports = {
         token: crypto.randomBytes(20).toString('hex'),
       },
       {
-        id:5,
+        id: 5,
         username: faker.internet.userName(),
         name: faker.name.findName(),
         phone: 123456789,
