@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   trade.associate = function associate(models) {
     trade.hasMany(models.message);
     trade.hasMany(models.offer);
-    trade.belongsToMany(models.user,{ through: 'UserTrade' })
+    trade.belongsToMany(models.user, { through: 'UserTrade' });
   };
 
   return trade;

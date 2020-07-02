@@ -11,18 +11,18 @@ async function buildPasswordHash(instance) {
 }
 
 async function buildToken(instance) {
-  console.log("CREANDO TOKEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN")
+  console.log('CREANDO TOKEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN');
   if (instance.changed('token')) {
     const token = crypto.randomBytes(20).toString('hex');
-    instance.set('token', token)
+    instance.set('token', token);
   }
 }
 
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
-    username:{
+    username: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
     },
     name: DataTypes.STRING,
     phone: DataTypes.STRING,
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     rating: DataTypes.FLOAT,
-    usertype: DataTypes.INTEGER,  // 0 usuario, 1 admin, 2 superadmin
+    usertype: DataTypes.INTEGER, // 0 usuario, 1 admin, 2 superadmin
     isactive: DataTypes.INTEGER, // 0 inactive, 1 active, ...?
     token: DataTypes.STRING,
   }, {});
@@ -42,13 +42,13 @@ module.exports = (sequelize, DataTypes) => {
   user.associate = function associate(models) {
     user.hasMany(models.evaluation);
     user.hasMany(models.object);
-    user.belongsToMany(models.trade,{ through: 'UserTrade' })
+    user.belongsToMany(models.trade, { through: 'UserTrade' });
     // associations can be defined here. This method receives a models parameter.
   };
 
   user.prototype.checkPassword = function checkPassword(password) {
     return bcrypt.compare(password, this.password);
-  }
+  };
 
   return user;
 };

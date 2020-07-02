@@ -49,7 +49,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      
+
     ];
 
     return queryInterface.bulkInsert('categories', categoriesData);
