@@ -1,13 +1,13 @@
 const spacePath = "https://guwuappspace1.sfo2.digitaloceanspaces.com/";
 module.exports = (sequelize, DataTypes) => {
   const object = sequelize.define('object', {
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
+    name: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: false },
     status: DataTypes.STRING || 'available',
     image1: DataTypes.STRING,
     image2: DataTypes.STRING,
     image3: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
+    userId: { type: DataTypes.INTEGER, allowNull: false },
   }, {});
 
   object.associate = function associate(models) {

@@ -1,10 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   const offer = sequelize.define('offer', {
-    status: DataTypes.INTEGER, // 0=rejected ; 1 = pending ; 2 = accepted
-    date: DataTypes.DATE,
-    info: DataTypes.STRING,
-    tradeId: DataTypes.INTEGER,
-    sender: DataTypes.INTEGER, // sin associate porque no necesitamos cascade
+    status: { type: DataTypes.INTEGER, allowNull: false },
+    // 0=rejected ; 1 = pending ; 2 = accepted
+    date: { type: DataTypes.DATE, allowNull: false },
+    info: { type: DataTypes.STRING, allowNull: false },
+    tradeId: { type: DataTypes.INTEGER, allowNull: false },
+    sender: { type: DataTypes.INTEGER, allowNull: false },
+    // sin associate porque no necesitamos cascade
     // es un userId
   }, {});
 
