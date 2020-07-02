@@ -36,7 +36,7 @@ h2{
   display: flex;
   justify-content: space-between;
   max-width: 60%;
-  margin-left: 20%;
+  margin-left: 5%;
 }
 
 .box-user{
@@ -46,8 +46,8 @@ h2{
 
 .item{
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
 }
 
@@ -57,11 +57,23 @@ h2{
 
 .owner {
   text-align: center;
+  margin-bottom: 25px;
+}
+
+.selector {
+  flex: 1;
+  max-width: 400px;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  flex: 3;
 }
 
 .selector input[type=checkbox] {
-  transform: scale(2);
-  margin-right: 30px;
+  transform: scale(1);
+  // margin-right: 10px;
 }
 
 .final-box {
@@ -75,11 +87,14 @@ h2{
 
 .info-input {
   width: 550px;
+  border: lightgray solid;
+  border-radius: 5px;
 }
 
 .aux-box {
   display: flex;
+  flex-direction: column;
   margin-top: 20px;
-  justify-content: space-between;
-  padding-right: 100px;
+  justify-content: center;
+  align-items: center;
 }
