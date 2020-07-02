@@ -4,7 +4,7 @@ import AsyncSelect from 'react-select/async';
 
 var objectOptions=[];
 
-fetch('https://localhost:3000/objects')
+fetch('http://localhost:3000/objects')
 	.then(function(response) {
   	return response.json();
   })
