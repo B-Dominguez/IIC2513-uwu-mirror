@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const evaluation = sequelize.define('evaluation', {
-    rate: DataTypes.FLOAT,
-    description: DataTypes.TEXT,
+    rate: { type: DataTypes.FLOAT, allowNull: false },
+    description:{ type: DataTypes.TEXT, allowNull: false },
   }, {});
 
   evaluation.associate = function associate(models) {

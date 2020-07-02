@@ -18,16 +18,16 @@
     <% } %>
     <div  class="field">
       <label for="name">Nombre</label>
-      <input type="text" name="name" value="<%= object.name %>" />
+      <input type="text" name="name" value="<%= object.name %>" required />
     </div>
     <div  class="field">
       <label for="description">Descripción</label>
-      <textarea type="text" name="description"><%= object.description %></textarea>
+      <textarea type="text" name="description" required><%= object.description %></textarea>
     </div>
     <div  class="field">
       <label for="category">Categoria</label>
       <select name="categoryId" value= "<%= object.categoryId %>">
-        <option hidden="hidden" selected="selected" value= NULL> Selecciona</option>
+        <option hidden="hidden" selected="selected" value= NULL required > Selecciona</option>
         <% categoriesList.forEach((category) => { %>
           <option value= <%= category.id %>> <%= category.name %></option>
             <% }) %>

@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const message = sequelize.define('message', {
-    content: DataTypes.TEXT,
+    content: { type: DataTypes.TEXT, allowNull: false },
     date: DataTypes.DATE,
-    sender: DataTypes.INTEGER,
-    tradeId: DataTypes.INTEGER,
+    sender: { type: DataTypes.INTEGER, allowNull: false },
+    tradeId: { type: DataTypes.INTEGER, allowNull: false },
   }, {});
 
   message.associate = function associate(models) {

@@ -14,8 +14,8 @@
       <input type="hidden" name="_method" value="patch" />
     <% } %>
     <div  class="field">
-      <label for="rate">Rate</label>
-      <input type="number" name="rate" value="<%= evaluation.rate %>" />
+      <label for="rate" required>Rate</label>
+      <input type="number" name="rate" value="<%= evaluation.rate %>" required />
     </div>
     <div  class="field">
       <label for="description">Description</label>
