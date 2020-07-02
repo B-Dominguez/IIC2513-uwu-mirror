@@ -11,17 +11,16 @@ const offers = require('./routes/offers');
 const session = require('./routes/session');
 const categories = require('./routes/categories');
 
-
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
-    currentUser: ctx.session.token && await ctx.orm.user.findOne({ where: { token:ctx.session.token } }),
+    currentUser: ctx.session.token && await ctx.orm.user.findOne({ where: { token: ctx.session.token } }),
     newSessionPath: ctx.router.url('session.new'),
     newUserPath: ctx.router.url('users.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
     tradesPath: ctx.router.url('trades.list'),
-    profilePath: ctx.router.url('users/'+ctx.session.userId+'/show'),
+    profilePath: ctx.router.url(`users/${ctx.session.userId}/show`),
     // searchCatPath: ctx.router.url('object.searchCat')
   });
   return next();

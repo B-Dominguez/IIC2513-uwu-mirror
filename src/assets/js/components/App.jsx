@@ -4,7 +4,7 @@ import AsyncSelect from 'react-select/async';
 
 var objectOptions=[];
 
-fetch('https://grupo-uwu.herokuapp.com/objects')
+fetch('https://localhost:3000/objects')
 	.then(function(response) {
   	return response.json();
   })
@@ -18,7 +18,7 @@ fetch('https://grupo-uwu.herokuapp.com/objects')
       })
     })
   });
-  
+
 const filterObjects = (inputValue) => {
   return objectOptions.filter(i =>
     i.label.toLowerCase().includes(inputValue.toLowerCase())

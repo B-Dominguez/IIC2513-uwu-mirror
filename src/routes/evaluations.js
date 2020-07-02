@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+
 const router = new KoaRouter();
 
 async function loadEvaluation(ctx, next) {
@@ -23,18 +24,18 @@ router.get('evaluations.list', '/', async (ctx) => {
 
 router.get('evaluations.new', '/new', async (ctx) => {
   const evaluation = ctx.orm.evaluation.build();
-  searchPath: ctx.router.url('objects.searchForm'),
+  ctx.router.url('objects.searchForm'),
   await ctx.render('evaluations/new', {
     evaluation,
     submitEvaluationPath: ctx.router.url('evaluations.create'),
-   });
+  });
   // equiv                        {evaluation: evaluation}
 });
 
-router.post('evaluations.create', '/', async (ctx) =>{
+router.post('evaluations.create', '/', async (ctx) => {
   const evaluation = ctx.orm.evaluation.build(ctx.request.body);
   try {
-    await evaluation.save({ fields: ['rate',  'description']});
+    await evaluation.save({ fields: ['rate', 'description'] });
     ctx.redirect(ctx.router.url('evaluations.list'));
   } catch (validationError) {
     await ctx.render('evaluations.new', {
@@ -51,22 +52,22 @@ router.get('evaluations.edit', '/:id/edit', loadEvaluation, async (ctx) => {
   await ctx.render('evaluations/edit', {
     evaluation,
     searchPath: ctx.router.url('objects.searchForm'),
-    submitEvaluationPath: ctx.router.url('evaluations.update', {id: evaluation.id}),
+    submitEvaluationPath: ctx.router.url('evaluations.update', { id: evaluation.id }),
   });
 });
 
 router.patch('evaluations.update', '/:id', loadEvaluation, async (ctx) => {
   const { evaluation } = ctx.state;
   try {
-    const {rate, description} = ctx.request.body;
-    await evaluation.update({rate, description});
+    const { rate, description } = ctx.request.body;
+    await evaluation.update({ rate, description });
     ctx.redirect(ctx.router.url('evaluations.list'));
   } catch (validationError) {
     await ctx.render('evaluations.edit', {
       evaluation,
       searchPath: ctx.router.url('objects.searchForm'),
       errors: validationError.errors,
-      submitEvaluationPath: ctx.router.url('evaluations.update', {id: evaluation.id}),
+      submitEvaluationPath: ctx.router.url('evaluations.update', { id: evaluation.id }),
     });
   }
 });

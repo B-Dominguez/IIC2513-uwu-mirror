@@ -11,5 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here. This method receives a models parameter.
   };
 
+  message.prototype.parsedCreatedAt = function() {
+  return this.createdAt.getDate()+"/"+this.createdAt.getMonth()+"/"+
+  this.createdAt.getFullYear()+" "+this.createdAt.getHours()+":"+this.createdAt.getMinutes();
+};
+
   return message;
 };

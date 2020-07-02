@@ -4,13 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.DATE,
     info: DataTypes.STRING,
     tradeId: DataTypes.INTEGER,
-    sender: DataTypes.INTEGER,  // sin associate porque no necesitamos cascade
+    sender: DataTypes.INTEGER, // sin associate porque no necesitamos cascade
     // es un userId
   }, {});
 
   offer.associate = function associate(models) {
     offer.belongsTo(models.trade);
-    offer.belongsToMany(models.object,{ through: 'ObjectOffer'} )
+    offer.belongsToMany(models.object, { through: 'ObjectOffer' });
     // associations can be defined here. This method receives a models parameter.
   };
 

@@ -33,33 +33,30 @@ app.context.orm = orm;
 
 // expose running mode in ctx.state
 
-
-
 app.use((ctx, next) => {
   ctx.state.env = ctx.app.env;
   return next();
 });
 
-app.use(async(ctx, next) => {
+app.use(async (ctx, next) => {
   try {
-    await next()
-    const status = ctx.status || 404
+    await next();
+    const status = ctx.status || 404;
     if (status === 404) {
-        ctx.throw(404)
+      ctx.throw(404);
     }
   } catch (err) {
-    ctx.status = err.status || 500
+    ctx.status = err.status || 500;
     if (ctx.status === 401) {
-      //Your 404.jade
+      // Your 404.jade
       await ctx.render('401', {
         searchPath: ctx.router.url('objects.searchForm'),
       });
     } else {
-      //other_error jade
-      console.log("Other error");
+      // other_error jade
     }
   }
-})
+});
 // log requests
 app.use(koaLogger());
 
