@@ -6,24 +6,14 @@
       <column>
         <info>
             <div class="name"> Intercambio <%= trade.id %> </div>
-            <% if (!user1or2) {%>
+            <% if (!user1or2) { // Cuando es un admin %>
               <div class="text"> usuario1: <%= trade.id_user1 %> </div>
               <div class="text"> usuario2: <%= trade.id_user2 %>  </div>
             <% } else {%>
-              <% if (user1or2 == 1) {%>
-                <div class="text">
-                  Con usuario <a href= <%= "/users/" + trade.id_user2 + "/show"%>> <%= user2Name %></a>
-                </div>
-              <% } else {%>
-                <div class="text">
-                  Con usuario
-                  <% if (user1or2 == 1) {%>
-                    <a href= <%= "/users/" + trade.id_user1 + "/show"%>> <%= user2Name %></a>
-                  <% } else {%>
-                    <a href= <%= "/users/" + trade.id_user1 + "/show"%>> <%= user1Name %></a>
-                  <% } %>
-                </div>
-              <% } %>
+              <div class="text">
+                Con usuario <a href= <%= otherProfilePath %>> <%= otherName
+                  %></a>
+              </div>
             <% } %>
             <div class="text"> Creado el <%= trade.createdAt.getDate() %>/<%= trade.createdAt.getMonth()+1%>/<%= trade.createdAt.getFullYear() %> a las <%= trade.createdAt.getHours() %>:<%= trade.createdAt.getMinutes() %>   </div>
             <div class="text">
@@ -80,30 +70,27 @@
         </info>
       </column>
       <column>
-                <h3>Chat</h3>
+          <h3>Chat</h3>
 
       <scroll-column>
-          <% if (!tradeMessagesList.length) { %>
-            <text>Aún no hay mensajes</text>
-        <% } else { %>
+        <% if (!tradeMessagesList.length) { %>
+          <text>Aún no hay mensajes</text>
+        <% } else { if (user1or2 || superpermit) { // admin regular no ve%>
           <info-chat>
             <% tradeMessagesList.forEach((message) => { %>
-            <% if (message.sender == trade.id_user1 && user1or2 == 2) {%>
-              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/" + message.sender + "/show"%>> <%= user1Name %></a> dijo: <%= message.content %> </div>
-            <% } %>
-            <% if (message.sender == trade.id_user2 && user1or2 == 1) {%>
-              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/" + message.sender + "/show"%>> <%= user2Name %></a> dijo: <%= message.content %> </div>
-            <% } %>
-            <% if (message.sender == trade.id_user1 && user1or2 == 1) {%>
-              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/myprofile"%>> Tú </a> dijiste: <%= message.content %> </div>
-            <% } %>
-            <% if (message.sender == trade.id_user2 && user1or2 == 2) {%>
-              <div class="text"> (<%= message.createdAt.getDate() %>/<%= message.createdAt.getMonth()+1%>/<%= message.createdAt.getFullYear() %> <%= message.createdAt.getHours() %>:<%= message.createdAt.getMinutes() %> )  <a href= <%= "/users/myprofile"%>> Tú </a> dijiste: <%= message.content %> </div>
+            <% if (message.sender == userId) {%>
+              <div class="text"> (<%= message.parsedCreatedAt() %>) <a href= <%= senderProfilePath(message) %>> Tú</a> dijiste: <%= message.content %> </div>
+            <% } else {%>
+              <% if (message.sender == trade.id_user2) {%>
+                <div class="text"> (<%= message.parsedCreatedAt() %>) <a href= <%= senderProfilePath(message) %>> <%= user2Name %></a> dijo: <%= message.content %> </div>
+              <% } else {%>
+                <div class="text"> (<%= message.parsedCreatedAt() %>) <a href= <%= senderProfilePath(message) %>> <%= user1Name %></a> dijo: <%= message.content %> </div>
+              <% } %>
             <% } %>
         <% }) %>
       </info-chat>
 
-        <% } %>
+        <% }} %>
       </scroll-column>
 
       <% if (user1or2 || superpermit) { %>
@@ -178,7 +165,7 @@
         </column>
         <column>
           <info>
-            <div class="name"> Oferta<%= tradeOffer.id %> </div>
+            <div class="name"> Oferta <%= tradeOffer.id %> </div>
             <div class="text"> <%= tradeOffer.info %> </div>
             <div class="text"> <%= tradeOffer.date %> </div>
           </info>
@@ -290,11 +277,7 @@
     <% objects1.forEach((object) => { %>
     <div class="item">
       <div class="item-img">
-        <% if (object.image1) { %>
-          <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
-        <% } else { %>
-          <img src="http://placehold.it/150x150">
-        <% } %>
+        <img src="<%= object.getFirstImagePath() %>">
       </div>
       <div class="item-name">
         <p><%= object.name %></p>
@@ -309,11 +292,7 @@
     <% objects2.forEach((object) => { %>
     <form action="/"></form>
     <div class="item">
-      <% if (object.image1) { %>
-        <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
-      <% } else { %>
-        <img src="http://placehold.it/150x150">
-      <% } %>
+      <img src="<%= object.getFirstImagePath() %>">
       <div class="item-name">
         <p><%= object.name %></p>
       </div>

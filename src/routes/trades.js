@@ -43,8 +43,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
   const { usersession } = ctx.state;
   if (!usersession || ((usersession.id != trade.id_user1)
     && (usersession.id != trade.id_user2) && (usersession.usertype == 0))) {
-    // Si no se ha iniciado sesión, o es un usuario común que quiere ver
-    // Los trades de otro usuario:
+    // Si no se ha iniciado sesión, o es un usuario común no dueño
     return ctx.throw(401, 'Unauthorized');
   }
   const user1 = await ctx.orm.user.findByPk(trade.id_user1);
@@ -60,20 +59,21 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
   let user1or2 = null;
   let userId = null;
   let otherId = null;
-  if (usersession) {
-    userId = usersession.id;
-    superpermit = usersession.usertype == 2;
-    if (usersession.id == trade.id_user1) {
-      user1or2 = 1;
-      otherId = trade.id_user2;
-    }
-    if (usersession.id == trade.id_user2) {
-      user1or2 = 2;
-      otherId = trade.id_user1;
-    }
-    if (tradeOffer && tradeOffer.sender == usersession.id) {
-      offerIsMine = true;
-    }
+  var otherName = null;
+  userId = usersession.id;
+  superpermit = usersession.usertype == 2;
+  if (usersession.id == trade.id_user1) {
+    user1or2 = 1;
+    otherId = trade.id_user2;
+    otherName = user2.name;
+  }
+  if (usersession.id == trade.id_user2) {
+    user1or2 = 2;
+    otherId = trade.id_user1;
+    otherName = user1.name;
+  }
+  if (tradeOffer && tradeOffer.sender == usersession.id) {
+    offerIsMine = true;
   }
 
   const user1Name = user1.name;
@@ -95,11 +95,7 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
     //   if (!objects1Array.includes(object.id)) {
     //     objects2Array,push(object.id)
     //   }
-    // });
-    console.log('CCCCCCCCCCCCCc');
-
-    console.log(objectsAll);
-
+    // }
     objectsAll.forEach((object) => {
       if (object.userId != usersession.id) {
         objects2.push(object);
@@ -109,9 +105,9 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
     });
   }
 
-  console.log(objects2);
 
   await ctx.render('trades/show', {
+    otherName,
     objects1,
     objects2,
     userId,
@@ -128,7 +124,8 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
     editTradePath: ctx.router.url('trades.edit', { id: trade.id }),
     deleteTradePath: ctx.router.url('trades.delete', { id: trade.id }),
     submitMessagePath: ctx.router.url('messages.create', { tradeId: trade.id }),
-    newOfferPath: ctx.router.url('offers.new', { tradeId: trade.id, id1: userId, id2: otherId }),
+    newOfferPath: ctx.router.url('offers.new', { tradeId: trade.id, id1: userId,
+      id2: otherId }),
     updateTradePath: ctx.router.url('trades.update', { id: trade.id }),
     updateOfferPath: (offer) => ctx.router.url('offers.update',
       { id: offer.id }),
@@ -140,6 +137,9 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
       { id: offer.id }),
     deleteOfferPath: (offer) => ctx.router.url('offers.delete',
       { id: offer.id }),
+    otherProfilePath: ctx.router.url('users.show',{id: otherId}),
+    senderProfilePath: (message) => ctx.router.url('users.show',
+    {id: message.sender}),
   });
 });
 
@@ -157,24 +157,18 @@ router.get('trades.new', '/new', async (ctx) => {
 });
 
 router.post('trades.create', '/', loadUserSession, async (ctx) => {
-  console.log('111111111111111');
   const { usersession } = ctx.state;
   if (!usersession) {
     // Si no se ha iniciado sesión
-    console.log('2222222222222222222');
     return ctx.throw(401, 'Unauthorized');
   }
   const trade = ctx.orm.trade.build(ctx.request.body);
-  console.log('333333333333333333333');
   try {
-    console.log('4444444444444444');
     await trade.save({
       fields: ['id_user1', 'id_user2', 'user1_confirms',
         'user2_confirms', 'status', 'date'],
     });
-    console.log('55555555555555');
     ctx.redirect(ctx.router.url('trades.show', { id: trade.id }));
-    console.log('666666666666');
   } catch (validationError) {
     await ctx.render('trades/new', {
       trade,
