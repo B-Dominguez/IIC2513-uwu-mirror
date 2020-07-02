@@ -45,11 +45,13 @@
           <input class="input-field" type="text" name="address" placeholder="Dirección" required><%= user.address %></input>
         </div>
         <br>
+        <div  class="field">
         <% if (user.isNewRecord) { %>
           <button class="submit-button" type="submit" name="create" value="Registrarse" />Registrarse</button>
         <% } else { %>
           <button class="submit-button" type="submit" name="update" value="Update" />Actualizar datos</button>
         <% } %>
+        </div>
       </div>
     </div>
   </form>
