@@ -10,22 +10,18 @@
           <input type="radio" id="3" name="image-slide" hidden />
 
           <div class="slide">
-            <% if (object.image1) { %>
-              <div class="item-slide">
-                <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
-              </div>
-            <% } %>
-            <% if (object.image2) { %>
-              <div class="item-slide">
-                <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image2%>">
-              </div>
-            <% } %>
-            <% if (object.image3) { %>
-              <div class="item-slide">
-                <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image3%>">
-              </div>
-            <% } %>
-
+            <%
+            var i;
+            for (i = 1; i < 4; i++) {
+              var image = object.getImagePath(i);
+              if (image) { %>
+                <div class="item-slide">
+                  <img src="<%=image%>">
+                </div>
+                <%
+              }
+            }
+            %>
           </div>
 
           <div class="pagination">
@@ -61,7 +57,7 @@
         <% } else { %>
         <p>No disponible :(</p>
         <% } %>
-        <div> <p>Fecha de publicación: <%= object.createdAt.getDate() + "/" + object.createdAt.getMonth() + "/" + object.createdAt.getFullYear() %></p></div>
+        <div> <p>Fecha de publicación: <%= object.parsedCreatedAt() %></p></div>
       </div>
       <div class="links-box">
         <% if (userpermit || superpermit) { %>
