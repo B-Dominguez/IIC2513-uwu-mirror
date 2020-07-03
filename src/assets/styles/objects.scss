@@ -24,7 +24,7 @@ h2{
       border-left: 2px solid #0076CE;
       background-color: #0076CE;
     }
-  
+
     td {
       background-color: #FFFFFF;
       border: 1px solid rgb(0, 118, 206);
@@ -33,7 +33,7 @@ h2{
 }
 column {
   display: inline-block;
-  
+
 }
 
 row {
@@ -152,10 +152,10 @@ info {
   border-radius: 6px;
   overflow: hidden;
 }
-.img {
-    height: auto; 
-    width: auto; 
-    max-width: 150px; 
+img {
+    height: auto;
+    width: auto;
+    max-width: 200px;
     max-height: 150px;
 }
 .slide {
@@ -279,7 +279,7 @@ scroll-column {
   overflow: scroll;
   width: 700px;
   height: 180px;
-  
+
 }
 
 row {

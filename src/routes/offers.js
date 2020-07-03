@@ -20,6 +20,30 @@ async function loadUserSession(ctx, next) {
   return next();
 }
 
+async function loadAccessLevel(ctx, next) {
+  // Guardamos resultado (user) en state
+  console.log("loadAccessLevel");
+  ctx.state.accessLevel = null;
+  if (ctx.state.usersession) {
+    ctx.state.accessLevel = ctx.state.usersession.usertype;
+  }
+  // Despues pasa al sgte middleware
+  return next();
+}
+
+async function checkOfferOwner(ctx, next) {
+  // Guardamos resultado (user) en state
+  console.log("checkOfferOwner");
+  ctx.state.offertOwner = false;
+  if (ctx.state.offer) {
+    if (ctx.state.usersession) {
+      ctx.state.offerOwner = ctx.state.usersession.id == ctx.state.offer.userId;
+    }
+  }
+  // Despues pasa al sgte middleware
+  return next();
+}
+
 router.get('offers.list', '/', loadUserSession, async (ctx) => {
   const { usersession } = ctx.state;
   if (usersession && usersession.usertype == 2) {
@@ -38,8 +62,6 @@ router.get('offers.list', '/', loadUserSession, async (ctx) => {
 router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx) => {
   const { usersession } = ctx.state;
   if (!usersession) {
-    // Si no se ha iniciado sesión, o es un usuario común que quiere ver
-    // Los trades de otro usuario:
     return ctx.throw(401, 'Unauthorized');
   }
   const userId = usersession.id;
@@ -70,8 +92,11 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
   });
 });
 
-router.post('offers.create', '/:tradeId', async (ctx) => {
-  console.log('Este es el body !!');
+router.post('offers.create', '/:tradeId', loadUserSession, async (ctx) => {
+  const { usersession } = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   console.log(ctx.request.body);
   const offer = ctx.orm.offer.build(ctx.request.body);
   const { tradeId } = ctx.params;
@@ -95,8 +120,16 @@ router.post('offers.create', '/:tradeId', async (ctx) => {
   }
 });
 
-router.get('offers.edit', '/:id/edit', loadOffer, async (ctx) => {
+router.get('offers.edit', '/:id/edit', loadOffer, loadUserSession,
+loadAccessLevel, checkOfferOwner, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { offer } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.offerOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { tradeId } = ctx.params;
   await ctx.render('offers/edit', {
     offer,
@@ -106,8 +139,16 @@ router.get('offers.edit', '/:id/edit', loadOffer, async (ctx) => {
   });
 });
 
-router.patch('offers.update', '/:id', loadOffer, async (ctx) => {
+router.patch('offers.update', '/:id', loadOffer, loadUserSession,
+loadAccessLevel, checkOfferOwner, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { offer } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.offerOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   try {
     const { name, description, status } = ctx.request.body;
     await offer.update({ name, description, status });
@@ -126,8 +167,16 @@ router.patch('offers.update', '/:id', loadOffer, async (ctx) => {
   }
 });
 
-router.del('offers.delete', '/:id', loadOffer, async (ctx) => {
+router.del('offers.delete', '/:id', loadOffer, loadUserSession,
+loadAccessLevel, checkOfferOwner, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { offer } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.offerOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   await offer.destroy();
   ctx.redirect(ctx.router.url('offers.list'));
 });

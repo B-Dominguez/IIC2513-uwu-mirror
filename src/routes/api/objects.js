@@ -8,6 +8,15 @@ async function loadObject(ctx, next) {
   return next();
 }
 
+async function responseObject(ctx, object) {
+  ctx.body = ctx.jsonSerializer('object', {
+    attributes: ['name', 'description', 'categoryId', 'status', 'userId'],
+    topLevelLinks: {
+      self: `${ctx.origin}${ctx.router.url('api.object.show', { id: object.id })}`,
+    },
+  }).serialize(object);
+}
+
 router.get('api.objects.list', '/', async (ctx) => {
   const objectsList = await ctx.orm.object.findAll();
   ctx.body = ctx.jsonSerializer('object', {
@@ -23,12 +32,7 @@ router.get('api.objects.list', '/', async (ctx) => {
 
 router.get('api.object.show', '/:id', async (ctx) => {
   const object = await ctx.orm.object.findByPk(ctx.params.id);
-  ctx.body = ctx.jsonSerializer('object', {
-    attributes: ['name', 'description', 'categoryId', 'status', 'userId'],
-    topLevelLinks: {
-      self: `${ctx.origin}${ctx.router.url('api.object.show', { id: object.id })}`,
-    },
-  }).serialize(object);
+  await responseObject(ctx, object);
 });
 
 
@@ -36,19 +40,11 @@ router.post('api.objects.create', '/', async (ctx) => {
   //var JSONAPIDeserializer = require('jsonapi-serializer').Deserializer;
   //const bod = new JSONAPIDeserializer().deserialize(ctx.request.body);
   try {
-    const bod = JSON.parse(ctx.request.body);
-    console.log("bod-", bod);
+    const bod = JSON.parse(ctx.request.body)
     const object = ctx.orm.object.build(bod);
-    console.log("object ", object);
     try {
       await object.save({ fields: ['name', 'description', 'categoryId', 'status', 'userId'] });
-      console.log("success");
-      ctx.body = ctx.jsonSerializer('object', {
-        attributes: ['name', 'description', 'categoryId', 'status', 'userId'],
-        topLevelLinks: {
-          self: `${ctx.origin}${ctx.router.url('api.object.show', { id: object.id })}`,
-        },
-      }).serialize(object);
+      await responseObject(ctx, object);
     } catch (validationError) {
       console.log("validation error");
     }
@@ -69,12 +65,7 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
       await object.update({
         name, description, categoryId, status,
       });
-      ctx.body = ctx.jsonSerializer('object', {
-        attributes: ['name', 'description', 'categoryId', 'status', 'userId'],
-        topLevelLinks: {
-          self: `${ctx.origin}${ctx.router.url('api.object.show', { id: object.id })}`,
-        },
-      }).serialize(object);
+      await responseObject(ctx, object);
     } catch (validationError) {
       console.log("validation error");
     }
@@ -83,12 +74,7 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
 router.del('objects.delete', '/:id', loadObject, async (ctx) => {
   const { object } = ctx.state;
   await object.destroy();
-  ctx.body = ctx.jsonSerializer('object', {
-    attributes: ['name', 'description', 'categoryId', 'status', 'userId'],
-    topLevelLinks: {
-      self: `${ctx.origin}${ctx.router.url('api.object.show', { id: ctx.state.object.id })}`,
-    },
-  }).serialize(ctx.state.object);
+  await responseObject(ctx, ctx.state.object);
 });
 
 

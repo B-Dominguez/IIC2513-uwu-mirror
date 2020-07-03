@@ -20,6 +20,32 @@ async function loadUserSession(ctx, next) {
   return next();
 }
 
+async function loadAccessLevel(ctx, next) {
+  // Guardamos resultado (user) en state
+  console.log("loadAccessLevel");
+  ctx.state.accessLevel = null;
+  if (ctx.state.usersession) {
+    ctx.state.accessLevel = ctx.state.usersession.usertype;
+  }
+  // Despues pasa al sgte middleware
+  return next();
+}
+
+async function checkTradeOwner(ctx, next) {
+  // Guardamos resultado (user) en state
+  console.log("checkTradeOwner");
+  ctx.state.tradeOwner = false;
+  if (ctx.state.trade) {
+    if (ctx.state.usersession) {
+      ctx.state.tradeOwner = ((ctx.state.usersession.id ==
+        ctx.state.trade.id_user1) || (ctx.state.usersession.id ==
+          ctx.state.trade.id_user2));
+    }
+  }
+  // Despues pasa al sgte middleware
+  return next();
+}
+
 router.get('trades.list', '/', loadUserSession, async (ctx) => {
   const { usersession } = ctx.state;
   if (usersession && usersession.usertype == 2) {
@@ -37,15 +63,19 @@ router.get('trades.list', '/', loadUserSession, async (ctx) => {
   }
 });
 
-router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) => {
-  const { trade } = ctx.state;
-  const message = ctx.orm.message.build();
-  const { usersession } = ctx.state;
-  if (!usersession || ((usersession.id != trade.id_user1)
-    && (usersession.id != trade.id_user2) && (usersession.usertype == 0))) {
-    // Si no se ha iniciado sesión, o es un usuario común no dueño
+router.get('trades.show', '/:id/show', loadTrade, loadUserSession,
+loadAccessLevel, checkTradeOwner, async (ctx) => {
+  console.log("omefpwenrmfpewfpnew");
+  const {usersession} = ctx.state;
+  if (!usersession) {
     return ctx.throw(401, 'Unauthorized');
   }
+  console.log("222222222222222222222");
+  const { trade } = ctx.state;
+  if (ctx.state.accessLevel < 1 && !ctx.state.tradeOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
+  const message = ctx.orm.message.build();
   const user1 = await ctx.orm.user.findByPk(trade.id_user1);
   const user2 = await ctx.orm.user.findByPk(trade.id_user2);
   let superpermit = null;
@@ -57,11 +87,10 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
   });
 
   let user1or2 = null;
-  let userId = null;
   let otherId = null;
   var otherName = null;
-  userId = usersession.id;
-  superpermit = usersession.usertype == 2;
+  var userId = usersession.id;
+  superpermit = ctx.state.accessLevel == 2;
   if (usersession.id == trade.id_user1) {
     user1or2 = 1;
     otherId = trade.id_user2;
@@ -84,18 +113,6 @@ router.get('trades.show', '/:id/show', loadTrade, loadUserSession, async (ctx) =
 
   if (tradeOffer) {
     objectsAll = await tradeOffer.getObjects();
-
-    // const objects1 = await ctx.orm.object.findAll({
-    //   where: {userId: usersession.id}});
-    // objects1.forEach ((object) => {
-    //   objects1Array.push(object.id)
-    // });
-
-    // objectsAll.forEach ((object) => {
-    //   if (!objects1Array.includes(object.id)) {
-    //     objects2Array,push(object.id)
-    //   }
-    // }
     objectsAll.forEach((object) => {
       if (object.userId != usersession.id) {
         objects2.push(object);
@@ -178,15 +195,11 @@ router.post('trades.create', '/', loadUserSession, async (ctx) => {
   }
 });
 
-router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) => {
-  if (!usersession) { // 401 mejorar
-    // Si no se ha iniciado sesión
+router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession,
+loadAccessLevel, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession || ctx.state.accessLevel < 2) {
     return ctx.throw(401, 'Unauthorized');
-  }
-  const { usersession } = ctx.state;
-  const { trade } = ctx.state;
-  if (!usersession || usersession.id != 2) {
-    ctx.redirect('/');
   } else {
     await ctx.render('trades/edit', {
       trade,
@@ -196,8 +209,18 @@ router.get('trades.edit', '/:id/edit', loadTrade, loadUserSession, async (ctx) =
   }
 });
 
-router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
+router.patch('trades.update', '/:id', loadTrade, loadUserSession,
+loadAccessLevel, checkTradeOwner, async (ctx) => {
+  console.log("omefpwenrmfpewfpnew");
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
+  console.log("222222222222222222222");
   const { trade } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.tradeOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   try {
     const {
       id_user1, id_user2, status, date, user1_confirms,
@@ -229,8 +252,8 @@ router.patch('trades.update', '/:id', loadTrade, async (ctx) => {
 });
 
 router.del('trades.delete', '/:id', loadTrade, async (ctx) => {
-  if (!usersession) { // 401
-    // Si no se ha iniciado sesión
+  if (!usersession || usersession.usertype < 2) { // 401
+    // Si no es superadmin
     return ctx.throw(401, 'Unauthorized');
   }
   const { trade } = ctx.state;

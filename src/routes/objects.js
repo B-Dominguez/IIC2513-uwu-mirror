@@ -6,26 +6,51 @@ const fs = require('fs');
 const fileStorage = require('../services/file-storage');
 
 async function loadObject(ctx, next) {
+  console.log("loadObject");
   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
   console.log(ctx.state.object);
   return next();
 }
 
-// async function loadObjectByCat(ctx, next) {
-//   ctx.state.object = await ctx.orm.object.findByPk(ctx.params.id);
-//   return next();
-// }
-
 async function loadUserSession(ctx, next) {
   // Guardamos resultado (user) en state
+  console.log("loadUserSession");
   if (ctx.session.token == undefined) {
     ctx.state.usersession = null;
+    ctx.state.accessLevel = null;
     return next();
   }
   ctx.state.usersession = await ctx.orm.user.findOne({
     where: { token: ctx.session.token },
 
   });
+  if (ctx.state.usersession) {
+    ctx.state.accessLevel = ctx.state.usersession.usertype;
+  }
+  // Despues pasa al sgte middleware
+  return next();
+}
+
+async function loadAccessLevel(ctx, next) {
+  // Guardamos resultado (user) en state
+  console.log("loadAccessLevel");
+  ctx.state.accessLevel = null;
+  if (ctx.state.usersession) {
+    ctx.state.accessLevel = ctx.state.usersession.usertype;
+  }
+  // Despues pasa al sgte middleware
+  return next();
+}
+
+async function checkObjectOwner(ctx, next) {
+  // Guardamos resultado (user) en state
+  console.log("checkObjectOwner");
+  ctx.state.objectOwner = false;
+  if (ctx.state.object) {
+    if (ctx.state.usersession) {
+      ctx.state.objectOwner = ctx.state.usersession.id == ctx.state.object.userId;
+    }
+  }
   // Despues pasa al sgte middleware
   return next();
 }
@@ -59,7 +84,10 @@ router.get('objects.list', '/', loadUserSession, async (ctx) => {
   }
 });
 
-router.get('objects.new', '/new', async (ctx) => {
+router.get('objects.new', '/new', loadUserSession, async (ctx) => {
+  if (!ctx.state.usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const object = ctx.orm.object.build();
   const categoriesList = await ctx.orm.category.findAll();
   await ctx.render('objects/new', {
@@ -70,7 +98,10 @@ router.get('objects.new', '/new', async (ctx) => {
   });
 });
 
-router.post('objects.create', '/', async (ctx) => {
+router.post('objects.create', '/', loadUserSession, async (ctx) => {
+  if (!ctx.state.usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   console.log("body ", ctx.request.body);
   const object = ctx.orm.object.build(ctx.request.body);
   console.log("object", object);
@@ -118,8 +149,16 @@ router.post('objects.create', '/', async (ctx) => {
   }
 });
 
-router.get('objects.edit', '/:id/edit', loadObject, async (ctx) => {
+router.get('objects.edit', '/:id/edit', loadObject, loadUserSession,
+loadAccessLevel, checkObjectOwner, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { object } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.objectOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const categoriesList = await ctx.orm.category.findAll();
   await ctx.render('objects/edit', {
     object,
@@ -179,8 +218,16 @@ router.get('objects.searchCat', 'objects/:cat/searchCat', loadObject, async (ctx
   });
 });
 
-router.patch('objects.update', '/:id', loadObject, async (ctx) => {
+router.patch('objects.update', '/:id', loadObject, loadUserSession,
+loadAccessLevel, checkObjectOwner, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { object } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.objectOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const size1 = ctx.request.files.image1.size;
   const size2 = ctx.request.files.image2.size;
   const size3 = ctx.request.files.image3.size;
@@ -232,8 +279,16 @@ router.patch('objects.update', '/:id', loadObject, async (ctx) => {
   }
 });
 
-router.del('objects.delete', '/:id', loadObject, async (ctx) => {
+router.del('objects.delete', '/:id', loadObject, loadUserSession,
+loadAccessLevel, checkObjectOwner, async (ctx) => {
+  const {usersession} = ctx.state;
+  if (!usersession) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   const { object } = ctx.state;
+  if (ctx.state.accessLevel < 2 && !ctx.state.objectOwner) {
+    return ctx.throw(401, 'Unauthorized');
+  }
   await object.destroy();
   ctx.redirect(ctx.router.url('users.myprofile'));
 });
