@@ -71,7 +71,9 @@ router.get('objects.new', '/new', async (ctx) => {
 });
 
 router.post('objects.create', '/', async (ctx) => {
+  console.log("body ", ctx.request.body);
   const object = ctx.orm.object.build(ctx.request.body);
+  console.log("object", object);
   const size1 = ctx.request.files.image1.size;
   const size2 = ctx.request.files.image2.size;
   const size3 = ctx.request.files.image3.size;
