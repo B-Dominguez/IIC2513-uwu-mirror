@@ -3,12 +3,14 @@ const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 
 async function loadOffer(ctx, next) {
+  console.log("loadOffer");
   ctx.state.offer = await ctx.orm.offer.findByPk(ctx.params.id);
   return next();
 }
 
 async function loadUserSession(ctx, next) {
   // Guardamos resultado (user) en state
+  console.log("loadUserSession");
   if (ctx.session.token == undefined) {
     ctx.state.usersession = null;
     return next();
@@ -93,6 +95,7 @@ router.get('offers.new', '/new/:tradeId/:id1/:id2', loadUserSession, async (ctx)
 });
 
 router.post('offers.create', '/:tradeId', loadUserSession, async (ctx) => {
+  console.log("try post");
   const { usersession } = ctx.state;
   if (!usersession) {
     return ctx.throw(401, 'Unauthorized');
@@ -141,6 +144,7 @@ loadAccessLevel, checkOfferOwner, async (ctx) => {
 
 router.patch('offers.update', '/:id', loadOffer, loadUserSession,
 loadAccessLevel, checkOfferOwner, async (ctx) => {
+  console.log("postmiddlewearae");
   const {usersession} = ctx.state;
   if (!usersession) {
     return ctx.throw(401, 'Unauthorized');
