@@ -22,11 +22,7 @@
             </div>
             <div class="item-info">
               <div class="item-img">
-                <% if (object.image1) { %>
-                  <img src="https://guwuappspace1.sfo2.digitaloceanspaces.com/<%=object.image1%>">
-                <% } else { %>
-                  <img src="http://placehold.it/150x150">
-                <% } %>
+                <img src="<%= object.getFirstImagePath() %>">
               </div>
               <div class="item-name">
                 <p><%= object.name %></p>
@@ -64,7 +60,6 @@
 
       <br>
       <br>
-      <% console.log("AAAAAA ESTE ES EL TRADE ID", tradeId) %>
         <% if (!offer.isNewRecord) { %>
           <input type="hidden" name="_method" value="patch" />
         <% } else {%>
@@ -90,18 +85,5 @@
               <% } %>
             </div>
           </div>
-        <!-- </div>
-          <div  class="field">
-            <% if (offer.isNewRecord) { %>
-              <div>
-                <input type="submit" name="create" value="Enviar oferta" />
-              </div>
-            <% } else { %>
-              <div>
-                <input type="submit" name="update" value="Update" />
-              </div>
-            <% } %>
-          </div> -->
-
     </form>
   </div>
