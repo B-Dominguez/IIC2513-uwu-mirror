@@ -152,7 +152,12 @@ info {
   border-radius: 6px;
   overflow: hidden;
 }
-
+.img {
+    height: auto; 
+    width: auto; 
+    max-width: 150px; 
+    max-height: 150px;
+}
 .slide {
  display: flex;
  transform: translate3d(0,0,0);
