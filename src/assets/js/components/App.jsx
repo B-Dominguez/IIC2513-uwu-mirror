@@ -4,7 +4,7 @@ import AsyncSelect from 'react-select/async';
 
 var objectOptions=[];
 
-fetch('http://localhost:3000/objects')
+fetch('http://https://grupo-uwu.herokuapp.com/objects')
 	.then(function(response) {
   	return response.json();
   })
